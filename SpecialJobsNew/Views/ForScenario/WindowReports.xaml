@@ -1,0 +1,65 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowReports"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        mc:Ignorable="d"
+        Title="Документы" Height="300" Width="500" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3.2*"/>
+            <RowDefinition Height="3.2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="ПРЕДПИСАНИЕ" Grid.Row="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <RadioButton x:Name="PredPost"  HorizontalContentAlignment="Left" VerticalAlignment="Center" 
+                             Content="Эврика" Padding="8,0,0,5" Margin="20,20,1,6" IsChecked="True" GroupName="1" Checked="RadioButton_Checked"/>
+                <RadioButton x:Name="PredPostFSTEK"  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" 
+                             Content="ФСТЭК" Padding="8,0,0,5" Margin="20,0" GroupName="1" Checked="RadioButton_Checked_1"/>
+            </Grid>
+
+        </GroupBox>
+        <GroupBox Header="ПРОТОКОЛ" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <RadioButton x:Name="ProtPost" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                             Content="Эврика"  Margin="20,15,0,0" GroupName="1" Checked="RadioButton_Checked_2"/>
+                <RadioButton x:Name="ProtFSTEK" Grid.Row="1" HorizontalAlignment="Left"
+                              VerticalAlignment="Center" Margin="20,0"                             
+                             Content="ФСТЭК"   GroupName="1" Checked="RadioButton_Checked_3" IsChecked="True"/>
+                <dxe:CheckEdit   IsChecked="{Binding isWord,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0,15,25,0"                                 
+                                                                  Content="В формате Word" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Отчёт формируется в соответствии с выбранным шаблоном непосредственно в формате MICROSOFT WORD"  />
+            </Grid>
+
+        </GroupBox>
+        <Grid Grid.Row ="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.02*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.02*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.02*"/>
+            </Grid.ColumnDefinitions>
+            <dxe:ButtonEdit Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False"                             
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo  Command="{Binding CancelWindowCommand}" CommandParameter="1" ToolTip="Завершить сценарий" Content="Завершить" />
+            </dxe:ButtonEdit>
+         
+
+            <dxe:ButtonEdit x:Name="buttonKind" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False" 
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo Command="{Binding ReportCommand}" ToolTip="Переход к окну ввода настраиваемых полей отчёта"
+                                CommandParameter="{Binding Path=Tag, ElementName=buttonKind}" Content="Далее" />
+            </dxe:ButtonEdit>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,45 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowOrgAnalysis_1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        Title="Действия с работами" Height="230" Width="500" WindowStartupLocation="CenterScreen" FontSize="14"
+        KeyUp="Window_KeyUp">
+    
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition />
+                <ColumnDefinition/>
+                <ColumnDefinition />
+                
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Все работы" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <dxe:ComboBoxEdit Grid.Row="0" Grid.Column ="1" Grid.ColumnSpan="3"  ItemsSource="{Binding Organizations,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="ORG_NAME"  EditValue="{Binding org_id, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        ValueMember="ORG_ID" VerticalAlignment="Center"  IsTextEditable = "False" ShowError="False">
+            </dxe:ComboBoxEdit>
+            <Label Grid.Row="1" Content="Название новой работы" HorizontalAlignment="Stretch"  VerticalAlignment="Center" ></Label>
+            <dxe:TextEdit Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center" x:Name="teName" x:FieldModifier="public"
+                          EditValue="{Binding TextOrganization, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  >
+            </dxe:TextEdit>
+            <dxe:ButtonEdit Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" Margin="10,0,0,0" >
+                <dxe:ButtonInfo Content="Завершить" Command="{Binding CancelCommand}"  ToolTip="Выход без сохранения текущего ввода" Margin="1,0,10,0" />
+                <dxe:ButtonInfo Content="Удалить" Command="{Binding DeleteOrganizationCommand}"  ToolTip="Удаление выбранной работы" Margin="1,0,10,0" />
+                <dxe:ButtonInfo Content="Сохранить" Command="{Binding OKCommand}" ToolTip="Сохранить работу, очистить форму для нового ввода" Margin="1,0,10,0" />
+                <dxe:ButtonInfo Content="Далее, счета" Command="{Binding NextCommand}"  ToolTip="Добавление счётов" Margin="1,0,10,0" />
+
+               
+                
+            </dxe:ButtonEdit>
+        </Grid>
+    </Grid> 
+</Window>

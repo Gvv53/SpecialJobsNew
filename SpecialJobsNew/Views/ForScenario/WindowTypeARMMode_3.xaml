@@ -1,0 +1,240 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowTypeARMMode_3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        Title="WindowTypeARMMode_3" WindowStartupLocation="CenterScreen"
+        Height="Auto" SizeToContent="WidthAndHeight" HorizontalContentAlignment="Stretch"  KeyUp="Window_KeyUp"
+        Closing="Window_Closing" IsEnabled="{Binding buttonScenarioEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+
+    <Grid Height="auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+      
+        <Grid Grid.Row ="0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+               
+            <dxg:GridControl x:Name="gcModes" x:FieldModifier="public" ItemsSource= "{Binding Modes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 SelectedItem="{Binding selectedMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 SelectedItems="{Binding selectedItemsMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                 DesignTimeDataSourceRowCount="0" AllowDrop="True"
+                                 DesignTimeShowSampleData="False"
+                                 IsEnabled="{Binding keyModeEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                 CustomColumnDisplayText="gc_CustomColumnDisplayText"  Loaded="gcModes_Loaded"
+                                 dx:DXSerializer.SerializationID="gcModes" 
+                                 dx:DXSerializer.StoreLayoutMode="None"                                      
+                                 dxg:GridSerializationOptions.AddNewColumns = "False"  
+                                 dxg:GridSerializationOptions.RemoveOldColumns = "False" 
+                                 CurrentItem="{Binding focusedMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.ColumnSpan="4"
+                                 CurrentItemChanged="GcModes_CurrentItemChanged"  >
+
+                <dxg:GridControl.Bands>
+                    <dxg:GridControlBand HorizontalHeaderContentAlignment="Stretch" x:Name="band1" >
+                        <dxg:GridColumn FieldName="MODE_MT_ID" x:Name="MODE_MT_ID" Header ="Режим" HorizontalHeaderContentAlignment="Center"  AllowEditing="True"  
+                                            FixedWidth="False" AllowResizing="True"  Visible = "True" >
+                            <dxg:GridColumn.EditSettings >
+                                <dxe:ComboBoxEditSettings ItemsSource="{Binding ModeTypes,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                                  DisplayMember="MT_NAME" ValueMember="MT_ID" IsTextEditable = "False" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_EQ_ID" x:Name="MODE_EQ_ID" Header ="Оборудование"  HorizontalHeaderContentAlignment="Center"  AllowEditing="True" 
+                                            FixedWidth="false" AllowResizing="True" Visible = "True">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:ComboBoxEditSettings ItemsSource="{Binding ArmEquipments,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                                  DisplayMember="EQUIPMENT_TYPE.EQT_NAME" ValueMember="EQ_ID" IsTextEditable = "False" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_ANT_E_ID" x:Name="MODE_ANT_E_ID"  Header="Антенна E"  HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.EditSettings  >
+                                <dxg:LookUpEditSettings ItemsSource="{Binding AntennasE, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                  DisplayMember="ANT_MODEL" ValueMember="ANT_ID" AutoPopulateColumns="False" PopupWidth="310">
+                                    <dxg:LookUpEditSettings.PopupContentTemplate >
+                                        <ControlTemplate >
+                                            <dxg:GridControl Name="PART_GridControl">
+                                                <dxg:GridControl.Columns>
+                                                    <dxg:GridColumn FieldName="ANT_TYPE" Header="Тип" Width="120"/>
+                                                    <dxg:GridColumn FieldName="ANT_MODEL" Header="Модель" Width="80"/>
+                                                    <dxg:GridColumn FieldName="ANT_WORKNUMBER" Header="Зав.номер" Width="100"/>
+                                                </dxg:GridControl.Columns>
+                                                <dxg:GridControl.View>
+                                                    <dxg:TableView AutoWidth="True" ShowFilterPanelMode="Never"/>
+                                                </dxg:GridControl.View>
+                                            </dxg:GridControl>
+                                        </ControlTemplate>
+                                    </dxg:LookUpEditSettings.PopupContentTemplate>
+                                </dxg:LookUpEditSettings>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_ANT_H_ID" x:Name="MODE_ANT_H_ID" Header="Антенна H"  HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.EditSettings  >
+                                <dxg:LookUpEditSettings ItemsSource="{Binding AntennasH, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                  DisplayMember="ANT_MODEL" ValueMember="ANT_ID" AutoPopulateColumns="False" PopupWidth="310">
+                                    <dxg:LookUpEditSettings.PopupContentTemplate >
+                                        <ControlTemplate >
+                                            <dxg:GridControl Name="PART_GridControl">
+                                                <dxg:GridControl.Columns>
+                                                    <dxg:GridColumn FieldName="ANT_TYPE" Header="Тип" Width="120"/>
+                                                    <dxg:GridColumn FieldName="ANT_MODEL" Header="Модель" Width="80"/>
+                                                    <dxg:GridColumn FieldName="ANT_WORKNUMBER" Header="Зав.номер" Width="100"/>
+                                                </dxg:GridControl.Columns>
+                                                <dxg:GridControl.View>
+                                                    <dxg:TableView AutoWidth="True" ShowFilterPanelMode="Never"/>
+                                                </dxg:GridControl.View>
+                                            </dxg:GridControl>
+                                        </ControlTemplate>
+                                    </dxg:LookUpEditSettings.PopupContentTemplate>
+                                </dxg:LookUpEditSettings>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+
+                    </dxg:GridControlBand>
+                    <dxg:GridControlBand x:Name="band2" Header="2кат" HorizontalHeaderContentAlignment="Center" >
+                        <dxg:GridColumn FieldName="MODE_R2" x:Name="MODE_R2" Header ="Макс.R2воз" ReadOnly="True" HorizontalHeaderContentAlignment="Center" 
+                                            ToolTip="Максимальное значение для 2 кат.возимых СР" FixedWidth="False" AllowResizing="True" Visible = "True">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" DisplayFormat="{}{0:########}" Mask="########"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+
+
+                    </dxg:GridControlBand>
+                    <dxg:GridControlBand x:Name="bandParam" Header="Параметры измерений"  HorizontalHeaderContentAlignment="Center" >
+                        <dxg:GridColumn FieldName="MODE_FT" x:Name="MODE_FT" Header ="Ft"  HorizontalHeaderContentAlignment="Center"  AllowEditing="True" Width="70">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU"  Mask="#######0.###" MaskUseAsDisplayFormat="True"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_FT_UNIT_ID" x:Name="MODE_FT_UNIT_ID" Header="Ед.изм.F"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" AllowAutoFilter="False" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:ComboBoxEditSettings ItemsSource="{Binding UnitsF,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayMember="UNIT_VALUE" ValueMember="UNIT_ID"
+                                                              HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_TAU" x:Name="MODE_TAU" Header ="Tau, нсек"  HorizontalHeaderContentAlignment="Center" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU"   MaskUseAsDisplayFormat="True" Mask="#######0.#######" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_TAU_UNIT_ID" x:Name="MODE_TAU_UNIT_ID" Header="Ед.изм.Tau"  AllowEditing="True" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:ComboBoxEditSettings ItemsSource="{Binding UnitsTau,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                                              DisplayMember="UNIT_VALUE" ValueMember="UNIT_ID" HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_RMAX" x:Name="MODE_RMAX" Header ="Альфа"  HorizontalHeaderContentAlignment="Center" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" Mask="#######0.###" MaskUseAsDisplayFormat="True"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_D" x:Name="MODE_D" Header ="d, м" HorizontalHeaderContentAlignment="Center" Visible = "True">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" Mask="#######0.###" MaskUseAsDisplayFormat="True"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_R" x:Name="MODE_R" Header ="R, м"  HorizontalHeaderContentAlignment="Center" >
+                            <dxg:GridColumn.EditSettings >
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" Mask="#######0.###"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_IS_SOLID" x:Name="MODE_IS_SOLID" Header ="Сплошной спектр"  HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.EditSettings >
+                                <dxe:CheckEditSettings IsThreeState="False" ClickMode="Press" AllowNullInput="False"   >
+                                </dxe:CheckEditSettings>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_CONTR_E" x:Name="MODE_CONTR_E" Header ="Сигнал>3дБ"  HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.EditSettings >
+                                <dxe:CheckEditSettings IsThreeState="False" ClickMode="Press" AllowNullInput="False"   >
+                                </dxe:CheckEditSettings>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+
+                    </dxg:GridControlBand >
+
+                    <dxg:GridControlBand  x:Name="bandSAZ" Header="Параметры САЗ" HorizontalHeaderContentAlignment="Center"
+                                Visible="{Binding IncludeSAZ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                        <dxg:GridColumn FieldName="MODE_KS" x:Name="MODE_KS" Header ="Kш"  HorizontalHeaderContentAlignment="Center"  AllowEditing="True" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" Mask="#######0.###"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_L" x:Name="MODE_L" Header ="L, м"  HorizontalHeaderContentAlignment="Center" AllowEditing="True" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" Mask="#######0.###"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_RBW" x:Name="MODE_RBW" Header ="RBW" HorizontalHeaderContentAlignment="Center" AllowEditing="True" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" Mask="#######0.###"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_RBW_UNIT_ID" x:Name="MODE_RBW_UNIT_ID" Header="Ед.изм.RBW" AllowEditing="True" HorizontalHeaderContentAlignment="Center" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:ComboBoxEditSettings ItemsSource="{Binding Units,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayMember="UNIT_VALUE" ValueMember="UNIT_ID"
+                                                              HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_SVT" x:Name="MODE_SVT" Header="Положение САЗ" AllowEditing="True" HorizontalHeaderContentAlignment="Center" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:ComboBoxEditSettings >
+                                    <dxe:ComboBoxEditSettings.Items>
+                                        <dxe:ComboBoxEditItem Content="ГШ вблизи СВТ"/>
+                                        <dxe:ComboBoxEditItem Content="ГШ отнесён от СВТ" />
+                                    </dxe:ComboBoxEditSettings.Items>
+                                </dxe:ComboBoxEditSettings>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MODE_ANT_GS" x:Name="MODE_ANT_GS" Header ="Ант.на границе КЗ"  HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:CheckEditSettings/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                    </dxg:GridControlBand>
+
+                </dxg:GridControl.Bands>
+                <dxg:GridControl.View  >
+                    <dxg:TableView AllowEditing="True" ShowGroupPanel="False" NewItemRowPosition="Bottom" AllowDrop="False" 
+                                       VerticalScrollbarVisibility="Auto" HorizontalScrollbarVisibility="Auto" ScrollingMode="Smart"                                      
+                                       EditorButtonShowMode="ShowForFocusedRow" AllowFilterEditor="False" EditorShowMode="MouseDown" 
+                                       CellValueChanged="TableViewModes_CellValueChanged" 
+                                       Loaded="TableView_Loaded"                                        
+                                       CellValueChanging="TableViewModes_CellValueChanging" ShowFilterPanelMode="Never"
+                                       FocusedRow="{Binding focusedMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <dxg:TableView.RowStyle>
+                            <Style TargetType="dxg:RowControl">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+
+                                            <MenuItem  Header="Удалить строку" Command="{Binding  View.DataContext.DeleteModeCommand}" CommandParameter="{Binding Row}" />
+
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </dxg:TableView.RowStyle>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <dxe:ButtonEdit Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False"                             
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo  Command="{Binding CancelWindowCommand}" CommandParameter="123" ToolTip="Завершить сценарий, Esc" Content="Завершить" />
+            </dxe:ButtonEdit>
+
+        </Grid>
+
+    </Grid>
+</Window>

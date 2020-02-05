@@ -1,0 +1,85 @@
+﻿<Window x:Class="SpecialJobs.Views.ForReport.ReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:xtraEditors="clr-namespace:DevExpress.XtraEditors;assembly=DevExpress.XtraEditors.v15.2"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        Title="Настраиваемые поля в отчёте
+        " Height="800" Width="1000" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40
+                           *"/>
+            <RowDefinition Height="470*"/>
+            <RowDefinition Height="22*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="22*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130*"/>
+                <ColumnDefinition Width="250*"/>
+                <ColumnDefinition Width="130*"/>
+                <ColumnDefinition Width="459*"/>
+                <ColumnDefinition Width="177*"/>
+            </Grid.ColumnDefinitions>
+            <Label HorizontalAlignment="Stretch"  VerticalAlignment="Center" Content="Метка поля" HorizontalContentAlignment="Center"/>
+            <CheckBox Grid.Column="4" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="Выбор по умолчанию"
+                      IsChecked="{Binding isDefault, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+             
+            
+            <dxe:ComboBoxEdit x:Name="cbLabel" x:FieldModifier="public" Grid.Column ="1"  ItemsSource="{Binding listLabel}"                         
+                              EditValue ="{Binding selectedLabel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                              VerticalAlignment="Center" SelectAllOnGotFocus="False"                              
+                              ImmediatePopup="True" AllowRejectUnknownValues="True"  
+                               />
+            <!--EditValueChanging="cbLabel_EditValueChanging"-->
+            <Label Grid.Column="2"  HorizontalAlignment="Stretch"  VerticalAlignment="Center" Content="Описание поля" HorizontalContentAlignment="Center"/>
+            <dxe:ComboBoxEdit x:Name="cbDescription" Grid.Row="0" Grid.Column ="3"  ItemsSource="{Binding listDescription}"                         
+                       EditValue ="{Binding selectedDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" />
+
+
+        </Grid>
+        <TextBox HorizontalAlignment="Stretch"  Grid.Row="3" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow" 
+                 Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+                 Text="{Binding selectedText, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" TextOptions.TextFormattingMode="Display" AcceptsReturn="True"/>
+        <TextBox Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+                 Text="Для формирования нового значения измените  &quot;Описание поля&quot;, &quot;Содержание поля&quot;. Отметьте, при необходимости, признак &quot;Выбор по умолчанию&quot; .&#xD;&#xA;Новая запись будет автоматически сформирована и сохранена. &#xD;&#xA;Только изменённое &quot;Содержание поля в отчёте&quot; также созранится в БД без дополнительных манипуляций.&#xA;" Margin="0,10,0,35" Grid.RowSpan="2"/>
+        <Label HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Center" Content="Содержание поля в отчёте"/>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="160*"/>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="160*"/>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="160*"/>
+                <ColumnDefinition Width="60*"/>
+            </Grid.ColumnDefinitions>
+            <dxe:ButtonEdit Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False"                             
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="30"  >
+                <dxe:ButtonInfo  Command="{Binding CancelWindowCommand}"  ToolTip="К форме выбора отчёта" Content="Назад" />
+            </dxe:ButtonEdit>
+            <dxe:ButtonEdit Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False"                             
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="30"  >
+                <dxe:ButtonInfo  Command="{Binding ExitWindowCommand}"  ToolTip="Перейти к следующему шагу формирования отчёта" Content="Далее" />
+            </dxe:ButtonEdit>
+            <dxe:ButtonEdit Grid.Column="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False"                             
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="30" 
+                            IsEnabled="{Binding buttonEnabled, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  >
+                 <dxe:ButtonInfo  Command ="{Binding DeleteRowCommand}"  Content="Удалить описание" />
+            </dxe:ButtonEdit>
+
+            <!--<Button Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Center" Height="30"
+                    Content="Применить и выйти" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command ="{Binding ExitWindowCommand}"/>-->
+            
+            <!--<Button Grid.Column="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center" Height="30"
+                    Content="Удалить описание " HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Command ="{Binding DeleteRowCommand}"
+                    IsEnabled="{Binding buttonEnabled, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>-->
+
+        </Grid>
+    </Grid>
+</Window>

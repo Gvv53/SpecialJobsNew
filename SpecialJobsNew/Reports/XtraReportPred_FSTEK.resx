@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrLabel14.Text" xml:space="preserve">
+    <value>             Примечание: При невозможности обеспечить контролируемую зону указанного размера, необходимо применять установленным порядком систему активного зашумления, сертифицированную по требованиям безопасности информации.</value>
+  </data>
+  <data name="xrLabel5.Text" xml:space="preserve">
+    <value>             - вносить изменения в конфигурацию, схемы, монтаж и конструкцию технических средств,
+             использовать нештатные кабели и разъёмы без проведения повторных   специальных  
+             исследований; 
+             замена вышедших из строя типовых элементов в оборудовании ТС должна осуществляться на 
+             аналогичные, прошедшие СП; 
+             - нарушать целостность конструкции, производить измерения, подключаться к гнездам, работать
+             с открытыми крышками и кожухами, во время проведения закрытых мероприятий (обработки 
+             секретной информации на ТС);
+             - производить наладку ТС, работать с незадействованными и нештатными соединительными 
+             кабелями, вынутыми панелями, открытыми кожухами, неплотно затянутыми крепежными
+             винтами,а также подключаться к разъемам блоков;           </value>
+  </data>
+  <data name="xrLabel19.Text" xml:space="preserve">
+    <value>        В случае невозможности выполнения указанных требований, необходимо проведение мероприятий в соответствии с разделом 6 (п. 6.1.11)  " Требований по технической защите информации", (ФСТЭК России, 2016 г.).
+        Сеть передачи секретной информации должна быть выделенной, то есть не иметь подключений к другим сетям, в которых производится обработка не секретной информации.
+        Передача информации ограниченного доступа, отнесённой установленным порядком к государственной тайне, за пределы контролируемой зоны может осуществляться только в случае принятия мер защиты, установленных соответствующими нормативно-методическими документами ФСТЭК России и ФСБ России.</value>
+  </data>
+  <data name="xrLabel22.Text" xml:space="preserve">
+    <value>       2.4. Электропитание ТС должно осуществляться от промышленной сети переменного тока напряжением 220В и частотой 50 Гц от подстанции с высоковольтной частью, находящейся в пределах контролируемой зоны и не имеющей сторонних потребителей со стороны низшего напряжения за её пределами.        Допускается осуществлять электропитание ТС на объектах 2 и 3 категорий от трансформаторных подстанций, расположенных за пределами контролируемой зоны объекта, при условии принятия мер по технической защите информации в соответствии с требованиями в п.4.3.ТТЗИ - 2016.
+       Система заземления ТС должна соответствовать требованиям п.4.3.ТТЗИ - 2016 и должна располагаться в пределах контролируемой зоны. ЗАземление ТС производится нулевой шиной от трёхполюсной розетки.
+       В случае невозможности расположения заземляющего устройства в пределах контролируемой зоны и несоответствия другим требованиям п.4.3.ТТЗИ - 2016 проводится оценка защищённости информации,  обрабатываемой основными техническими средствами и системами, от утечки за счёт наводок на линии заземления.
+        2.5. ТС, подвергнутые ремонту, должны пройти повторные СИ.</value>
+  </data>
+  <data name="xrLabel20.Text" xml:space="preserve">
+    <value>        2.3. Линии передачи информации ограниченного доступа, отнесённой установленным порядком к государственной тайне, должны быть расположены в пределах контролируемой зоны  и удалены от её границы на расстояние:
+</value>
+  </data>
+  <data name="xrLabel11.Text" xml:space="preserve">
+    <value>            -   при наличии «Заключения по результатам специальных проверок» ТС (Таблица № 1);
+            -   при условии включения ТС в состав категорированного объекта информатизации;
+            -   при получении аттестата соответствия по требованиям безопасности информации на объект 
+            информатизации, в состав которого включено ТС.
+</value>
+  </data>
+  <data name="Пункт26_28.Text" xml:space="preserve">
+    <value>        2.6. При обработке секретной информации, в режиме вывода на экран монитора, должна быть исключена возможность визуального просмотра обрабатываемой информации из-за пределов помещения.
+        2.7. Размещение и монтаж средств изготовления и размножения документов необходимо проводить с учётом максимального затруднения визуального просмотра информации посторонними лицами, а также принимать дополнительные меры, исключающие подобный просмотр (шторы на окнах, жалюзи, непрозрачные экраны и иные средства защиты).
+        2.8. При обработке секретной информации на СПЭВМ или циркуляции в помещении информации, содержащей государственную тайну, необходимо отключать встроенные динамики монитора.</value>
+  </data>
+  <data name="Пункт5.Text" xml:space="preserve">
+    <value>             - контроль над выполнением требований настоящего предписания возлагается на пользователя
+             ТС с привлечением подразделения (ответственного) по защите информации эксплуатирующей 
+             организации;
+             - периодичность контроля параметров изделия определяется специальной службой организации.</value>
+  </data>
+  <data name="xrLabel15.Text" xml:space="preserve">
+    <value>             - изменений, приводящих к нарушению требований данного «Предписания...»;
+             - выявления при проведении инструментального контроля несоответствия уровней ПЭМИ от
+             технических средств, входящих в таблицу № 1, действующим «Нормам защиты информации, 
+             обрабатываемой средствами вычислительной техники и в автоматизированных системах, от
+             утечки за счёт побочных электромагнитных излучений и наводок», («Сборник норм защиты 
+             информации от утечки за счёт побочных электромагнитных излучений и наводок», 
+             Гостехкомиссия России, 1998 г.)</value>
+  </data>
+  <data name="Пункт4.Text" xml:space="preserve">
+    <value>             - устанавливать ТС в особо важных помещениях;
+             - использовать ТС в составе шифровальной техники;
+             - размещать ТС в российских заграничных учреждениях;
+             - привлекать иностранных специалистов к монтажу, наладке и обслуживанию ТС;
+             - использовать несертифицированные средства защиты информации;
+             - заменять ТС или их узлы на другие, не входящие в состав поставки (Таблица № 1), а также
+             расширять комплектность другими техническими средствами без проведения их повторных           
+             специальных исследований и специальных проверок;
+             - применять в средствах вычислительной техники (СВТ) беспроводные средства связи между 
+             отдельными функционально завершенными устройствами комплекта (системы);
+             - осуществлять подключение ТС с использованием нестандартных кабелей, не вошедших
+             в комплект поставки;
+             - производить обработку информации при отключенном заземлении.
+             - использовать ТС в составе мобильного объекта вычислительной техники.</value>
+  </data>
+  <data name="xrLabel1_1.Text" xml:space="preserve">
+    <value>       1.1.	Предписание содержит перечень требований и рекомендаций по защите информации, циркулирующей в выделенных помещениях (кроме особо важных помещений), от утечки за счет ПЭМИН, паразитной генерации, акустоэлектрических преобразований и высокочастотного навязывания.
+       По результатам проведенных специальных исследований разрешается использовать ТС (см. таблица №1) в выделенных помещениях II категории при соблюдении ниже перечисленных организационно-технических мероприятий.    </value>
+  </data>
+  <data name="Пункт1.Text" xml:space="preserve">
+    <value>        1. Данное предписание разработано по результатам специальных исследований, приведённых в
+"Протоколе лабораторных специальных исследований" и распространяется на технические средства
+(далее ТС), состав, модели и заводские номера которых приведены в таблице 1.</value>
+  </data>
+  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="xrLabel1.UserDesignerLocked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="xrLabel1.Text" xml:space="preserve">
+    <value>       Установка ТС в помещениях постоянной (временной) эксплуатации производится в соответствии с техническим паспортом на объект информатизации, настоящим Предписанием, техническим описанием, инструкцией по эксплуатации. Ввод в эксплуатацию ТС осуществляется пользователем с привлечением специалистов подразделения по защите информации.
+
+       2. При обработке информации ограниченного доступа, отнесенной установленным порядком к государственной тайне, с использованием ТС, входящих в состав поставки (Таблица № 1), необходимо обеспечить выполнение следующих требований по безопасности информации:
+
+       2.1. Эксплуатировать ТС, указанные таблице № 1, необходимо в следующих разрешенных режимах работы:</value>
+  </data>
+</root>

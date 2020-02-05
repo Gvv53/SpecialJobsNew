@@ -1,0 +1,96 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowMeasuring_2_base"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        WindowStartupLocation="CenterScreen"      
+         Height="600" Width="930">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="167*"/>
+            <RowDefinition Height="332*"/>
+            <RowDefinition Height="71*" />
+        </Grid.RowDefinitions>
+        <dxg:GridControl x:Name="gcU0" ItemsSource= "{Binding Measurings,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                         Grid.Row="0" IsEnabled="{Binding gcMeasuringEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                         ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Row" 
+                         SelectedItem="{Binding selectedRow, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         PastingFromClipboard="gcUF_PastingFromClipboard" Grid.RowSpan="2"   >
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="MDA_F" Header="Частота"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" Width="80"  VisibleIndex="0">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" DisplayFormat="{}{0:########.####}"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="MDA_U0CN_VALUE_IZM" Header="Ucигнал+шум, дБ"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" VisibleIndex="1" SortOrder="Ascending" SortIndex="0" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" DisplayFormat="{}{0:########.####}"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="MDA_U0N_VALUE_IZM" Header="Uшум, дБ"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" VisibleIndex="2" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskCulture="ru-RU" MaskUseAsDisplayFormat="True" DisplayFormat="{}{0:########.####}"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View >
+                <dxg:TableView AllowEditing="True" ShowGroupPanel="False" NewItemRowPosition="Bottom"                                                    
+                               ShownEditor="TableView_ShownEditor" EditorShowMode="MouseDown"                               
+                               CellValueChanging="TableView_CellValueChanging" 
+                               CellValueChanged="TableView_CellValueChanged"
+                               VerticalScrollbarVisibility="Auto"
+                               ScrollViewer.CanContentScroll="True" ScrollStep="1" 
+                               ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                               ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                               WheelScrollLines="6" 
+                               FocusedRow="{Binding FocusedRow, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+        <Grid Grid.Row ="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                
+
+            </Grid.ColumnDefinitions>
+            <dxe:ButtonEdit Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False"                             
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo  Command="{Binding CancelWindowCommand}" CommandParameter="12" ToolTip="Завершить сценарий" Content="Завершить" />
+            </dxe:ButtonEdit>
+            <dxe:ButtonEdit  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"  ShowNullText="False"  ShowText="False" 
+                         AllowDefaultButton="False"  HorizontalContentAlignment="Center" Text="Получить данные после автоизмерений" Height="26" >
+                <dxe:ButtonInfo Command="{Binding GetDataAfterMeasuringAutoCommand}"  ToolTip="Копирование данных из файла после автоматического измерения" Content="Получить данные автоизмерений"/>
+            </dxe:ButtonEdit>
+            <!--<dxe:ButtonEdit  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  ShowNullText="False"  ShowText="False" 
+                         AllowDefaultButton="False"  HorizontalContentAlignment="Center" Text="Вставить" Height="26" >
+                <dxe:ButtonInfo Command="{Binding PasteCommand}"  ToolTip="Вставка скопированных данных" Content="Вставить"/>
+            </dxe:ButtonEdit>-->
+
+            <dxe:ButtonEdit Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False" 
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo Command="{Binding ClearMeasuringDataCommand}" ToolTip="Очистить форму от данных измерений"
+                            Content="Очистить" />
+            </dxe:ButtonEdit>
+
+            <dxe:ButtonEdit Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False" 
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo Command="{Binding CancelWindowCommand}" CommandParameter="2" ToolTip="Переход к окну ввода измерений"
+                            Content="Назад" />
+            </dxe:ButtonEdit>
+
+            <dxe:ButtonEdit Grid.Column="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False" 
+                            AllowDefaultButton="False"  HorizontalContentAlignment="Center" Height="26"  >
+                <dxe:ButtonInfo Command="{Binding NextMeasuring_4Command}" ToolTip="Переход к окну расчёта"
+                            Content="Расчёт" />
+            </dxe:ButtonEdit>
+        </Grid>
+    </Grid>
+</Window>

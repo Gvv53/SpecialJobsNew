@@ -1,0 +1,37 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowOrgAnalysis_1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        Title="Создание новой работы" Height="150" Width="500" WindowStartupLocation="CenterScreen"
+        >
+   <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+
+            </Grid.RowDefinitions>
+            <Label Content="Название" HorizontalAlignment="Center"  VerticalAlignment="Center"></Label>            
+            <dxe:TextEdit Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center" x:Name="teName" x:FieldModifier="public"
+                          EditValue="{Binding TextOrganization, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  >
+            </dxe:TextEdit>
+            <dxe:ButtonEdit Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" >
+                <dxe:ButtonInfo GlyphKind="Cancel" Command="{Binding CancelCommand}"  ToolTip="Выход без сохранения текущего ввода" Margin="1,0,10,0" />
+                <!--<dxe:ButtonInfo GlyphKind="Plus" Command="{Binding AddCommand}" ToolTip="Добавить" Margin="1,0,10,0" />-->
+                <dxe:ButtonInfo GlyphKind="NextPage" Command="{Binding NextCommand}"  ToolTip="Добавление счётов" Margin="1,0,10,0" />
+
+                <dxe:ButtonInfo GlyphKind="Apply" Command="{Binding OKCommand}" ToolTip="Сохранить работу, очистить форму для нового ввода" Margin="1,0,10,0" />
+                
+            </dxe:ButtonEdit>
+        </Grid>
+    </Grid> 
+</Window>

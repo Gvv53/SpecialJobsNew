@@ -1,0 +1,65 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        x:Class="SpecialJobs.Views.SelectWindow"
+        xmlns:local="clr-namespace:SpecialJobs.ViewModels"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        Title="Выберите любую строку в типе АРМа, предназначенного для копирования" Height="700" Width="900" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <local:SelectWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <dxg:GridControl x:Name="gc" x:FieldModifier="public" SelectedItem="{Binding selectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                         
+    			SelectionMode="Row"  ScrollViewer.CanContentScroll="True"
+    			ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+    			ItemsSource="{Binding allArms,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="892" AutoExpandAllGroups="True">
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="ORG_NAME" Header="Работа" />
+                <dxg:GridColumn FieldName="ANL_INVOICE" Header="Счёт"/>
+                <dxg:GridColumn FieldName="AT_NAME" Header="Тип АРМ"/>
+                <dxg:GridColumn FieldName="ARM_NUMBER" Header="Номер АРМ"/>
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView AutoWidth="True" IsGroupPanelMenuEnabled="False" ShowGroupPanel="False"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+        <Grid Grid.Row = "1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Название нового типа АРМ" Grid.Column="1" VerticalAlignment="Center" FontSize="14" />
+            <TextBox Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="14"
+                     Text="{Binding armTypeNew,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+           
+
+        </Grid>
+        <Grid Grid.Row = "2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <dxe:ButtonEdit Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Center" AllowDefaultButton="False" ShowText="False" Height="27">
+                <dxe:ButtonInfo  Command="{Binding OKCommand}" ToolTip="Выбрать" Content="Выбрать" IsChecked="True"   />
+            </dxe:ButtonEdit>
+            <dxe:ButtonEdit Grid.Column="3" HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Center" AllowDefaultButton="False" ShowText="False" Height="27">
+                <dxe:ButtonInfo  Command="{Binding CancelCommand}"  ToolTip="Отменить" Content="Отменить" />
+            </dxe:ButtonEdit>
+        </Grid>
+
+    </Grid>
+</Window>

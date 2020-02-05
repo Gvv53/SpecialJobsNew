@@ -1,0 +1,62 @@
+﻿<Window xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"  x:Class="SpecialJobs.Views.ForScenario.WindowSearch"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Поиск" Height="300" Width="650"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        WindowStartupLocation="CenterScreen">
+    <Window.InputBindings>
+        <KeyBinding  Command ="{ Binding Path=CancelWindowCommand}"
+               Gesture="Esc" />
+    </Window.InputBindings>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="220*"/>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="350*"/>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="25*"/>
+        </Grid.ColumnDefinitions>
+        <!--<Grid  DataContext="{Binding RelativeSource={RelativeSource FindAncestor,
+                                      AncestorType=Window}}">-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="1" Grid.Column ="1" Content="Дата начала" FontSize="14"/>
+        <DatePicker Grid.Row="1" Grid.Column ="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center"
+                            SelectedDate="{Binding DateBegin,Mode=TwoWay}" IsEnabled="{Binding cbeAnalysisParamEnabled, UpdateSourceTrigger=PropertyChanged}" FontSize="14" />
+
+        <Label Grid.Row="2" Grid.Column ="1" Content="Дата окончания" Grid.ColumnSpan="2" FontSize="14" />
+        <DatePicker Grid.Row="2" Grid.Column ="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center"
+                            SelectedDate="{Binding DateEnd,Mode=TwoWay}" IsEnabled="{Binding cbeAnalysisParamEnabled, UpdateSourceTrigger=PropertyChanged}" FontSize="14" />
+        <Label Grid.Row="3" Grid.Column ="1" Content="Cчета, все или в заданном периоде" Grid.ColumnSpan="2" FontSize="14" />
+        <dxe:ComboBoxEdit Grid.Row="3" Grid.Column ="3"  ItemsSource="{Binding analysisSearch,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="ANL_INVOICE"  EditValue="{Binding anl_id_Search,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="ANL_ID" VerticalAlignment="Center" AddNewButtonPlacement="None"                        
+                        IncrementalFiltering="True" ImmediatePopup="True" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains"  ShowError="False" >
+        </dxe:ComboBoxEdit>
+        <Grid Grid.Row="6" Grid.ColumnSpan="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Content="Завершить" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding CancelWindowCommand}" FontSize="14" />
+            <Button Content="Применить" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding SearchOKCommand}" FontSize="14" />
+
+        </Grid>
+        <CheckBox Content="" Grid.Column="5" HorizontalAlignment="Stretch"  Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" 
+                  IsChecked="{Binding cbDate, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+      
+    </Grid>
+</Window>

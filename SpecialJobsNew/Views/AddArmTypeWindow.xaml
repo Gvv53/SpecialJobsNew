@@ -1,0 +1,29 @@
+﻿<Window x:Class="SpecialJobs.Views.AddArmTypeWindow"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        Height="150" Width="500" WindowStartupLocation="CenterScreen" Title="Добавление нового типа АРМ">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label Content="Тип АРМ" HorizontalAlignment="Center"  VerticalAlignment="Center"></Label>
+        <dxe:TextEdit Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center" EditValue="{Binding name,Mode=TwoWay}" EditValueChanging="TextEdit_EditValueChanging" >
+            <dxe:TextEdit.InputBindings>
+                <KeyBinding Command="{Binding Path=OKCommand}" Key="Enter"/>
+            </dxe:TextEdit.InputBindings>
+        </dxe:TextEdit>
+        <dxe:ButtonEdit Grid.Column="1" Grid.ColumnSpan ="3"  HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Center" AllowDefaultButton="False" ShowText="False" >
+            <dxe:ButtonInfo GlyphKind="Apply" Command="{Binding OKCommand}" ToolTip="Сохранить" Margin="1,0,10,0" />
+            <dxe:ButtonInfo GlyphKind="Cancel" Command="{Binding CancelCommand}"  ToolTip="Отменить" Margin="1,0,10,0" />
+        </dxe:ButtonEdit>
+    </Grid>
+</Window>

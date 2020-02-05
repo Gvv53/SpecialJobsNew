@@ -1,0 +1,13 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+    x:Class="SpecialJobs.Views.WindowReport"
+        Title="Формирование и просмотр отчёта" Height="800" Width="1000" WindowStartupLocation="CenterScreen">
+    <Grid>
+
+        <dxp:DocumentPreviewControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="dpc" x:FieldModifier="public" CommandBarStyle="Bars"  PageDisplayMode="Columns" />     
+
+    </Grid>
+    
+</Window>

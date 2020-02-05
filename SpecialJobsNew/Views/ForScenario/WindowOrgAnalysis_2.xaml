@@ -1,0 +1,86 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowOrgAnalysis_2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        Title="Действия со счетами" Height="500" Width="800" WindowStartupLocation="CenterScreen" FontSize="14"
+        KeyUp="Window_KeyUp">
+   
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.7*" />
+            <RowDefinition Height="0.7*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition />
+
+        </Grid.RowDefinitions>
+        <Label Content="Все счёта работы" HorizontalAlignment="Center"  VerticalAlignment="Center"></Label>
+        <dxe:ComboBoxEdit Grid.Row="0" Grid.Column ="1" Grid.ColumnSpan="3"  ItemsSource="{Binding analysis,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="ANL_INVOICE"  EditValue="{Binding anl_id,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="ANL_ID" VerticalAlignment="Center" IsTextEditable = "False" ShowError="False">
+        </dxe:ComboBoxEdit>
+        <Label Grid.Row="1" Content="Новый счёт" HorizontalAlignment="Center"  VerticalAlignment="Center"></Label>
+        <dxe:TextEdit Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center" x:Name="teName" x:FieldModifier="public"
+                      EditValue="{Binding TextAnalysis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="26"  >
+
+        </dxe:TextEdit>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="60*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding Header,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                       FontWeight="SemiBold" VerticalAlignment="Center" />
+
+            <Label Grid.Row="1" Grid.Column ="3" Content="Менеджер" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="0,17,0,16"/>
+            <dxe:ComboBoxEdit Grid.Row="1" Grid.Column ="4" ItemsSource="{Binding Persons_M,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="PERSON_FIO"  EditValue="{Binding analysis_one.ANL_MANAGER_PERSON_ID, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="PERSON_ID" VerticalAlignment="Center" IsEnabled="{Binding cbeAnalysisParamEnabled, UpdateSourceTrigger=PropertyChanged}"
+                        ShowError="False" Height="26"/>
+
+            <Label Grid.Row="2" Grid.Column ="3" Content="Исполнитель" VerticalAlignment="Center" VerticalContentAlignment="Center"  />
+            <dxe:ComboBoxEdit Grid.Row="2" Grid.Column ="4"  ItemsSource="{Binding Persons_I,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="PERSON_FIO"  EditValue="{Binding analysis_one.ANL_EXECUTOR_PERSON_ID, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="PERSON_ID" VerticalAlignment="Center" IsEnabled="{Binding cbeAnalysisParamEnabled, UpdateSourceTrigger=PropertyChanged}" 
+                        ShowError="False" Height="26"/>
+
+            <Label Grid.Row="1" Grid.Column ="0" Content="Дата начала" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            <DatePicker Grid.Row="1" Grid.Column ="1" HorizontalAlignment="Stretch"  VerticalAlignment="Center"
+                            SelectedDate="{Binding dateBegin,Mode=TwoWay}" IsEnabled="{Binding cbeAnalysisParamEnabled, UpdateSourceTrigger=PropertyChanged}" Height="26"/>
+
+            <Label Grid.Row="2" Grid.Column ="0" Content="Дата окончания" Grid.ColumnSpan="3" VerticalAlignment="Center" VerticalContentAlignment="Center"  />
+            <DatePicker Grid.Row="2" Grid.Column ="1" HorizontalAlignment="Stretch"  VerticalAlignment="Center"
+                            SelectedDate="{Binding dateEnd,Mode=TwoWay}" IsEnabled="{Binding cbeAnalysisParamEnabled, UpdateSourceTrigger=PropertyChanged}" Height="26" />
+
+
+        </Grid>
+        
+        <dxe:ButtonEdit   Grid.Row="3"  Grid.ColumnSpan="5"  HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                         AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" Height="26" >
+            
+            <dxe:ButtonInfo Content="Завершить  " Command="{Binding Cancel2Command}"  ToolTip="Выход без сохранения текущего ввода" />
+            <dxe:ButtonInfo Content="Переименовать  " Command="{Binding RenameAnalysisCommand}"  ToolTip="Изменение названия счёта" />
+            <dxe:ButtonInfo Content="Удалить    " Command="{Binding DeleteAnalysisCommand}"  ToolTip="Удалить выбранный счёт" />
+            <dxe:ButtonInfo Content="Сохранить новый счёт" Command="{Binding OK_AnlCommand}" ToolTip="Сохранить текущий ввод, подготовить форму для ввода нового счёта" />
+            <dxe:ButtonInfo x:Name="buttonPrev" Content="Назад, работы" Command="{Binding PrevCommand}"  ToolTip="Сохранить текущий ввод, вернуться в форму для ввода новых работ" />
+        </dxe:ButtonEdit>
+    </Grid>
+</Window>

@@ -1,0 +1,59 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowTypeARMMode_1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="250" Width="1000" WindowStartupLocation="CenterScreen"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" Title="Типы АРМ в счёте" FontSize="14" KeyUp="Window_KeyUp">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <Label Content="Типы АРМ" HorizontalAlignment="Center"  VerticalAlignment="Center" VerticalContentAlignment="Bottom"></Label>
+        <dxe:ComboBoxEdit Grid.Column ="1" Grid.ColumnSpan ="3"  ItemsSource="{Binding ArmTypes,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="AT_NAME"  EditValue="{Binding at_id, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="AT_ID" VerticalAlignment="Center"  IsTextEditable = "False" >
+
+        </dxe:ComboBoxEdit>
+        <dxe:ButtonEdit Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False" 
+                            AllowDefaultButton="False" Height="26" HorizontalContentAlignment="Stretch"  >
+            <dxe:ButtonInfo  Command="{Binding CancelWindowCommand}" CommandParameter="1" ToolTip="Завершить сценарий" Content="Завершить" />
+        </dxe:ButtonEdit>
+        <dxe:ButtonEdit Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowNullText="False"  ShowText="False" 
+                            AllowDefaultButton="False" Height="26" HorizontalContentAlignment="Stretch"  >
+            <dxe:ButtonInfo  Command="{Binding RenameARMTypeCommand}"  ToolTip="Изменить название типа АРМ" Content="Переименовать" />
+        </dxe:ButtonEdit>
+        <dxe:ButtonEdit Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" Height="26" >
+            <dxe:ButtonInfo Command="{Binding CopyArmTypeCommand}"  ToolTip="Полное копирование типа, включая АРМы, оборудование, измерительные инструменты"
+                            Content="Копировать"/>
+        </dxe:ButtonEdit>
+        <dxe:ButtonEdit Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" Height="26" >
+            <dxe:ButtonInfo Command="{Binding AddArmTypeCommand}"  ToolTip="Добавление нового типа" Content="Добавить"/>
+        </dxe:ButtonEdit>
+        <dxe:ButtonEdit Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" Height="26" >
+            <dxe:ButtonInfo Content="Удалить" Command="{Binding DeleteArmTypeCommand}"  ToolTip="Удаление выбранного типа"/>
+        </dxe:ButtonEdit>
+
+        <dxe:ButtonEdit Grid.Row="2" Grid.Column="5" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" Height="26" >
+            <dxe:ButtonInfo Content="Далее, АРМы в типе" Command="{Binding NextTypeARMCommand}"  
+                            ToolTip="Переход на форму работы с АРМами выбранного типа" />
+        </dxe:ButtonEdit>
+
+    </Grid>
+
+
+</Window>

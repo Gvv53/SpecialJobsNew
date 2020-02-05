@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="xrPictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAANoAAAAjCAIAAAB94oNdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAA+/SURBVHhe7dtXmxXV1gXg/q0iiGI8+KnHdDBhBkFAMaAo
+        oGBAAQUVAybAhIoE24gigiDmrPC9XaO6LHbtXZ1u+qLGRT9VK84155hh1Yahkx3GgW+//XbPnj1bt25d
+        s2bN0qVL58+ff8011zzwwAM333zzs88+++qrrz733HPPPPPM8PDw77//Xs7pMHF0dGzD4cOHN2zYcP31
+        15933nmzZs06/fTT/T3zzDPPOuusCy64YMWKFVdcccVFF110ww03PP3005s3b543b9511123bt06vDxx
+        4kS5Sodxo6Njf3z33XerV6/GwhkzZuDfueeee/bZZ8+ePXtmAaT0/Pzzz+/YseP1119/5ZVXXnjhhUOH
+        Dn3zzTfvvffetm3b3njjja+++uqHH34ol+swPvSh488///zFF1/sK/Dxxx8n+zDPgQI//vhjhlWg9M8/
+        //zLL7/8888/vcprno8dO/bLL79kwDhhvGhkqc8++4wMZWsDf//99/Hjxxn7008/Jc+vv/6q8eDBg5hh
+        4kQ37Yv333//4osvRsSwUFDEyMsvv3zx4sUPP/ywlP32229/+OGHaCdwLhiFuHjHHXfs3bt3+fLl2kFC
+        37hxY9QyIVDyJ5988tFHHznR0aNH//nnn7Kjhj/++IOu+ACF00nZOoqffvrJCqZTkeeytQZ6o0BjWLZs
+        GgWDaofvv//e69dff00Sf9Nbh7kZaTXZwDCmj0Umh1Po+MEHHzz44IM33njjlVdeedlll/23AGrqkon+
+        r8CLL76YwRVefvnlCy+8kLWI4vWRRx5hy2uvvfamm25iGPZw7IzsC3TfuXPn/fffb/xVV11la+lPjCm7
+        a8CAxx57DCcsLi1KlOTBQl1kEMm0EF6ujCSTgwVFPukYFxGRHmy6f//+ppbFRaKSucKll16qsnQczyQE
+        qsDRpg+3g5KjUifC6SVLlmzZsgXtyu4CHNIAWxiwaNGi9evX1xnzzjvvUA5lglpCmcu4ZV8B1Lnkkkvm
+        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
+</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>    По результатам проведённых специальных исследований разрешается использовать ТС (см. таблица №1) в выделенных помещениях II категории при соблюдении ниже перечисленных организационно-технических мероприятий.</value>
+  </data>
+  <data name="lab2.Text" xml:space="preserve">
+    <value>  2.    При обработке информации ограниченного доступа, отнесённной установленным порядком к государственнной тайне, с использованием ТС, входящих в состав поставки (Таблица №1), необходимо обеспечить выполнение следующих требований по безопасности информации:
+
+</value>
+  </data>
+  <data name="xrLabel14.Text" xml:space="preserve">
+    <value>Примечание: При невозможности обеспечить контролируемую зону указанного размера, необходимо применять установленным порядком систему активного зашумления, сертифицированную по требованиям безопасности информации.</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>     1.1. Предписание содержит перечень требований и рекомендаций по защите информации, циркулирующей в выделенных помещениях (кроме особо важных помешений), от утечки за счёт ПЭМИН, паразитной генерации, акустикоэелктрических преобразований и высокочастотного навязывания.
+        
+
+   
+</value>
+  </data>
+  <data name="xrLabel12.Text" xml:space="preserve">
+    <value>     2.3. Линии передачи информации ограниченного доступа, отнесённой установленным порядком к государственной тайне, должны быть расположены в пределах контролируемой зоны  и удалены от её границы на расстояние:
+       -    для объектов 1 и 2 категорий - не менее 15 метров;
+       -    для объектов 3 категории - не менее 10 метров.
+            В случае невозможности выполнения указанных требований, необходимо проведение мероприятий в соответствии с разделом 5 (п. 5.5.11)  " Специальных требований и рекомендаций по защите инйормаци, составляющей государственную тайну, от утечки по техническим каналам", (Гостехкомиссия России, 1997г.).
+
+     Сеть передачи секретной информации должна быть выделенной, то есть не иметь подключений к другим сетям, в которых производится обработка не секретной информации.
+            Передача информации ограниченного доступа, отнесённой установленным порядком к государственной тайне, за пределы контролируемой зоны может осуществляться только в случае принятия мер защиты, установленных соответствующими нормативно-методическими документами ФСТЭК России и ФСБ России.
+     2.4. Электропитание ТС должно осуществляться от промышленной сети переменного тока напряжением 220В и частотой 50Гц от подстанции с высоковольтной частью, находящейся в пределах контролируемой зоны и не имеющей сторонних потребителей со стороны низшего напряжения за её пределами.
+     На объектах 2 и 3 категорий электропитание ТС должно осуществляться через сертифиицрованные (аттестованные)            по требованиям безопасности информации сетевые помехоподавляющие фильтры с фильтрацией сигналов на нулевом проводе, либо с использованием систем активного зашумления.
+     Сетевые помехоподавляющие фильтры должны применяться в соответствии с требованиями и рекомендациями, приведёнными в п. 9.13 СТР-97.
+     Допускается осуществлять электропитание ТС на объектах 2 и 3 категорий от трансформаторных подстанций, расположенных за пределами контролируемой зоны объекта, при условии использования сертифицированных (аттестованных) по требованиям безопасности информации помехоподавляющих фильтров или систем активного зашумления, устанавливаемых на кабельной линии.</value>
+  </data>
+  <data name="xrLabel10.Text" xml:space="preserve">
+    <value>     1. Данное предписание разработано по резкльтатам специальных исследованией, приведённых в
+"Протоколе лабораторных специальных исследований" и распространяется на технические средства
+(далее ТС), состав, модели и заводские номера которых приведены в таблице 1.</value>
+  </data>
+  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+</root>

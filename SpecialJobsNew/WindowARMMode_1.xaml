@@ -1,0 +1,59 @@
+﻿<Window x:Class="SpecialJobs.Views.ForScenario.WindowARMMode_1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="300" Width="800" WindowStartupLocation="CenterScreen"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" Title="Режимы в счёте">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+
+        </Grid.RowDefinitions>
+        <Label Content="Типы АРМ" HorizontalAlignment="Center"  VerticalAlignment="Center"></Label>
+        <dxe:ComboBoxEdit Grid.Column ="1" Grid.ColumnSpan ="3"  ItemsSource="{Binding ArmTypes,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="AT_NAME"  EditValue="{Binding atScen_id, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="AT_ID" VerticalAlignment="Center"  ShowError="False"
+                        IncrementalFiltering="True" ImmediatePopup="True" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains" >
+            <dxe:ComboBoxEdit.Buttons>
+                <dxe:ButtonInfo GlyphKind="Search" Command="{Binding CopyArmTypeCommand}" IsLeft="True" ToolTip="Копировать тип АРМа" Content="{DynamicResource ButtonStyle1}"/>
+                <dxe:ButtonInfo GlyphKind="Plus" Command="{Binding AddArmTypeCommand}" IsLeft="True" ToolTip="Добавить новый тип АРМа" />
+                <dxe:ButtonInfo GlyphKind="Minus" ToolTip="Удалить выбранный АРМ" Command="{Binding DeleteArmTypeCommand}" IsLeft="True"/>
+            </dxe:ComboBoxEdit.Buttons>
+        </dxe:ComboBoxEdit>
+        <!--<dxe:TextEdit Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"  VerticalAlignment="Center" x:Name="teName" x:FieldModifier="public"
+                          EditValue="{Binding TextARM, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  >
+        </dxe:TextEdit>-->
+        <Label Grid.Row="1" Content="АРМы выбранного типа" HorizontalAlignment="Center"  VerticalAlignment="Center"></Label>
+        <dxe:ComboBoxEdit Grid.Row="1" Grid.Column ="1" Grid.ColumnSpan="3"  ItemsSource="{Binding Arms,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="ARM_NUMBER"  EditValue="{Binding arm_id, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="ARM_ID" VerticalAlignment="Center"   ShowError="False"
+                        IncrementalFiltering="True" ImmediatePopup="True" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains">
+            <dxe:ComboBoxEdit.Buttons>
+                <dxe:ButtonInfo GlyphKind="Plus" Command="{Binding AddArmCommand}" IsLeft="True" ToolTip="Добавить новый АРМ" />
+                <dxe:ButtonInfo GlyphKind="Minus" ToolTip="Удалить выбранный АРМ" Command="{Binding DeleteArmCommand}" IsLeft="True"/>
+            </dxe:ComboBoxEdit.Buttons>
+        </dxe:ComboBoxEdit>
+       
+       
+        <dxe:ButtonEdit Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            AllowDefaultButton="False" ShowText="False" HorizontalContentAlignment="Center" >
+            <dxe:ButtonInfo GlyphKind="Cancel" Command="{Binding CancelCommand}"  ToolTip="Выход без сохранения текущего ввода"  Margin="1,0,10,0"/>
+            <!--<dxe:ButtonInfo GlyphKind="Plus" Command="{Binding AddCommand}" ToolTip="Добавить" Margin="1,0,10,0" />-->
+            <dxe:ButtonInfo GlyphKind="NextPage" Command="{Binding PrevCommand}"  
+                            ToolTip="Сохранить текущий ввод, вернуться в форму для ввода новых работ" Margin="1,0,10,0" />
+
+            <!--<dxe:ButtonInfo GlyphKind="Apply" Command="{Binding OK_AnlCommand}" ToolTip="Сохранить текущий ввод, подготовить форму для ввода нового ARM" Margin="1,0,10,0" />-->
+
+        </dxe:ButtonEdit>
+    </Grid>
+</Window>

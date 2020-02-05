@@ -1,0 +1,234 @@
+﻿<Window x:Class="SpecialJobs.Views.AntennaWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"                         
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1200" Title="Справочник - АНТЕННЫ" WindowStartupLocation="CenterScreen">
+
+    <Grid x:Name="gridParent" x:FieldModifier="public">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row =" 0">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Антенны" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="14" HorizontalContentAlignment="Center"/>
+                <dxg:GridControl  ItemsSource= "{Binding antennas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			         SelectedItem="{Binding selectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                        
+			         SelectionMode="Row"  ScrollViewer.CanContentScroll="True"
+			         ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"                         
+			         DesignTimeDataSourceRowCount="0" DesignTimeUseDistinctSampleValues="False" DesignTimeShowSampleData="False" 
+                     x:Name="gcAntennas" x:FieldModifier="public" Grid.RowSpan="2" >
+                    <dxg:GridControl.Columns >
+                        <dxg:GridColumn FieldName="ANT_TYPE" Header="Тип" HorizontalHeaderContentAlignment="Center" VisibleIndex="0"/>
+                        <dxg:GridColumn FieldName="ANT_NAME" Header="Название" HorizontalHeaderContentAlignment="Center" VisibleIndex="1"/>
+                        <dxg:GridColumn FieldName="ANT_DEFAULT" Header="По умолчанию" HorizontalHeaderContentAlignment="Center" VisibleIndex="2"/>
+                        <dxg:GridColumn FieldName="ANT_MODEL" Header="Модель" HorizontalHeaderContentAlignment="Center" VisibleIndex="3"/>
+                        <dxg:GridColumn FieldName="ANT_F_INTERVAL" Header="Диапазон частот" HorizontalHeaderContentAlignment="Center" VisibleIndex="4"/>
+                        <dxg:GridColumn FieldName="ANT_WORKNUMBER" Header="Заводской №"  HorizontalHeaderContentAlignment="Center"  VisibleIndex="5"/>
+                        <dxg:GridColumn FieldName="ANT_SERTIFICAT" Header="Сертификат" HorizontalHeaderContentAlignment="Center"  VisibleIndex="6"/>
+                        <dxg:GridColumn FieldName="ANT_OWNER" Header="Владелец" HorizontalHeaderContentAlignment="Center" VisibleIndex="7"/>
+                        <dxg:GridColumn FieldName="ANT_CONDITIONS" Header="Условия калибровки"  HorizontalHeaderContentAlignment="Center"  VisibleIndex="8"/>
+                        <dxg:GridColumn FieldName="ANT_ERROR" Header="Погрешность коэффициента,дБ" HorizontalHeaderContentAlignment="Center"  VisibleIndex="9"/>
+                        <dxg:GridColumn  Header="Ед.Изм.частоты" HorizontalHeaderContentAlignment="Center"
+                                 DisplayMemberBinding="{Binding Path=RowData.Row.UNIT.UNIT_VALUE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VisibleIndex="6">
+                        </dxg:GridColumn>
+                        
+                        <dxg:GridColumn  Header="Начальник" HorizontalHeaderContentAlignment="Center"
+                                 DisplayMemberBinding="{Binding Path=RowData.Row.PERSON.PERSON_FIO, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VisibleIndex="8">
+                        </dxg:GridColumn>
+                        <dxg:GridColumn  Header="Исполнитель" HorizontalHeaderContentAlignment="Center"
+                                 DisplayMemberBinding="{Binding Path=RowData.Row.PERSON1.PERSON_FIO, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VisibleIndex="9">
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn FieldName="ANT_DATE" Header="Дата поверки" HorizontalHeaderContentAlignment="Center" Width ="200" VisibleIndex="10"/>
+
+                    </dxg:GridControl.Columns>
+
+                    <dxg:GridControl.View   >
+                        <dxg:TableView AllowEditing="False" ShowGroupPanel="False" NewItemRowPosition="Bottom"    
+					                   VerticalScrollbarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollStep="1" 
+					                   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+					                   WheelScrollLines="6" FocusedRow="{Binding selectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+                <Grid Grid.Row="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <dxe:ButtonEdit  Grid.Column ="0" VerticalAlignment="Center" HorizontalAlignment="Center"  ShowNullText="False" ShowText="False" 
+				AllowDefaultButton="False" ToolTip="Добавить строку" Width="75" >
+                        <dxe:ButtonInfo Command="{Binding AddDataCommand}" GlyphKind="Plus"/>
+                    </dxe:ButtonEdit>
+                    <dxe:ButtonEdit  Grid.Column ="1" VerticalAlignment="Center" HorizontalAlignment="Center"  ShowNullText="False" ShowText="False" 
+				AllowDefaultButton="False" ToolTip="Изменить выделенную строку" Width="75" >
+                        <dxe:ButtonInfo Command="{Binding EditDataCommand}" CommandParameter="{Binding View.FocusedRow, ElementName=gc}" GlyphKind="Edit"/>
+                    </dxe:ButtonEdit>
+                    <dxe:ButtonEdit  Grid.Column ="2" VerticalAlignment="Center" HorizontalAlignment="Center"  ShowNullText="False" ShowText="False" 
+				                     AllowDefaultButton="False" ToolTip="Удалитьстроку" Width="75" >
+                        <dxe:ButtonInfo Command="{Binding DeleteDataCommand}" CommandParameter="{Binding View.FocusedRow, ElementName=gcAntennas}" GlyphKind="Minus"/>
+                    </dxe:ButtonEdit>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row ="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="40*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="149*"/>
+                    <ColumnDefinition Width="248*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Content="Тип антенны" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:ComboBoxEdit x:Name="AntType" Grid.Row="0" Grid.Column = "1" EditValue="{Binding type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  IsTextEditable="False"                             
+                                  VerticalAlignment="Center" IsEnabled="{Binding isEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  >
+                    <dxe:ComboBoxEditItem Content="Электрическая"/>
+                    <dxe:ComboBoxEditItem Content="Магнитная"/>
+                    <dxe:ComboBoxEditItem Content="Эквивалент сети, фаза"/>
+                    <dxe:ComboBoxEditItem Content="Эквивалент сети, ноль"/>
+                    <dxe:ComboBoxEditItem Content="Генератор шума"/>
+                </dxe:ComboBoxEdit>
+                <Label Grid.Row="1" Grid.Column =" 0" Content="Название антенны" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="1" Grid.Column ="1"  EditValue="{Binding name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+				              IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>               
+                <Label Grid.Row="2" Grid.Column =" 0" Content="Модель" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit x:Name="Model" Grid.Row="2" Grid.Column ="1"  EditValue="{Binding model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+				              IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>
+                <Label Grid.Row="3" Grid.Column =" 0" Content="Диапазон частот" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="3" Grid.Column ="1"  EditValue="{Binding interval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+				              IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>
+
+                <Label Grid.Row="4" Content="Заводской №" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="4" Grid.Column ="1"  EditValue="{Binding workNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" 
+				     IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>
+                <Label Grid.Row="5" Content="Сертификат" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="5" Grid.Column ="1"  EditValue="{Binding sertificat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" 
+				     IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>
+                <Label Grid.Row="6" Content="Владелец" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="6" Grid.Column ="1"  EditValue="{Binding owner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" 
+				     IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>
+                <Label Grid.Row="7" Content="Условия калибровки" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:TextEdit Grid.Row="7" Grid.Column ="1"  EditValue="{Binding conditions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" 
+				     IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus"/>
+                <Label Grid.Row="8" Content="Погрешность К калибровки, дБ" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+                <dxe:TextEdit Grid.Row="8" Grid.Column ="1"  EditValue="{Binding error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+				      IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextEdit_GotFocus" MaskType="Numeric"/>
+              
+                <Label Grid.Row="9" Content="Ед.изм-я частоты" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:ComboBoxEdit x:Name="UnitId" Grid.Row="9" Grid.Column ="1"  ItemsSource="{Binding  units,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        DisplayMember="UNIT_VALUE"  EditValue="{Binding fUnitId, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ValueMember="UNIT_ID" VerticalAlignment="Center" IsEnabled="{Binding isEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        IsTextEditable = "False"/>
+               
+                <Label Grid.Row="10" Content="Начальник" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:ComboBoxEdit Grid.Row="10" Grid.Column = "1" ItemsSource="{Binding  persons,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                  DisplayMember="PERSON_FIO" EditValue="{Binding personId, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                  ValueMember="PERSON_ID" VerticalAlignment="Center" IsEnabled="{Binding isEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                  IsTextEditable = "False"/>
+                <Label Grid.Row="11" Content="Исполнитель" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <dxe:ComboBoxEdit Grid.Row="11" Grid.Column = "1" ItemsSource="{Binding  persons,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                  DisplayMember="PERSON_FIO" EditValue="{Binding executorId, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                  ValueMember="PERSON_ID" VerticalAlignment="Center" IsEnabled="{Binding isEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                  IsTextEditable = "False"/>
+                <Label Grid.Row="12" Content="Дата поверки" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <DatePicker Grid.Row="12" Grid.Column ="1" HorizontalAlignment="Stretch"  VerticalAlignment="Center"
+                            SelectedDate="{Binding date,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsEnabled="{Binding isEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
+
+               
+                <Label Grid.Row="13" Content="Использовать по умолчанию" VerticalAlignment="Center" VerticalContentAlignment="Center"/>                
+                <dxe:ComboBoxEdit Grid.Row="13" Grid.Column = "1" EditValue="{Binding defaultAnt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                               
+                                  VerticalAlignment="Center" IsEnabled="{Binding isEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                  IsTextEditable = "False">
+                    <dxe:ComboBoxEditItem Content="да"/>
+                    <dxe:ComboBoxEditItem Content="нет"/>
+                </dxe:ComboBoxEdit>
+            </Grid >
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="11*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Метрологические характеристики" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="14" HorizontalContentAlignment="Center"/>
+                <dxe:ButtonEdit  VerticalAlignment="Center" HorizontalAlignment="Right"  ShowNullText="False" ShowText="False" 
+                                 AllowDefaultButton="False" ToolTip="Удалить выделенную строку" Width="25"  IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                    <dxe:ButtonInfo Command="{Binding DeleteCalibrCommand}" CommandParameter="{Binding View.FocusedRow, ElementName=gcCalibr}" GlyphKind="Minus"/>
+                </dxe:ButtonEdit>
+                <dxg:GridControl Grid.Row ="1"  ItemsSource= "{Binding data, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"       		      	
+			                     SelectionMode="Row"  ScrollViewer.CanContentScroll="True" x:Name="gcCalibr" x:FieldModifier="public"
+   			                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"                         
+			                     AllowDrop="True" DesignTimeShowSampleData="False" IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <dxg:GridControl.Columns >
+                        <dxg:GridColumn FieldName="ANT_CAL_F" Header="Частота"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" Width ="220"  VisibleIndex="0" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="ANT_CAL_VALUE" Header="Коэффициент,дБ"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" Width ="150" VisibleIndex="1" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings AllowSpinOnMouseWheel="False" MaskType="Numeric"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="ANT_CAL_NOTE" Header="Примечание"  AllowEditing="True" HorizontalHeaderContentAlignment="Center" Width ="200" VisibleIndex="4" />
+
+                    </dxg:GridControl.Columns>
+
+                    <dxg:GridControl.View   >
+                        <dxg:TableView AllowEditing="True" ShowGroupPanel="False" NewItemRowPosition="Bottom"  InitNewRow="TableView_InitNewRow"  
+ 					                   VerticalScrollbarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollStep="1" 
+	                      	    	   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+				   	                   WheelScrollLines="6" AllowDrop="False" FocusedRow="{Binding selectedRowCalibr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       ShownEditor="TableView_ShownEditor" />
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+                <Grid Grid.Row="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <dxe:ButtonEdit  Grid.Column ="0" VerticalAlignment="Center" HorizontalAlignment="Center"  ShowNullText="False" ShowText="False" 
+					                 AllowDefaultButton="False" ToolTip="Сохранить" Width="75" IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <dxe:ButtonInfo Command="{Binding SaveDataCommand}" GlyphKind="Apply"/>
+                    </dxe:ButtonEdit>
+                    <dxe:ButtonEdit  Grid.Column ="1" VerticalAlignment="Center" HorizontalAlignment="Center"  ShowNullText="False" ShowText="False" 
+					                 AllowDefaultButton="False" ToolTip="Отменить" Width="75" IsEnabled="{Binding isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <dxe:ButtonInfo Command="{Binding CancelDataCommand}" GlyphKind="Cancel"/>
+                    </dxe:ButtonEdit>
+
+                </Grid>
+            </Grid >
+        </Grid>
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,3020 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MethodsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ANALYSIS">
+          <Key>
+            <PropertyRef Name="ANL_ID" />
+          </Key>
+          <Property Name="ANL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANL_ORG_ID" Type="int" Nullable="false" />
+          <Property Name="ANL_INVOICE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ANL_REASON" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANL_METHOD_ID" Type="int" />
+          <Property Name="ANL_DATE_BEGIN" Type="datetime" />
+          <Property Name="ANL_DATE_END" Type="datetime" />
+          <Property Name="ANL_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANL_MANAGER_PERSON_ID" Type="int" />
+          <Property Name="ANL_EXECUTOR_PERSON_ID" Type="int" />
+          <Property Name="ANL_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="ANTENNA">
+          <Key>
+            <PropertyRef Name="ANT_ID" />
+          </Key>
+          <Property Name="ANT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANT_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANT_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANT_WORKNUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANT_SERTIFICAT" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANT_F_INTERVAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="ANT_ERROR" Type="float" Nullable="false" />
+          <Property Name="ANT_OWNER" Type="nvarchar" MaxLength="500" />
+          <Property Name="ANT_CONDITIONS" Type="nvarchar" MaxLength="500" />
+          <Property Name="ANT_PERSON_ID" Type="int" />
+          <Property Name="ANT_EXECUTOR_ID" Type="int" />
+          <Property Name="ANT_DATE" Type="datetime" />
+          <Property Name="ANT_F_UNIT_ID" Type="int" />
+          <Property Name="ANT_COMMENT" Type="nvarchar" MaxLength="500" />
+          <Property Name="ANT_DEFAULT" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ANTENNA_ARM">
+          <Key>
+            <PropertyRef Name="ANTARM_ID" />
+          </Key>
+          <Property Name="ANTARM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANTARM_ARM_ID" Type="int" />
+          <Property Name="ANTARM_ANT_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="ANTENNA_CALIBRATION">
+          <Key>
+            <PropertyRef Name="ANT_CAL_ID" />
+          </Key>
+          <Property Name="ANT_CAL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANT_CAL_ANT_ID" Type="int" Nullable="false" />
+          <Property Name="ANT_CAL_F" Type="float" Nullable="false" />
+          <Property Name="ANT_CAL_VALUE" Type="float" Nullable="false" />
+          <Property Name="ANT_CAL_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="ARM">
+          <Key>
+            <PropertyRef Name="ARM_ID" />
+          </Key>
+          <Property Name="ARM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ARM_AT_ID" Type="int" />
+          <Property Name="ARM_NUMBER" Type="nvarchar" MaxLength="500" />
+          <Property Name="ARM_KATEGORIA" Type="int" Nullable="false" />
+          <Property Name="ARM_SVT" Type="nvarchar" MaxLength="20" />
+          <Property Name="ARM_NK" Type="nvarchar" MaxLength="20" />
+          <Property Name="ARM_IK" Type="nvarchar" MaxLength="20" />
+          <Property Name="ARM_TT" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARM_NOTE" Type="nvarchar" MaxLength="500" />
+          <Property Name="ARM_ANT_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="ARM_TYPE">
+          <Key>
+            <PropertyRef Name="AT_ID" />
+          </Key>
+          <Property Name="AT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AT_ANL_ID" Type="int" />
+          <Property Name="AT_NAME" Type="nvarchar" MaxLength="500" />
+          <Property Name="AT_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="COUNTRY">
+          <Key>
+            <PropertyRef Name="COUNTRY_ID" />
+          </Key>
+          <Property Name="COUNTRY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COUNTRY_NAME" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CurrentUserTask">
+          <Key>
+            <PropertyRef Name="CUT_ID" />
+          </Key>
+          <Property Name="CUT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CUT_ORG_ID" Type="int" />
+          <Property Name="CUT_ANL_ID" Type="int" />
+          <Property Name="CUT_AT_ID" Type="int" />
+          <Property Name="CUT_ARM_ID" Type="int" />
+          <Property Name="CUT_MODE_ID" Type="int" />
+          <Property Name="CUT_USER_NAME" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EQUIPMENT">
+          <Key>
+            <PropertyRef Name="EQ_ID" />
+          </Key>
+          <Property Name="EQ_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EQ_EQT_ID" Type="int" />
+          <Property Name="EQ_ARM_ID" Type="int" />
+          <Property Name="EQ_MODEL" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EQ_SERIAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="EQ_PROD_ID" Type="int" />
+          <Property Name="EQ_COUNTRY_ID" Type="int" />
+          <Property Name="EQ_PARENT_ID" Type="int" />
+          <Property Name="EQ_SZZ" Type="int" />
+          <Property Name="EQ_NOTE" Type="nvarchar" MaxLength="50" />
+          <Property Name="EQ_IN_MODE" Type="bit" />
+          <Property Name="EQ_F_DEFAULT" Type="float" />
+        </EntityType>
+        <EntityType Name="EQUIPMENT_TYPE">
+          <Key>
+            <PropertyRef Name="EQT_ID" />
+          </Key>
+          <Property Name="EQT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EQT_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EQT_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="FIDER">
+          <Key>
+            <PropertyRef Name="F_ID" />
+          </Key>
+          <Property Name="F_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="F_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="F_WORKNUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="F_SERTIFICAT" Type="nvarchar" MaxLength="50" />
+          <Property Name="F_ERROR" Type="float" Nullable="false" />
+          <Property Name="F_OWNER" Type="nvarchar" MaxLength="50" />
+          <Property Name="F_CONDITIONS" Type="nvarchar" MaxLength="150" />
+          <Property Name="F_PERSON_ID" Type="int" />
+          <Property Name="F_EXECUTOR_ID" Type="int" />
+          <Property Name="F_DATE" Type="datetime" />
+          <Property Name="F_F_UNIT_ID" Type="int" />
+          <Property Name="F_VALUE_UNIT_ID" Type="int" />
+          <Property Name="F_COMMENT" Type="nvarchar" MaxLength="500" />
+          <Property Name="F_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="F_F_INTERVAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="F_DEFAULT" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="FIDER_CALIBRATION">
+          <Key>
+            <PropertyRef Name="F_CAL_ID" />
+          </Key>
+          <Property Name="F_CAL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="F_CAL_F_ID" Type="int" Nullable="false" />
+          <Property Name="F_CAL_F" Type="float" Nullable="false" />
+          <Property Name="F_CAL_VALUE" Type="float" Nullable="false" />
+          <Property Name="F_CAL_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="MEASURING_DATA">
+          <Key>
+            <PropertyRef Name="MDA_ID" />
+          </Key>
+          <Property Name="MDA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MDA_MODE_ID" Type="int" Nullable="false" />
+          <Property Name="MDA_F" Type="float" Nullable="false" />
+          <Property Name="MDA_F_UNIT_ID" Type="int" Nullable="false" />
+          <Property Name="MDA_I" Type="int" Nullable="false" />
+          <Property Name="MDA_ECN_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_EN_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_U0CN_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_U0N_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_UFCN_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_UFN_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_ES_VALUE_IZM" Type="float" Nullable="false" />
+          <Property Name="MDA_ECN_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_EN_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_U0CN_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_U0N_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_UFCN_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_UFN_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_ES_VALUE_IZM_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_ECN_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_EN_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_U0CN_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_U0N_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_UFCN_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_UFN_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_ES_VALUE_IZM_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_EGS_DB" Type="float" Nullable="false" />
+          <Property Name="MDA_EGS_MKV" Type="float" Nullable="false" />
+          <Property Name="MDA_E" Type="float" Nullable="false" />
+          <Property Name="MDA_UF" Type="float" Nullable="false" />
+          <Property Name="MDA_U0" Type="float" Nullable="false" />
+          <Property Name="MDA_EGS" Type="float" Nullable="false" />
+          <Property Name="MDA_KP" Type="float" Nullable="false" />
+          <Property Name="MDA_KPS" Type="float" Nullable="false" />
+          <Property Name="MDA_RBW" Type="float" Nullable="false" />
+          <Property Name="MDA_RBW_UNIT_ID" Type="int" Nullable="false" />
+          <Property Name="MDA_ANT_ID" Type="int" />
+          <Property Name="MDA_KA" Type="float" Nullable="false" />
+          <Property Name="MDA_KF" Type="float" Nullable="false" />
+          <Property Name="MDA_K0" Type="float" Nullable="false" />
+          <Property Name="MDA_F_BEGIN" Type="float" Nullable="false" />
+          <Property Name="MDA_F_END" Type="float" Nullable="false" />
+          <Property Name="MDA_ECN_BEGIN" Type="float" Nullable="false" />
+          <Property Name="MDA_EN_BEGIN" Type="float" Nullable="false" />
+          <Property Name="MDA_ECN_END" Type="float" Nullable="false" />
+          <Property Name="MDA_EN_END" Type="float" Nullable="false" />
+          <Property Name="MDA_ANGLE" Type="int" Nullable="false" />
+          <Property Name="MDA_TYPE" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="MEASURING_DEVICE">
+          <Key>
+            <PropertyRef Name="MD_ID" />
+          </Key>
+          <Property Name="MD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MD_MDT_ID" Type="int" />
+          <Property Name="MD_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="MD_WORKNUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MD_F_INTERVAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="MD_DATE" Type="datetime" />
+          <Property Name="MD_ERROR" Type="float" Nullable="false" />
+          <Property Name="MD_DEFAULT" Type="nvarchar" MaxLength="10" />
+          <Property Name="MD_OWNER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MD_NOTE" Type="nvarchar" MaxLength="500" />
+          <Property Name="MD_IS_HELPER" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="MEASURING_DEVICE_ARM">
+          <Key>
+            <PropertyRef Name="MDARM_ID" />
+          </Key>
+          <Property Name="MDARM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MDARM_MD_ID" Type="int" />
+          <Property Name="MDARM_ARM_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="MEASURING_DEVICE_TYPE">
+          <Key>
+            <PropertyRef Name="MDT_ID" />
+          </Key>
+          <Property Name="MDT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MDT_NAME" Type="nvarchar" MaxLength="500" />
+          <Property Name="MDT_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="MEASURING_EQUIPMENT">
+          <Key>
+            <PropertyRef Name="ME_ID" />
+          </Key>
+          <Property Name="ME_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ME_MET_ID" Type="int" />
+          <Property Name="ME_MODEL" Type="nvarchar" MaxLength="500" />
+          <Property Name="ME_SERIAL" Type="nvarchar" MaxLength="500" />
+          <Property Name="ME_INTERVAL" Type="nvarchar" MaxLength="500" />
+          <Property Name="ME_NOTE" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="MEASURING_EQUIPMENT_ARM">
+          <Key>
+            <PropertyRef Name="MEARM_ID" />
+          </Key>
+          <Property Name="MEARM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MEARM_ME_ID" Type="int" />
+          <Property Name="MEARM_ARM_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="MEASURING_EQUIPMENT_TYPE">
+          <Key>
+            <PropertyRef Name="MET_ID" />
+          </Key>
+          <Property Name="MET_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MET_NAME" Type="nvarchar" MaxLength="500" />
+          <Property Name="MET_NOTE" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MEASURING_FOR_REPORT">
+          <Key>
+            <PropertyRef Name="MFR_ID" />
+          </Key>
+          <Property Name="MFR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MFR_MODE_ID" Type="int" Nullable="false" />
+          <Property Name="MFR_NPP" Type="int" Nullable="false" />
+          <Property Name="MFR_F" Type="float" />
+          <Property Name="MFR__I" Type="int" />
+          <Property Name="MFR_ECN" Type="float" />
+          <Property Name="MFR_EN" Type="float" />
+          <Property Name="MFR_E" Type="float" />
+          <Property Name="MFR_R2_2" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR_R2_3" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR_UGS1" Type="float" />
+          <Property Name="MFR_UGS2" Type="float" />
+          <Property Name="MFR_R1_2" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR_R1_3" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR__R1_2" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR__R1_3" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR_KZAT" Type="float" />
+          <Property Name="MFR_DELTA" Type="nvarchar" MaxLength="50" />
+          <Property Name="MFR_F_BEGIN" Type="float" />
+          <Property Name="MFR_F_END" Type="float" />
+        </EntityType>
+        <EntityType Name="METHOD">
+          <Key>
+            <PropertyRef Name="METHOD_ID" />
+          </Key>
+          <Property Name="METHOD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="METHOD_NAME" Type="nvarchar" MaxLength="500" />
+          <Property Name="METHOD_ABBREV" Type="nvarchar" MaxLength="50" />
+          <Property Name="METHOD_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="MODE">
+          <Key>
+            <PropertyRef Name="MODE_ID" />
+          </Key>
+          <Property Name="MODE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MODE_ARM_ID" Type="int" />
+          <Property Name="MODE_ITEM" Type="nvarchar" MaxLength="500" />
+          <Property Name="MODE_MT_ID" Type="int" />
+          <Property Name="MODE_AUTORBW" Type="bit" />
+          <Property Name="MODE_ITUNIFIED" Type="bit" />
+          <Property Name="MODE_FT" Type="float" Nullable="false" />
+          <Property Name="MODE_FT_UNIT_ID" Type="int" />
+          <Property Name="MODE_TAU" Type="float" Nullable="false" />
+          <Property Name="MODE_TAU_UNIT_ID" Type="int" />
+          <Property Name="MODE_D" Type="float" Nullable="false" />
+          <Property Name="MODE_R" Type="float" Nullable="false" />
+          <Property Name="MODE_RMAX" Type="float" Nullable="false" />
+          <Property Name="MODE_L" Type="float" Nullable="false" />
+          <Property Name="MODE_ANT_GS" Type="bit" />
+          <Property Name="MODE_RBW" Type="float" Nullable="false" />
+          <Property Name="MODE_RBW_UNIT_ID" Type="int" />
+          <Property Name="MODE_SVT" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODE_NORMA" Type="float" Nullable="false" />
+          <Property Name="MODE_KS" Type="float" Nullable="false" />
+          <Property Name="MODE_EQ_ID" Type="int" />
+          <Property Name="MODE_IS_SOLID" Type="bit" Nullable="false" />
+          <Property Name="MODE_R2" Type="float" Nullable="false" />
+          <Property Name="MODE_R1" Type="float" Nullable="false" />
+          <Property Name="MODE_CONTR_E" Type="bit" Nullable="false" />
+          <Property Name="MODE_ANT_E_ID" Type="int" />
+          <Property Name="MODE_ANT_H_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="MODE_TYPE">
+          <Key>
+            <PropertyRef Name="MT_ID" />
+          </Key>
+          <Property Name="MT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MT_NAME" Type="nvarchar" MaxLength="500" />
+          <Property Name="MT_NOTE" Type="nvarchar" MaxLength="500" />
+          <Property Name="MT_KN" Type="float" />
+          <Property Name="MT_CK" Type="nvarchar" MaxLength="500" />
+          <Property Name="MT_N" Type="float" />
+          <Property Name="MT_M" Type="float" />
+          <Property Name="MT_ISVISILABLE" Type="bit" Nullable="false" />
+          <Property Name="MT_F_DEFAULT" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORGANIZATION">
+          <Key>
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Name="ORG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ORG_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ORG_ABBREV" Type="nvarchar" MaxLength="50" />
+          <Property Name="ORG_ADDRES" Type="nvarchar" MaxLength="50" />
+          <Property Name="ORG_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PERSON">
+          <Key>
+            <PropertyRef Name="PERSON_ID" />
+          </Key>
+          <Property Name="PERSON_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PERSON_FIO" Type="nvarchar" MaxLength="50" />
+          <Property Name="PERSON_NOTE" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PRODUCER">
+          <Key>
+            <PropertyRef Name="PROD_ID" />
+          </Key>
+          <Property Name="PROD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PROD_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="PROD_COUNTRY" Type="nvarchar" MaxLength="50" />
+          <Property Name="PROD_NOTE" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="REPORT_DATA">
+          <Key>
+            <PropertyRef Name="RD_ID" />
+          </Key>
+          <Property Name="RD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RD_ANL_ID" Type="int" Nullable="false" />
+          <Property Name="RD_LABEL" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RD_REPORT" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RD_DESCRIPTION" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RD_TEXT" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RD_DEFAULT" Type="bit" />
+        </EntityType>
+        <EntityType Name="RESULT">
+          <Key>
+            <PropertyRef Name="RES_ID" />
+          </Key>
+          <Property Name="RES_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RES_MODE_ID" Type="int" Nullable="false" />
+          <Property Name="RES_TYPE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RES_I_ZATUCHANIJA" Type="float" Nullable="false" />
+          <Property Name="RES_I" Type="int" Nullable="false" />
+          <Property Name="RES_NORMA" Type="float" Nullable="false" />
+          <Property Name="RES_NORMA_1" Type="float" Nullable="false" />
+          <Property Name="RES_NORMA_2" Type="float" Nullable="false" />
+          <Property Name="RES_NORMA_3" Type="float" Nullable="false" />
+          <Property Name="RES_SIGNAL_UF" Type="float" Nullable="false" />
+          <Property Name="RES_SIGNAL_U0" Type="float" Nullable="false" />
+          <Property Name="RES_SIGNAL" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_DRIVE" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_CARRY" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_DRIVE_UF" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_CARRY_UF" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_DRIVE_U0" Type="float" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_CARRY_U0" Type="float" Nullable="false" />
+          <Property Name="RES_SAZ" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_1" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_2" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_3" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE_1" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE_2" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE_3" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY_1" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY_2" Type="float" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY_3" Type="float" Nullable="false" />
+          <Property Name="RES_R1_SOSR" Type="float" Nullable="false" />
+          <Property Name="RES_R1_SOSR_1" Type="float" Nullable="false" />
+          <Property Name="RES_R1_SOSR_2" Type="float" Nullable="false" />
+          <Property Name="RES_R1_SOSR_3" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_KF" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_KF_1" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_KF_2" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_KF_3" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_K0" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_K0_1" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_K0_2" Type="float" Nullable="false" />
+          <Property Name="RES_DRIVE_K0_3" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_KF" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_KF_1" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_KF_2" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_KF_3" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_K0" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_K0_1" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_K0_2" Type="float" Nullable="false" />
+          <Property Name="RES_CARRY_K0_3" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TableUpdated">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="TableName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateTimeUpdate" Type="datetime" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UNIT">
+          <Key>
+            <PropertyRef Name="UNIT_ID" />
+          </Key>
+          <Property Name="UNIT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UNIT_VALUE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UNIT_NOTE" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Methods.dbo.AllArmsView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="AllArmsView">
+          <Key>
+            <PropertyRef Name="ORG_NAME" />
+            <PropertyRef Name="ANL_INVOICE" />
+            <PropertyRef Name="ARM_ID" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="ANL_ID" />
+            <PropertyRef Name="AT_ID" />
+            <PropertyRef Name="armTypeNew" />
+          </Key>
+          <Property Name="ORG_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ANL_INVOICE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AT_NAME" Type="nvarchar" MaxLength="500" />
+          <Property Name="ARM_NUMBER" Type="nvarchar" MaxLength="500" />
+          <Property Name="ARM_ID" Type="int" Nullable="false" />
+          <Property Name="ORG_ID" Type="int" Nullable="false" />
+          <Property Name="ANL_ID" Type="int" Nullable="false" />
+          <Property Name="AT_ID" Type="int" Nullable="false" />
+          <Property Name="armTypeNew" Type="varchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ANALYSIS_METHOD">
+          <End Role="METHOD" Type="Self.METHOD" Multiplicity="0..1" />
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="METHOD">
+              <PropertyRef Name="METHOD_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_METHOD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANALYSIS_ORGANIZATION">
+          <End Role="ORGANIZATION" Type="Self.ORGANIZATION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORGANIZATION">
+              <PropertyRef Name="ORG_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_ORG_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANALYSIS_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_MANAGER_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANALYSIS_PERSON1">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_EXECUTOR_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_ARM_ANTENNA1">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="0..1" />
+          <End Role="ANTENNA_ARM" Type="Self.ANTENNA_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA_ARM">
+              <PropertyRef Name="ANTARM_ANT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_ARM_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANTENNA_ARM" Type="Self.ANTENNA_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA_ARM">
+              <PropertyRef Name="ANTARM_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_CALIBRATION_ANTENNA">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANTENNA_CALIBRATION" Type="Self.ANTENNA_CALIBRATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA_CALIBRATION">
+              <PropertyRef Name="ANT_CAL_ANT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA">
+              <PropertyRef Name="ANT_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_PERSON1">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA">
+              <PropertyRef Name="ANT_EXECUTOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_UNIT1">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA">
+              <PropertyRef Name="ANT_F_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ARM_ANTENNA">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="0..1" />
+          <End Role="ARM" Type="Self.ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="ARM">
+              <PropertyRef Name="ARM_ANT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ARM_ARM_TYPE">
+          <End Role="ARM_TYPE" Type="Self.ARM_TYPE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ARM" Type="Self.ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM_TYPE">
+              <PropertyRef Name="AT_ID" />
+            </Principal>
+            <Dependent Role="ARM">
+              <PropertyRef Name="ARM_AT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ARM_TYPE_ANALYSIS">
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ARM_TYPE" Type="Self.ARM_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANALYSIS">
+              <PropertyRef Name="ANL_ID" />
+            </Principal>
+            <Dependent Role="ARM_TYPE">
+              <PropertyRef Name="AT_ANL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_COUNTRY">
+          <End Role="COUNTRY" Type="Self.COUNTRY" Multiplicity="0..1" />
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COUNTRY">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_COUNTRY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_EQUIPMENT_TYPE">
+          <End Role="EQUIPMENT_TYPE" Type="Self.EQUIPMENT_TYPE" Multiplicity="0..1" />
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPMENT_TYPE">
+              <PropertyRef Name="EQT_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_EQT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_PRODUCER">
+          <End Role="PRODUCER" Type="Self.PRODUCER" Multiplicity="0..1" />
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCER">
+              <PropertyRef Name="PROD_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_PROD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_CALIBRATION_FIDER">
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIDER_CALIBRATION" Type="Self.FIDER_CALIBRATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIDER">
+              <PropertyRef Name="F_ID" />
+            </Principal>
+            <Dependent Role="FIDER_CALIBRATION">
+              <PropertyRef Name="F_CAL_F_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_PERSON1">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_EXECUTOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_UNIT">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_F_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_UNIT1">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_VALUE_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DATA_MODE">
+          <End Role="MODE" Type="Self.MODE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASURING_DATA" Type="Self.MEASURING_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE">
+              <PropertyRef Name="MODE_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DATA">
+              <PropertyRef Name="MDA_MODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DATA_UNIT">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="1" />
+          <End Role="MEASURING_DATA" Type="Self.MEASURING_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DATA">
+              <PropertyRef Name="MDA_F_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DATA_UNIT1">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="1" />
+          <End Role="MEASURING_DATA" Type="Self.MEASURING_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DATA">
+              <PropertyRef Name="MDA_RBW_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASURING_EQUIPMENT_ARM" Type="Self.MEASURING_EQUIPMENT_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_EQUIPMENT_ARM">
+              <PropertyRef Name="MEARM_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_ARM1">
+          <End Role="MEASURING_DEVICE" Type="Self.MEASURING_DEVICE" Multiplicity="0..1" />
+          <End Role="MEASURING_DEVICE_ARM" Type="Self.MEASURING_DEVICE_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_DEVICE">
+              <PropertyRef Name="MD_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DEVICE_ARM">
+              <PropertyRef Name="MDARM_MD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE">
+          <End Role="MEASURING_EQUIPMENT" Type="Self.MEASURING_EQUIPMENT" Multiplicity="0..1" />
+          <End Role="MEASURING_EQUIPMENT_ARM" Type="Self.MEASURING_EQUIPMENT_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_EQUIPMENT">
+              <PropertyRef Name="ME_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_EQUIPMENT_ARM">
+              <PropertyRef Name="MEARM_ME_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASURING_DEVICE_ARM" Type="Self.MEASURING_DEVICE_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DEVICE_ARM">
+              <PropertyRef Name="MDARM_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_MEASURING_DEVICE">
+          <End Role="MEASURING_DEVICE_TYPE" Type="Self.MEASURING_DEVICE_TYPE" Multiplicity="0..1" />
+          <End Role="MEASURING_DEVICE" Type="Self.MEASURING_DEVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_DEVICE_TYPE">
+              <PropertyRef Name="MDT_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DEVICE">
+              <PropertyRef Name="MD_MDT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE">
+          <End Role="MEASURING_EQUIPMENT_TYPE" Type="Self.MEASURING_EQUIPMENT_TYPE" Multiplicity="0..1" />
+          <End Role="MEASURING_EQUIPMENT" Type="Self.MEASURING_EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_EQUIPMENT_TYPE">
+              <PropertyRef Name="MET_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_EQUIPMENT">
+              <PropertyRef Name="ME_MET_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_FOR_REPORT_MODE">
+          <End Role="MODE" Type="Self.MODE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASURING_FOR_REPORT" Type="Self.MEASURING_FOR_REPORT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE">
+              <PropertyRef Name="MODE_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_FOR_REPORT">
+              <PropertyRef Name="MFR_MODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_ANTENNA_E">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="0..1" />
+          <End Role="MODE" Type="Self.MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_ANT_E_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_ANTENNA_H">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="0..1" />
+          <End Role="MODE" Type="Self.MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_ANT_H_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MODE" Type="Self.MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_MODE_TYPE">
+          <End Role="MODE_TYPE" Type="Self.MODE_TYPE" Multiplicity="0..1" />
+          <End Role="MODE" Type="Self.MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE_TYPE">
+              <PropertyRef Name="MT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_MT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_UNIT">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="MODE" Type="Self.MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_FT_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_UNIT1">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="MODE" Type="Self.MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_TAU_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REPORT_DATA_ANALYSIS">
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="REPORT_DATA" Type="Self.REPORT_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANALYSIS">
+              <PropertyRef Name="ANL_ID" />
+            </Principal>
+            <Dependent Role="REPORT_DATA">
+              <PropertyRef Name="RD_ANL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RESULT_MODE">
+          <End Role="MODE" Type="Self.MODE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RESULT" Type="Self.RESULT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE">
+              <PropertyRef Name="MODE_ID" />
+            </Principal>
+            <Dependent Role="RESULT">
+              <PropertyRef Name="RES_MODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Merge" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="MethodsModelStoreContainer">
+          <EntitySet Name="ANALYSIS" EntityType="Self.ANALYSIS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANTENNA" EntityType="Self.ANTENNA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANTENNA_ARM" EntityType="Self.ANTENNA_ARM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANTENNA_CALIBRATION" EntityType="Self.ANTENNA_CALIBRATION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARM" EntityType="Self.ARM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARM_TYPE" EntityType="Self.ARM_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COUNTRY" EntityType="Self.COUNTRY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrentUserTask" EntityType="Self.CurrentUserTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EQUIPMENT" EntityType="Self.EQUIPMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EQUIPMENT_TYPE" EntityType="Self.EQUIPMENT_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FIDER" EntityType="Self.FIDER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FIDER_CALIBRATION" EntityType="Self.FIDER_CALIBRATION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_DATA" EntityType="Self.MEASURING_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_DEVICE" EntityType="Self.MEASURING_DEVICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_DEVICE_ARM" EntityType="Self.MEASURING_DEVICE_ARM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_DEVICE_TYPE" EntityType="Self.MEASURING_DEVICE_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_EQUIPMENT" EntityType="Self.MEASURING_EQUIPMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_EQUIPMENT_ARM" EntityType="Self.MEASURING_EQUIPMENT_ARM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_EQUIPMENT_TYPE" EntityType="Self.MEASURING_EQUIPMENT_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEASURING_FOR_REPORT" EntityType="Self.MEASURING_FOR_REPORT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="METHOD" EntityType="Self.METHOD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MODE" EntityType="Self.MODE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MODE_TYPE" EntityType="Self.MODE_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORGANIZATION" EntityType="Self.ORGANIZATION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCER" EntityType="Self.PRODUCER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORT_DATA" EntityType="Self.REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RESULT" EntityType="Self.RESULT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableUpdated" EntityType="Self.TableUpdated" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UNIT" EntityType="Self.UNIT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AllArmsView" EntityType="Self.AllArmsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[AllArmsView].[ORG_NAME] AS [ORG_NAME], 
+[AllArmsView].[ANL_INVOICE] AS [ANL_INVOICE], 
+[AllArmsView].[AT_NAME] AS [AT_NAME], 
+[AllArmsView].[ARM_NUMBER] AS [ARM_NUMBER], 
+[AllArmsView].[ARM_ID] AS [ARM_ID], 
+[AllArmsView].[ORG_ID] AS [ORG_ID], 
+[AllArmsView].[ANL_ID] AS [ANL_ID], 
+[AllArmsView].[AT_ID] AS [AT_ID], 
+[AllArmsView].[armTypeNew] AS [armTypeNew]
+FROM [dbo].[AllArmsView] AS [AllArmsView]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ANALYSIS_METHOD" Association="Self.FK_ANALYSIS_METHOD">
+            <End Role="METHOD" EntitySet="METHOD" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANALYSIS_ORGANIZATION" Association="Self.FK_ANALYSIS_ORGANIZATION">
+            <End Role="ORGANIZATION" EntitySet="ORGANIZATION" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANALYSIS_PERSON" Association="Self.FK_ANALYSIS_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANALYSIS_PERSON1" Association="Self.FK_ANALYSIS_PERSON1">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_ARM_ANTENNA1" Association="Self.FK_ANTENNA_ARM_ANTENNA1">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="ANTENNA_ARM" EntitySet="ANTENNA_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_ARM_ARM" Association="Self.FK_ANTENNA_ARM_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="ANTENNA_ARM" EntitySet="ANTENNA_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_CALIBRATION_ANTENNA" Association="Self.FK_ANTENNA_CALIBRATION_ANTENNA">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="ANTENNA_CALIBRATION" EntitySet="ANTENNA_CALIBRATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_PERSON" Association="Self.FK_ANTENNA_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_PERSON1" Association="Self.FK_ANTENNA_PERSON1">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_UNIT1" Association="Self.FK_ANTENNA_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ARM_ANTENNA" Association="Self.FK_ARM_ANTENNA">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="ARM" EntitySet="ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ARM_ARM_TYPE" Association="Self.FK_ARM_ARM_TYPE">
+            <End Role="ARM_TYPE" EntitySet="ARM_TYPE" />
+            <End Role="ARM" EntitySet="ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ARM_TYPE_ANALYSIS" Association="Self.FK_ARM_TYPE_ANALYSIS">
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+            <End Role="ARM_TYPE" EntitySet="ARM_TYPE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_ARM" Association="Self.FK_EQUIPMENT_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_COUNTRY" Association="Self.FK_EQUIPMENT_COUNTRY">
+            <End Role="COUNTRY" EntitySet="COUNTRY" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_EQUIPMENT_TYPE" Association="Self.FK_EQUIPMENT_EQUIPMENT_TYPE">
+            <End Role="EQUIPMENT_TYPE" EntitySet="EQUIPMENT_TYPE" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_PRODUCER" Association="Self.FK_EQUIPMENT_PRODUCER">
+            <End Role="PRODUCER" EntitySet="PRODUCER" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_CALIBRATION_FIDER" Association="Self.FK_FIDER_CALIBRATION_FIDER">
+            <End Role="FIDER" EntitySet="FIDER" />
+            <End Role="FIDER_CALIBRATION" EntitySet="FIDER_CALIBRATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_PERSON" Association="Self.FK_FIDER_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_PERSON1" Association="Self.FK_FIDER_PERSON1">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_UNIT" Association="Self.FK_FIDER_UNIT">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_UNIT1" Association="Self.FK_FIDER_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DATA_MODE" Association="Self.FK_MEASURING_DATA_MODE">
+            <End Role="MODE" EntitySet="MODE" />
+            <End Role="MEASURING_DATA" EntitySet="MEASURING_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DATA_UNIT" Association="Self.FK_MEASURING_DATA_UNIT">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MEASURING_DATA" EntitySet="MEASURING_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DATA_UNIT1" Association="Self.FK_MEASURING_DATA_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MEASURING_DATA" EntitySet="MEASURING_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_ARM" Association="Self.FK_MEASURING_DEVICE_ARM_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="MEASURING_EQUIPMENT_ARM" EntitySet="MEASURING_EQUIPMENT_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_ARM1" Association="Self.FK_MEASURING_DEVICE_ARM_ARM1">
+            <End Role="MEASURING_DEVICE" EntitySet="MEASURING_DEVICE" />
+            <End Role="MEASURING_DEVICE_ARM" EntitySet="MEASURING_DEVICE_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE" Association="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE">
+            <End Role="MEASURING_EQUIPMENT" EntitySet="MEASURING_EQUIPMENT" />
+            <End Role="MEASURING_EQUIPMENT_ARM" EntitySet="MEASURING_EQUIPMENT_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1" Association="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="MEASURING_DEVICE_ARM" EntitySet="MEASURING_DEVICE_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_MEASURING_DEVICE" Association="Self.FK_MEASURING_DEVICE_MEASURING_DEVICE">
+            <End Role="MEASURING_DEVICE_TYPE" EntitySet="MEASURING_DEVICE_TYPE" />
+            <End Role="MEASURING_DEVICE" EntitySet="MEASURING_DEVICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE" Association="Self.FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE">
+            <End Role="MEASURING_EQUIPMENT_TYPE" EntitySet="MEASURING_EQUIPMENT_TYPE" />
+            <End Role="MEASURING_EQUIPMENT" EntitySet="MEASURING_EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_FOR_REPORT_MODE" Association="Self.FK_MEASURING_FOR_REPORT_MODE">
+            <End Role="MODE" EntitySet="MODE" />
+            <End Role="MEASURING_FOR_REPORT" EntitySet="MEASURING_FOR_REPORT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_ANTENNA_E" Association="Self.FK_MODE_ANTENNA_E">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_ANTENNA_H" Association="Self.FK_MODE_ANTENNA_H">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_ARM" Association="Self.FK_MODE_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_MODE_TYPE" Association="Self.FK_MODE_MODE_TYPE">
+            <End Role="MODE_TYPE" EntitySet="MODE_TYPE" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_UNIT" Association="Self.FK_MODE_UNIT">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_UNIT1" Association="Self.FK_MODE_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REPORT_DATA_ANALYSIS" Association="Self.FK_REPORT_DATA_ANALYSIS">
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+            <End Role="REPORT_DATA" EntitySet="REPORT_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RESULT_MODE" Association="Self.FK_RESULT_MODE">
+            <End Role="MODE" EntitySet="MODE" />
+            <End Role="RESULT" EntitySet="RESULT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MethodsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ANALYSIS">
+          <Key>
+            <PropertyRef Name="ANL_ID" />
+          </Key>
+          <Property Name="ANL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANL_ORG_ID" Type="Int32" Nullable="false" />
+          <Property Name="ANL_INVOICE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ANL_REASON" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANL_METHOD_ID" Type="Int32" />
+          <Property Name="ANL_DATE_BEGIN" Type="DateTime" Precision="3" />
+          <Property Name="ANL_DATE_END" Type="DateTime" Precision="3" />
+          <Property Name="ANL_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANL_MANAGER_PERSON_ID" Type="Int32" />
+          <Property Name="ANL_EXECUTOR_PERSON_ID" Type="Int32" />
+          <Property Name="ANL_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="METHOD" Relationship="Self.FK_ANALYSIS_METHOD" FromRole="ANALYSIS" ToRole="METHOD" />
+          <NavigationProperty Name="ORGANIZATION" Relationship="Self.FK_ANALYSIS_ORGANIZATION" FromRole="ANALYSIS" ToRole="ORGANIZATION" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_ANALYSIS_PERSON" FromRole="ANALYSIS" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON1" Relationship="Self.FK_ANALYSIS_PERSON1" FromRole="ANALYSIS" ToRole="PERSON" />
+          <NavigationProperty Name="ARM_TYPE" Relationship="Self.FK_ARM_TYPE_ANALYSIS" FromRole="ANALYSIS" ToRole="ARM_TYPE" />
+          <NavigationProperty Name="REPORT_DATA" Relationship="Self.FK_REPORT_DATA_ANALYSIS" FromRole="ANALYSIS" ToRole="REPORT_DATA" />
+        </EntityType>
+        <EntityType Name="ANTENNA">
+          <Key>
+            <PropertyRef Name="ANT_ID" />
+          </Key>
+          <Property Name="ANT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANT_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_WORKNUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_SERTIFICAT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_F_INTERVAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_ERROR" Type="Double" Nullable="false" />
+          <Property Name="ANT_OWNER" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_CONDITIONS" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_PERSON_ID" Type="Int32" />
+          <Property Name="ANT_EXECUTOR_ID" Type="Int32" />
+          <Property Name="ANT_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ANT_F_UNIT_ID" Type="Int32" />
+          <Property Name="ANT_COMMENT" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ANT_DEFAULT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANTENNA_ARM" Relationship="Self.FK_ANTENNA_ARM_ANTENNA1" FromRole="ANTENNA" ToRole="ANTENNA_ARM" />
+          <NavigationProperty Name="ANTENNA_CALIBRATION" Relationship="Self.FK_ANTENNA_CALIBRATION_ANTENNA" FromRole="ANTENNA" ToRole="ANTENNA_CALIBRATION" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_ANTENNA_PERSON" FromRole="ANTENNA" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON1" Relationship="Self.FK_ANTENNA_PERSON1" FromRole="ANTENNA" ToRole="PERSON" />
+          <NavigationProperty Name="UNIT" Relationship="Self.FK_ANTENNA_UNIT1" FromRole="ANTENNA" ToRole="UNIT" />
+          <Property Name="ANT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ARM" Relationship="MethodsModel.FK_ARM_ANTENNA" FromRole="ANTENNA" ToRole="ARM" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_MODE_ANTENNA_E" FromRole="ANTENNA" ToRole="MODE" />
+          <NavigationProperty Name="MODE1" Relationship="MethodsModel.FK_MODE_ANTENNA_H" FromRole="ANTENNA" ToRole="MODE" />
+        </EntityType>
+        <EntityType Name="ANTENNA_ARM">
+          <Key>
+            <PropertyRef Name="ANTARM_ID" />
+          </Key>
+          <Property Name="ANTARM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANTARM_ARM_ID" Type="Int32" />
+          <Property Name="ANTARM_ANT_ID" Type="Int32" />
+          <NavigationProperty Name="ANTENNA" Relationship="Self.FK_ANTENNA_ARM_ANTENNA1" FromRole="ANTENNA_ARM" ToRole="ANTENNA" />
+          <NavigationProperty Name="ARM" Relationship="Self.FK_ANTENNA_ARM_ARM" FromRole="ANTENNA_ARM" ToRole="ARM" />
+        </EntityType>
+        <EntityType Name="ANTENNA_CALIBRATION">
+          <Key>
+            <PropertyRef Name="ANT_CAL_ID" />
+          </Key>
+          <Property Name="ANT_CAL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANT_CAL_ANT_ID" Type="Int32" Nullable="false" />
+          <Property Name="ANT_CAL_F" Type="Double" Nullable="false" />
+          <Property Name="ANT_CAL_VALUE" Type="Double" Nullable="false" />
+          <Property Name="ANT_CAL_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANTENNA" Relationship="Self.FK_ANTENNA_CALIBRATION_ANTENNA" FromRole="ANTENNA_CALIBRATION" ToRole="ANTENNA" />
+        </EntityType>
+        <EntityType Name="ARM">
+          <Key>
+            <PropertyRef Name="ARM_ID" />
+          </Key>
+          <Property Name="ARM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ARM_AT_ID" Type="Int32" />
+          <Property Name="ARM_NUMBER" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_KATEGORIA" Type="Int32" Nullable="false" />
+          <Property Name="ARM_SVT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_NK" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_IK" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_TT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANTENNA_ARM" Relationship="Self.FK_ANTENNA_ARM_ARM" FromRole="ARM" ToRole="ANTENNA_ARM" />
+          <NavigationProperty Name="ARM_TYPE" Relationship="Self.FK_ARM_ARM_TYPE" FromRole="ARM" ToRole="ARM_TYPE" />
+          <NavigationProperty Name="EQUIPMENT" Relationship="Self.FK_EQUIPMENT_ARM" FromRole="ARM" ToRole="EQUIPMENT" />
+          <NavigationProperty Name="MEASURING_EQUIPMENT_ARM" Relationship="Self.FK_MEASURING_DEVICE_ARM_ARM" FromRole="ARM" ToRole="MEASURING_EQUIPMENT_ARM" />
+          <NavigationProperty Name="MEASURING_DEVICE_ARM" Relationship="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1" FromRole="ARM" ToRole="MEASURING_DEVICE_ARM" />
+          <Property Name="ARM_ANT_ID" Type="Int32" />
+          <NavigationProperty Name="ANTENNA" Relationship="MethodsModel.FK_ARM_ANTENNA" FromRole="ARM" ToRole="ANTENNA" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_MODE_ARM" FromRole="ARM" ToRole="MODE" />
+        </EntityType>
+        <EntityType Name="ARM_TYPE">
+          <Key>
+            <PropertyRef Name="AT_ID" />
+          </Key>
+          <Property Name="AT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AT_ANL_ID" Type="Int32" />
+          <Property Name="AT_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AT_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANALYSIS" Relationship="Self.FK_ARM_TYPE_ANALYSIS" FromRole="ARM_TYPE" ToRole="ANALYSIS" />
+          <NavigationProperty Name="ARM" Relationship="Self.FK_ARM_ARM_TYPE" FromRole="ARM_TYPE" ToRole="ARM" />
+        </EntityType>
+        <EntityType Name="COUNTRY">
+          <Key>
+            <PropertyRef Name="COUNTRY_ID" />
+          </Key>
+          <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COUNTRY_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EQUIPMENT" Relationship="Self.FK_EQUIPMENT_COUNTRY" FromRole="COUNTRY" ToRole="EQUIPMENT" />
+        </EntityType>
+        <EntityType Name="EQUIPMENT">
+          <Key>
+            <PropertyRef Name="EQ_ID" />
+          </Key>
+          <Property Name="EQ_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EQ_EQT_ID" Type="Int32" />
+          <Property Name="EQ_ARM_ID" Type="Int32" />
+          <Property Name="EQ_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EQ_SERIAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EQ_PROD_ID" Type="Int32" />
+          <Property Name="EQ_COUNTRY_ID" Type="Int32" />
+          <Property Name="EQ_PARENT_ID" Type="Int32" />
+          <Property Name="EQ_SZZ" Type="Int32" />
+          <Property Name="EQ_NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ARM" Relationship="Self.FK_EQUIPMENT_ARM" FromRole="EQUIPMENT" ToRole="ARM" />
+          <NavigationProperty Name="COUNTRY" Relationship="Self.FK_EQUIPMENT_COUNTRY" FromRole="EQUIPMENT" ToRole="COUNTRY" />
+          <NavigationProperty Name="EQUIPMENT_TYPE" Relationship="Self.FK_EQUIPMENT_EQUIPMENT_TYPE" FromRole="EQUIPMENT" ToRole="EQUIPMENT_TYPE" />
+          <NavigationProperty Name="PRODUCER" Relationship="Self.FK_EQUIPMENT_PRODUCER" FromRole="EQUIPMENT" ToRole="PRODUCER" />
+          <Property Name="EQ_IN_MODE" Type="Boolean" />
+          <Property Name="EQ_F_DEFAULT" Type="Double" />
+        </EntityType>
+        <EntityType Name="EQUIPMENT_TYPE">
+          <Key>
+            <PropertyRef Name="EQT_ID" />
+          </Key>
+          <Property Name="EQT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EQT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EQT_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EQUIPMENT" Relationship="Self.FK_EQUIPMENT_EQUIPMENT_TYPE" FromRole="EQUIPMENT_TYPE" ToRole="EQUIPMENT" />
+        </EntityType>
+        <EntityType Name="FIDER">
+          <Key>
+            <PropertyRef Name="F_ID" />
+          </Key>
+          <Property Name="F_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="F_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F_WORKNUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F_SERTIFICAT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F_ERROR" Type="Double" Nullable="false" />
+          <Property Name="F_OWNER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F_CONDITIONS" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="F_PERSON_ID" Type="Int32" />
+          <Property Name="F_EXECUTOR_ID" Type="Int32" />
+          <Property Name="F_DATE" Type="DateTime" Precision="3" />
+          <Property Name="F_F_UNIT_ID" Type="Int32" />
+          <Property Name="F_VALUE_UNIT_ID" Type="Int32" />
+          <Property Name="F_COMMENT" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="F_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F_F_INTERVAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="F_DEFAULT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FIDER_CALIBRATION" Relationship="Self.FK_FIDER_CALIBRATION_FIDER" FromRole="FIDER" ToRole="FIDER_CALIBRATION" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_FIDER_PERSON" FromRole="FIDER" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON1" Relationship="Self.FK_FIDER_PERSON1" FromRole="FIDER" ToRole="PERSON" />
+          <NavigationProperty Name="UNIT" Relationship="Self.FK_FIDER_UNIT" FromRole="FIDER" ToRole="UNIT" />
+          <NavigationProperty Name="UNIT1" Relationship="Self.FK_FIDER_UNIT1" FromRole="FIDER" ToRole="UNIT" />
+        </EntityType>
+        <EntityType Name="FIDER_CALIBRATION">
+          <Key>
+            <PropertyRef Name="F_CAL_ID" />
+          </Key>
+          <Property Name="F_CAL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="F_CAL_F_ID" Type="Int32" Nullable="false" />
+          <Property Name="F_CAL_F" Type="Double" Nullable="false" />
+          <Property Name="F_CAL_VALUE" Type="Double" Nullable="false" />
+          <Property Name="F_CAL_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FIDER" Relationship="Self.FK_FIDER_CALIBRATION_FIDER" FromRole="FIDER_CALIBRATION" ToRole="FIDER" />
+        </EntityType>
+        <EntityType Name="MEASURING_DEVICE">
+          <Key>
+            <PropertyRef Name="MD_ID" />
+          </Key>
+          <Property Name="MD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MD_MDT_ID" Type="Int32" />
+          <Property Name="MD_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MD_WORKNUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MD_F_INTERVAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MD_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MD_ERROR" Type="Double" Nullable="false" />
+          <Property Name="MD_DEFAULT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MD_OWNER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MD_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MD_IS_HELPER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MEASURING_DEVICE_ARM" Relationship="Self.FK_MEASURING_DEVICE_ARM_ARM1" FromRole="MEASURING_DEVICE" ToRole="MEASURING_DEVICE_ARM" />
+          <NavigationProperty Name="MEASURING_DEVICE_TYPE" Relationship="Self.FK_MEASURING_DEVICE_MEASURING_DEVICE" FromRole="MEASURING_DEVICE" ToRole="MEASURING_DEVICE_TYPE" />
+        </EntityType>
+        <EntityType Name="MEASURING_DEVICE_ARM">
+          <Key>
+            <PropertyRef Name="MDARM_ID" />
+          </Key>
+          <Property Name="MDARM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MDARM_MD_ID" Type="Int32" />
+          <Property Name="MDARM_ARM_ID" Type="Int32" />
+          <NavigationProperty Name="ARM" Relationship="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1" FromRole="MEASURING_DEVICE_ARM" ToRole="ARM" />
+          <NavigationProperty Name="MEASURING_DEVICE" Relationship="Self.FK_MEASURING_DEVICE_ARM_ARM1" FromRole="MEASURING_DEVICE_ARM" ToRole="MEASURING_DEVICE" />
+        </EntityType>
+        <EntityType Name="MEASURING_DEVICE_TYPE">
+          <Key>
+            <PropertyRef Name="MDT_ID" />
+          </Key>
+          <Property Name="MDT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MDT_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MDT_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MEASURING_DEVICE" Relationship="Self.FK_MEASURING_DEVICE_MEASURING_DEVICE" FromRole="MEASURING_DEVICE_TYPE" ToRole="MEASURING_DEVICE" />
+        </EntityType>
+        <EntityType Name="MEASURING_EQUIPMENT">
+          <Key>
+            <PropertyRef Name="ME_ID" />
+          </Key>
+          <Property Name="ME_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ME_MET_ID" Type="Int32" />
+          <Property Name="ME_MODEL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ME_SERIAL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ME_INTERVAL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ME_NOTE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="MEASURING_EQUIPMENT_ARM" Relationship="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE" FromRole="MEASURING_EQUIPMENT" ToRole="MEASURING_EQUIPMENT_ARM" />
+          <NavigationProperty Name="MEASURING_EQUIPMENT_TYPE" Relationship="MethodsModel.FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE" FromRole="MEASURING_EQUIPMENT" ToRole="MEASURING_EQUIPMENT_TYPE" />
+        </EntityType>
+        <EntityType Name="MEASURING_EQUIPMENT_ARM">
+          <Key>
+            <PropertyRef Name="MEARM_ID" />
+          </Key>
+          <Property Name="MEARM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MEARM_ME_ID" Type="Int32" />
+          <Property Name="MEARM_ARM_ID" Type="Int32" />
+          <NavigationProperty Name="ARM" Relationship="Self.FK_MEASURING_DEVICE_ARM_ARM" FromRole="MEASURING_EQUIPMENT_ARM" ToRole="ARM" />
+          <NavigationProperty Name="MEASURING_EQUIPMENT" Relationship="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE" FromRole="MEASURING_EQUIPMENT_ARM" ToRole="MEASURING_EQUIPMENT" />
+        </EntityType>
+        <EntityType Name="MEASURING_FOR_REPORT">
+          <Key>
+            <PropertyRef Name="MFR_ID" />
+          </Key>
+          <Property Name="MFR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MFR_MODE_ID" Type="Int32" Nullable="false" />
+          <Property Name="MFR_NPP" Type="Int32" Nullable="false" />
+          <Property Name="MFR_F" Type="Double" />
+          <Property Name="MFR__I" Type="Int32" />
+          <Property Name="MFR_ECN" Type="Double" />
+          <Property Name="MFR_EN" Type="Double" />
+          <Property Name="MFR_E" Type="Double" />
+          <Property Name="MFR_R2_2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR_R2_3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR_UGS1" Type="Double" />
+          <Property Name="MFR_UGS2" Type="Double" />
+          <Property Name="MFR_R1_2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR_R1_3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR__R1_2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR__R1_3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR_KZAT" Type="Double" />
+          <Property Name="MFR_DELTA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MFR_F_BEGIN" Type="Double" />
+          <Property Name="MFR_F_END" Type="Double" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_MEASURING_FOR_REPORT_MODE" FromRole="MEASURING_FOR_REPORT" ToRole="MODE" />
+        </EntityType>
+        <EntityType Name="METHOD">
+          <Key>
+            <PropertyRef Name="METHOD_ID" />
+          </Key>
+          <Property Name="METHOD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="METHOD_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="METHOD_ABBREV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="METHOD_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANALYSIS" Relationship="Self.FK_ANALYSIS_METHOD" FromRole="METHOD" ToRole="ANALYSIS" />
+        </EntityType>
+        <EntityType Name="ORGANIZATION">
+          <Key>
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Name="ORG_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ORG_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ORG_ABBREV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ORG_ADDRES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ORG_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANALYSIS" Relationship="Self.FK_ANALYSIS_ORGANIZATION" FromRole="ORGANIZATION" ToRole="ANALYSIS" />
+        </EntityType>
+        <EntityType Name="PERSON">
+          <Key>
+            <PropertyRef Name="PERSON_ID" />
+          </Key>
+          <Property Name="PERSON_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PERSON_FIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PERSON_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ANALYSIS" Relationship="Self.FK_ANALYSIS_PERSON" FromRole="PERSON" ToRole="ANALYSIS" />
+          <NavigationProperty Name="ANALYSIS1" Relationship="Self.FK_ANALYSIS_PERSON1" FromRole="PERSON" ToRole="ANALYSIS" />
+          <NavigationProperty Name="ANTENNA" Relationship="Self.FK_ANTENNA_PERSON" FromRole="PERSON" ToRole="ANTENNA" />
+          <NavigationProperty Name="ANTENNA1" Relationship="Self.FK_ANTENNA_PERSON1" FromRole="PERSON" ToRole="ANTENNA" />
+          <NavigationProperty Name="FIDER" Relationship="Self.FK_FIDER_PERSON" FromRole="PERSON" ToRole="FIDER" />
+          <NavigationProperty Name="FIDER1" Relationship="Self.FK_FIDER_PERSON1" FromRole="PERSON" ToRole="FIDER" />
+        </EntityType>
+        <EntityType Name="PRODUCER">
+          <Key>
+            <PropertyRef Name="PROD_ID" />
+          </Key>
+          <Property Name="PROD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PROD_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PROD_COUNTRY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PROD_NOTE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="EQUIPMENT" Relationship="Self.FK_EQUIPMENT_PRODUCER" FromRole="PRODUCER" ToRole="EQUIPMENT" />
+        </EntityType>
+        <EntityType Name="REPORT_DATA">
+          <Key>
+            <PropertyRef Name="RD_ID" />
+          </Key>
+          <Property Name="RD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RD_ANL_ID" Type="Int32" Nullable="false" />
+          <Property Name="RD_LABEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RD_REPORT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RD_DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RD_TEXT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RD_DEFAULT" Type="Boolean" />
+          <NavigationProperty Name="ANALYSIS" Relationship="Self.FK_REPORT_DATA_ANALYSIS" FromRole="REPORT_DATA" ToRole="ANALYSIS" />
+        </EntityType>
+        <EntityType Name="TableUpdated">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="TableName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DateTimeUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="UNIT">
+          <Key>
+            <PropertyRef Name="UNIT_ID" />
+          </Key>
+          <Property Name="UNIT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UNIT_VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UNIT_NOTE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ANTENNA" Relationship="Self.FK_ANTENNA_UNIT1" FromRole="UNIT" ToRole="ANTENNA" />
+          <NavigationProperty Name="FIDER" Relationship="Self.FK_FIDER_UNIT" FromRole="UNIT" ToRole="FIDER" />
+          <NavigationProperty Name="FIDER1" Relationship="Self.FK_FIDER_UNIT1" FromRole="UNIT" ToRole="FIDER" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_MODE_UNIT" FromRole="UNIT" ToRole="MODE" />
+          <NavigationProperty Name="MODE1" Relationship="MethodsModel.FK_MODE_UNIT1" FromRole="UNIT" ToRole="MODE" />
+          <NavigationProperty Name="MEASURING_DATA" Relationship="MethodsModel.FK_MEASURING_DATA_UNIT" FromRole="UNIT" ToRole="MEASURING_DATA" />
+          <NavigationProperty Name="MEASURING_DATA1" Relationship="MethodsModel.FK_MEASURING_DATA_UNIT1" FromRole="UNIT" ToRole="MEASURING_DATA" />
+          </EntityType>
+        <Association Name="FK_ANALYSIS_METHOD">
+          <End Role="METHOD" Type="Self.METHOD" Multiplicity="0..1" />
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="METHOD">
+              <PropertyRef Name="METHOD_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_METHOD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANALYSIS_ORGANIZATION">
+          <End Role="ORGANIZATION" Type="Self.ORGANIZATION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORGANIZATION">
+              <PropertyRef Name="ORG_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_ORG_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANALYSIS_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_MANAGER_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANALYSIS_PERSON1">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANALYSIS">
+              <PropertyRef Name="ANL_EXECUTOR_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ARM_TYPE_ANALYSIS">
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ARM_TYPE" Type="Self.ARM_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANALYSIS">
+              <PropertyRef Name="ANL_ID" />
+            </Principal>
+            <Dependent Role="ARM_TYPE">
+              <PropertyRef Name="AT_ANL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REPORT_DATA_ANALYSIS">
+          <End Role="ANALYSIS" Type="Self.ANALYSIS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="REPORT_DATA" Type="Self.REPORT_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANALYSIS">
+              <PropertyRef Name="ANL_ID" />
+            </Principal>
+            <Dependent Role="REPORT_DATA">
+              <PropertyRef Name="RD_ANL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_ARM_ANTENNA1">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="0..1" />
+          <End Role="ANTENNA_ARM" Type="Self.ANTENNA_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA_ARM">
+              <PropertyRef Name="ANTARM_ANT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_CALIBRATION_ANTENNA">
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANTENNA_CALIBRATION" Type="Self.ANTENNA_CALIBRATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA_CALIBRATION">
+              <PropertyRef Name="ANT_CAL_ANT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA">
+              <PropertyRef Name="ANT_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_PERSON1">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA">
+              <PropertyRef Name="ANT_EXECUTOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_UNIT1">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="ANTENNA" Type="Self.ANTENNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA">
+              <PropertyRef Name="ANT_F_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ANTENNA_ARM_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANTENNA_ARM" Type="Self.ANTENNA_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="ANTENNA_ARM">
+              <PropertyRef Name="ANTARM_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ARM_ARM_TYPE">
+          <End Role="ARM_TYPE" Type="Self.ARM_TYPE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ARM" Type="Self.ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM_TYPE">
+              <PropertyRef Name="AT_ID" />
+            </Principal>
+            <Dependent Role="ARM">
+              <PropertyRef Name="ARM_AT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_ARM">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASURING_EQUIPMENT_ARM" Type="Self.MEASURING_EQUIPMENT_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_EQUIPMENT_ARM">
+              <PropertyRef Name="MEARM_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1">
+          <End Role="ARM" Type="Self.ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASURING_DEVICE_ARM" Type="Self.MEASURING_DEVICE_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DEVICE_ARM">
+              <PropertyRef Name="MDARM_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_COUNTRY">
+          <End Role="COUNTRY" Type="Self.COUNTRY" Multiplicity="0..1" />
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COUNTRY">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_COUNTRY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_EQUIPMENT_TYPE">
+          <End Role="EQUIPMENT_TYPE" Type="Self.EQUIPMENT_TYPE" Multiplicity="0..1" />
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPMENT_TYPE">
+              <PropertyRef Name="EQT_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_EQT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EQUIPMENT_PRODUCER">
+          <End Role="PRODUCER" Type="Self.PRODUCER" Multiplicity="0..1" />
+          <End Role="EQUIPMENT" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCER">
+              <PropertyRef Name="PROD_ID" />
+            </Principal>
+            <Dependent Role="EQUIPMENT">
+              <PropertyRef Name="EQ_PROD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_CALIBRATION_FIDER">
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIDER_CALIBRATION" Type="Self.FIDER_CALIBRATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIDER">
+              <PropertyRef Name="F_ID" />
+            </Principal>
+            <Dependent Role="FIDER_CALIBRATION">
+              <PropertyRef Name="F_CAL_F_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_PERSON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_PERSON1">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="PERSON_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_EXECUTOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_UNIT">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_F_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIDER_UNIT1">
+          <End Role="UNIT" Type="Self.UNIT" Multiplicity="0..1" />
+          <End Role="FIDER" Type="Self.FIDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="FIDER">
+              <PropertyRef Name="F_VALUE_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_ARM1">
+          <End Role="MEASURING_DEVICE" Type="Self.MEASURING_DEVICE" Multiplicity="0..1" />
+          <End Role="MEASURING_DEVICE_ARM" Type="Self.MEASURING_DEVICE_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_DEVICE">
+              <PropertyRef Name="MD_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DEVICE_ARM">
+              <PropertyRef Name="MDARM_MD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_MEASURING_DEVICE">
+          <End Role="MEASURING_DEVICE_TYPE" Type="Self.MEASURING_DEVICE_TYPE" Multiplicity="0..1" />
+          <End Role="MEASURING_DEVICE" Type="Self.MEASURING_DEVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_DEVICE_TYPE">
+              <PropertyRef Name="MDT_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DEVICE">
+              <PropertyRef Name="MD_MDT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE">
+          <End Role="MEASURING_EQUIPMENT" Type="Self.MEASURING_EQUIPMENT" Multiplicity="0..1" />
+          <End Role="MEASURING_EQUIPMENT_ARM" Type="Self.MEASURING_EQUIPMENT_ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_EQUIPMENT">
+              <PropertyRef Name="ME_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_EQUIPMENT_ARM">
+              <PropertyRef Name="MEARM_ME_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MethodsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ANALYSIS" EntityType="Self.ANALYSIS" />
+          <EntitySet Name="ANTENNA" EntityType="Self.ANTENNA" />
+          <EntitySet Name="ANTENNA_ARM" EntityType="Self.ANTENNA_ARM" />
+          <EntitySet Name="ANTENNA_CALIBRATION" EntityType="Self.ANTENNA_CALIBRATION" />
+          <EntitySet Name="ARM" EntityType="Self.ARM" />
+          <EntitySet Name="ARM_TYPE" EntityType="Self.ARM_TYPE" />
+          <EntitySet Name="COUNTRY" EntityType="Self.COUNTRY" />
+          <EntitySet Name="EQUIPMENT" EntityType="Self.EQUIPMENT" />
+          <EntitySet Name="EQUIPMENT_TYPE" EntityType="Self.EQUIPMENT_TYPE" />
+          <EntitySet Name="FIDER" EntityType="Self.FIDER" />
+          <EntitySet Name="FIDER_CALIBRATION" EntityType="Self.FIDER_CALIBRATION" />
+          <EntitySet Name="MEASURING_DEVICE" EntityType="Self.MEASURING_DEVICE" />
+          <EntitySet Name="MEASURING_DEVICE_ARM" EntityType="Self.MEASURING_DEVICE_ARM" />
+          <EntitySet Name="MEASURING_DEVICE_TYPE" EntityType="Self.MEASURING_DEVICE_TYPE" />
+          <EntitySet Name="MEASURING_EQUIPMENT" EntityType="Self.MEASURING_EQUIPMENT" />
+          <EntitySet Name="MEASURING_EQUIPMENT_ARM" EntityType="Self.MEASURING_EQUIPMENT_ARM" />
+          <EntitySet Name="MEASURING_FOR_REPORT" EntityType="Self.MEASURING_FOR_REPORT" />
+          <EntitySet Name="METHOD" EntityType="Self.METHOD" />
+          <EntitySet Name="ORGANIZATION" EntityType="Self.ORGANIZATION" />
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" />
+          <EntitySet Name="PRODUCER" EntityType="Self.PRODUCER" />
+          <EntitySet Name="REPORT_DATA" EntityType="Self.REPORT_DATA" />
+          <EntitySet Name="TableUpdated" EntityType="Self.TableUpdated" />
+          <EntitySet Name="UNIT" EntityType="Self.UNIT" />
+          <AssociationSet Name="FK_ANALYSIS_METHOD" Association="Self.FK_ANALYSIS_METHOD">
+            <End Role="METHOD" EntitySet="METHOD" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANALYSIS_ORGANIZATION" Association="Self.FK_ANALYSIS_ORGANIZATION">
+            <End Role="ORGANIZATION" EntitySet="ORGANIZATION" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANALYSIS_PERSON" Association="Self.FK_ANALYSIS_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANALYSIS_PERSON1" Association="Self.FK_ANALYSIS_PERSON1">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ARM_TYPE_ANALYSIS" Association="Self.FK_ARM_TYPE_ANALYSIS">
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+            <End Role="ARM_TYPE" EntitySet="ARM_TYPE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REPORT_DATA_ANALYSIS" Association="Self.FK_REPORT_DATA_ANALYSIS">
+            <End Role="ANALYSIS" EntitySet="ANALYSIS" />
+            <End Role="REPORT_DATA" EntitySet="REPORT_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_ARM_ANTENNA1" Association="Self.FK_ANTENNA_ARM_ANTENNA1">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="ANTENNA_ARM" EntitySet="ANTENNA_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_CALIBRATION_ANTENNA" Association="Self.FK_ANTENNA_CALIBRATION_ANTENNA">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="ANTENNA_CALIBRATION" EntitySet="ANTENNA_CALIBRATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_PERSON" Association="Self.FK_ANTENNA_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_PERSON1" Association="Self.FK_ANTENNA_PERSON1">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_UNIT1" Association="Self.FK_ANTENNA_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ANTENNA_ARM_ARM" Association="Self.FK_ANTENNA_ARM_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="ANTENNA_ARM" EntitySet="ANTENNA_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ARM_ARM_TYPE" Association="Self.FK_ARM_ARM_TYPE">
+            <End Role="ARM_TYPE" EntitySet="ARM_TYPE" />
+            <End Role="ARM" EntitySet="ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_ARM" Association="Self.FK_EQUIPMENT_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_ARM" Association="Self.FK_MEASURING_DEVICE_ARM_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="MEASURING_EQUIPMENT_ARM" EntitySet="MEASURING_EQUIPMENT_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1" Association="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="MEASURING_DEVICE_ARM" EntitySet="MEASURING_DEVICE_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_COUNTRY" Association="Self.FK_EQUIPMENT_COUNTRY">
+            <End Role="COUNTRY" EntitySet="COUNTRY" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_EQUIPMENT_TYPE" Association="Self.FK_EQUIPMENT_EQUIPMENT_TYPE">
+            <End Role="EQUIPMENT_TYPE" EntitySet="EQUIPMENT_TYPE" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EQUIPMENT_PRODUCER" Association="Self.FK_EQUIPMENT_PRODUCER">
+            <End Role="PRODUCER" EntitySet="PRODUCER" />
+            <End Role="EQUIPMENT" EntitySet="EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_CALIBRATION_FIDER" Association="Self.FK_FIDER_CALIBRATION_FIDER">
+            <End Role="FIDER" EntitySet="FIDER" />
+            <End Role="FIDER_CALIBRATION" EntitySet="FIDER_CALIBRATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_PERSON" Association="Self.FK_FIDER_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_PERSON1" Association="Self.FK_FIDER_PERSON1">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_UNIT" Association="Self.FK_FIDER_UNIT">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIDER_UNIT1" Association="Self.FK_FIDER_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="FIDER" EntitySet="FIDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_ARM1" Association="Self.FK_MEASURING_DEVICE_ARM_ARM1">
+            <End Role="MEASURING_DEVICE" EntitySet="MEASURING_DEVICE" />
+            <End Role="MEASURING_DEVICE_ARM" EntitySet="MEASURING_DEVICE_ARM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_MEASURING_DEVICE" Association="Self.FK_MEASURING_DEVICE_MEASURING_DEVICE">
+            <End Role="MEASURING_DEVICE_TYPE" EntitySet="MEASURING_DEVICE_TYPE" />
+            <End Role="MEASURING_DEVICE" EntitySet="MEASURING_DEVICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE" Association="Self.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE">
+            <End Role="MEASURING_EQUIPMENT" EntitySet="MEASURING_EQUIPMENT" />
+            <End Role="MEASURING_EQUIPMENT_ARM" EntitySet="MEASURING_EQUIPMENT_ARM" />
+          </AssociationSet>
+          <EntitySet Name="CurrentUserTask" EntityType="MethodsModel.CurrentUserTask" />
+          <EntitySet Name="AllArmsView" EntityType="MethodsModel.AllArmsView" />
+          <EntitySet Name="RESULT" EntityType="MethodsModel.RESULT" />
+          <EntitySet Name="MODE_TYPE" EntityType="MethodsModel.MODE_TYPE" />
+          <AssociationSet Name="FK_MODE_TYPE_MODE_TYPE" Association="MethodsModel.FK_MODE_TYPE_MODE_TYPE">
+            <End Role="MODE_TYPE" EntitySet="MODE_TYPE" />
+            <End Role="MODE_TYPE1" EntitySet="MODE_TYPE" />
+          </AssociationSet>
+          <FunctionImport Name="Merge" />
+          <AssociationSet Name="FK_ARM_ANTENNA" Association="MethodsModel.FK_ARM_ANTENNA">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="ARM" EntitySet="ARM" />
+          </AssociationSet>
+          <EntitySet Name="MEASURING_EQUIPMENT_TYPE" EntityType="MethodsModel.MEASURING_EQUIPMENT_TYPE" />
+          <AssociationSet Name="FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE" Association="MethodsModel.FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE">
+            <End Role="MEASURING_EQUIPMENT_TYPE" EntitySet="MEASURING_EQUIPMENT_TYPE" />
+            <End Role="MEASURING_EQUIPMENT" EntitySet="MEASURING_EQUIPMENT" />
+          </AssociationSet>
+          <EntitySet Name="MODE" EntityType="MethodsModel.MODE" />
+          <AssociationSet Name="FK_MODE_ANTENNA_E" Association="MethodsModel.FK_MODE_ANTENNA_E">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_ANTENNA_H" Association="MethodsModel.FK_MODE_ANTENNA_H">
+            <End Role="ANTENNA" EntitySet="ANTENNA" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_ARM" Association="MethodsModel.FK_MODE_ARM">
+            <End Role="ARM" EntitySet="ARM" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_FOR_REPORT_MODE" Association="MethodsModel.FK_MEASURING_FOR_REPORT_MODE">
+            <End Role="MODE" EntitySet="MODE" />
+            <End Role="MEASURING_FOR_REPORT" EntitySet="MEASURING_FOR_REPORT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_MODE_TYPE" Association="MethodsModel.FK_MODE_MODE_TYPE">
+            <End Role="MODE_TYPE" EntitySet="MODE_TYPE" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_UNIT" Association="MethodsModel.FK_MODE_UNIT">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODE_UNIT1" Association="MethodsModel.FK_MODE_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MODE" EntitySet="MODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RESULT_MODE" Association="MethodsModel.FK_RESULT_MODE">
+            <End Role="MODE" EntitySet="MODE" />
+            <End Role="RESULT" EntitySet="RESULT" />
+          </AssociationSet>
+          <EntitySet Name="MEASURING_DATA" EntityType="MethodsModel.MEASURING_DATA" />
+          <AssociationSet Name="FK_MEASURING_DATA_MODE" Association="MethodsModel.FK_MEASURING_DATA_MODE">
+            <End Role="MODE" EntitySet="MODE" />
+            <End Role="MEASURING_DATA" EntitySet="MEASURING_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DATA_UNIT" Association="MethodsModel.FK_MEASURING_DATA_UNIT">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MEASURING_DATA" EntitySet="MEASURING_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEASURING_DATA_UNIT1" Association="MethodsModel.FK_MEASURING_DATA_UNIT1">
+            <End Role="UNIT" EntitySet="UNIT" />
+            <End Role="MEASURING_DATA" EntitySet="MEASURING_DATA" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="CurrentUserTask">
+          <Key>
+            <PropertyRef Name="CUT_ID" />
+          </Key>
+          <Property Name="CUT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CUT_ORG_ID" Type="Int32" />
+          <Property Name="CUT_ANL_ID" Type="Int32" />
+          <Property Name="CUT_AT_ID" Type="Int32" />
+          <Property Name="CUT_ARM_ID" Type="Int32" />
+          <Property Name="CUT_MODE_ID" Type="Int32" />
+          <Property Name="CUT_USER_NAME" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AllArmsView">
+          <Key>
+            <PropertyRef Name="ORG_NAME" />
+            <PropertyRef Name="ANL_INVOICE" />
+            <PropertyRef Name="ARM_ID" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="ANL_ID" />
+            <PropertyRef Name="AT_ID" />
+            <PropertyRef Name="armTypeNew" />
+          </Key>
+          <Property Name="ORG_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ANL_INVOICE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AT_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_NUMBER" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ARM_ID" Type="Int32" Nullable="false" />
+          <Property Name="ORG_ID" Type="Int32" Nullable="false" />
+          <Property Name="ANL_ID" Type="Int32" Nullable="false" />
+          <Property Name="AT_ID" Type="Int32" Nullable="false" />
+          <Property Name="armTypeNew" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RESULT">
+          <Key>
+            <PropertyRef Name="RES_ID" />
+          </Key>
+          <Property Name="RES_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RES_MODE_ID" Type="Int32" Nullable="false" />
+          <Property Name="RES_TYPE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RES_I_ZATUCHANIJA" Type="Double" Nullable="false" />
+          <Property Name="RES_I" Type="Int32" Nullable="false" />
+          <Property Name="RES_NORMA" Type="Double" Nullable="false" />
+          <Property Name="RES_NORMA_1" Type="Double" Nullable="false" />
+          <Property Name="RES_NORMA_2" Type="Double" Nullable="false" />
+          <Property Name="RES_NORMA_3" Type="Double" Nullable="false" />
+          <Property Name="RES_SIGNAL_UF" Type="Double" Nullable="false" />
+          <Property Name="RES_SIGNAL_U0" Type="Double" Nullable="false" />
+          <Property Name="RES_SIGNAL" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_DRIVE" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_CARRY" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_DRIVE_UF" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_CARRY_UF" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_DRIVE_U0" Type="Double" Nullable="false" />
+          <Property Name="RES_DELTA_PORTABLE_CARRY_U0" Type="Double" Nullable="false" />
+          <Property Name="RES_SAZ" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_1" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_2" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_3" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE_1" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE_2" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_DRIVE_3" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY_1" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY_2" Type="Double" Nullable="false" />
+          <Property Name="RES_R2_PORTABLE_CARRY_3" Type="Double" Nullable="false" />
+          <Property Name="RES_R1_SOSR" Type="Double" Nullable="false" />
+          <Property Name="RES_R1_SOSR_1" Type="Double" Nullable="false" />
+          <Property Name="RES_R1_SOSR_2" Type="Double" Nullable="false" />
+          <Property Name="RES_R1_SOSR_3" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_KF" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_KF_1" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_KF_2" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_KF_3" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_K0" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_K0_1" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_K0_2" Type="Double" Nullable="false" />
+          <Property Name="RES_DRIVE_K0_3" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_KF" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_KF_1" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_KF_2" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_KF_3" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_K0" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_K0_1" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_K0_2" Type="Double" Nullable="false" />
+          <Property Name="RES_CARRY_K0_3" Type="Double" Nullable="false" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_RESULT_MODE" FromRole="RESULT" ToRole="MODE" />
+        </EntityType>
+        <EntityType Name="MODE_TYPE">
+          <Key>
+            <PropertyRef Name="MT_ID" />
+          </Key>
+          <Property Name="MT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MT_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MT_NOTE" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MT_KN" Type="Double" />
+          <Property Name="MT_CK" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MT_N" Type="Double" />
+          <Property Name="MT_M" Type="Double" />
+          <Property Name="MT_ISVISILABLE" Type="Boolean" Nullable="false" />
+          <Property Name="MT_F_DEFAULT" Type="Double" Nullable="false" />
+          <NavigationProperty Name="MODE_TYPE1" Relationship="MethodsModel.FK_MODE_TYPE_MODE_TYPE" FromRole="MODE_TYPE" ToRole="MODE_TYPE1" />
+          <NavigationProperty Name="MODE_TYPE2" Relationship="MethodsModel.FK_MODE_TYPE_MODE_TYPE" FromRole="MODE_TYPE1" ToRole="MODE_TYPE" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_MODE_MODE_TYPE" FromRole="MODE_TYPE" ToRole="MODE" />
+        </EntityType>
+        <Association Name="FK_MODE_TYPE_MODE_TYPE">
+          <End Type="MethodsModel.MODE_TYPE" Role="MODE_TYPE" Multiplicity="1" />
+          <End Type="MethodsModel.MODE_TYPE" Role="MODE_TYPE1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MODE_TYPE">
+              <PropertyRef Name="MT_ID" />
+            </Principal>
+            <Dependent Role="MODE_TYPE1">
+              <PropertyRef Name="MT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ARM_ANTENNA">
+          <End Type="MethodsModel.ANTENNA" Role="ANTENNA" Multiplicity="0..1" />
+          <End Type="MethodsModel.ARM" Role="ARM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="ARM">
+              <PropertyRef Name="ARM_ANT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MEASURING_EQUIPMENT_TYPE">
+          <Key>
+            <PropertyRef Name="MET_ID" />
+          </Key>
+          <Property Name="MET_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MET_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MET_NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MEASURING_EQUIPMENT" Relationship="MethodsModel.FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE" FromRole="MEASURING_EQUIPMENT_TYPE" ToRole="MEASURING_EQUIPMENT" />
+        </EntityType>
+        <Association Name="FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE">
+          <End Type="MethodsModel.MEASURING_EQUIPMENT_TYPE" Role="MEASURING_EQUIPMENT_TYPE" Multiplicity="0..1" />
+          <End Type="MethodsModel.MEASURING_EQUIPMENT" Role="MEASURING_EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASURING_EQUIPMENT_TYPE">
+              <PropertyRef Name="MET_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_EQUIPMENT">
+              <PropertyRef Name="ME_MET_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MODE">
+          <Key>
+            <PropertyRef Name="MODE_ID" />
+          </Key>
+          <Property Name="MODE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MODE_ARM_ID" Type="Int32" />
+          <Property Name="MODE_ITEM" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MODE_MT_ID" Type="Int32" />
+          <Property Name="MODE_AUTORBW" Type="Boolean" />
+          <Property Name="MODE_ITUNIFIED" Type="Boolean" />
+          <Property Name="MODE_FT" Type="Double" Nullable="false" />
+          <Property Name="MODE_FT_UNIT_ID" Type="Int32" />
+          <Property Name="MODE_TAU" Type="Double" Nullable="false" />
+          <Property Name="MODE_TAU_UNIT_ID" Type="Int32" />
+          <Property Name="MODE_D" Type="Double" Nullable="false" />
+          <Property Name="MODE_R" Type="Double" Nullable="false" />
+          <Property Name="MODE_RMAX" Type="Double" Nullable="false" />
+          <Property Name="MODE_L" Type="Double" Nullable="false" />
+          <Property Name="MODE_ANT_GS" Type="Boolean" />
+          <Property Name="MODE_RBW" Type="Double" Nullable="false" />
+          <Property Name="MODE_RBW_UNIT_ID" Type="Int32" />
+          <Property Name="MODE_SVT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODE_NORMA" Type="Double" Nullable="false" />
+          <Property Name="MODE_KS" Type="Double" Nullable="false" />
+          <Property Name="MODE_EQ_ID" Type="Int32" />
+          <Property Name="MODE_IS_SOLID" Type="Boolean" Nullable="false" />
+          <Property Name="MODE_R2" Type="Double" Nullable="false" />
+          <Property Name="MODE_R1" Type="Double" Nullable="false" />
+          <Property Name="MODE_CONTR_E" Type="Boolean" Nullable="false" />
+          <Property Name="MODE_ANT_E_ID" Type="Int32" />
+          <Property Name="MODE_ANT_H_ID" Type="Int32" />
+          <NavigationProperty Name="ANTENNA" Relationship="MethodsModel.FK_MODE_ANTENNA_E" FromRole="MODE" ToRole="ANTENNA" />
+          <NavigationProperty Name="ANTENNA1" Relationship="MethodsModel.FK_MODE_ANTENNA_H" FromRole="MODE" ToRole="ANTENNA" />
+          <NavigationProperty Name="ARM" Relationship="MethodsModel.FK_MODE_ARM" FromRole="MODE" ToRole="ARM" />
+          <NavigationProperty Name="MEASURING_FOR_REPORT" Relationship="MethodsModel.FK_MEASURING_FOR_REPORT_MODE" FromRole="MODE" ToRole="MEASURING_FOR_REPORT" />
+          <NavigationProperty Name="MODE_TYPE" Relationship="MethodsModel.FK_MODE_MODE_TYPE" FromRole="MODE" ToRole="MODE_TYPE" />
+          <NavigationProperty Name="UNIT" Relationship="MethodsModel.FK_MODE_UNIT" FromRole="MODE" ToRole="UNIT" />
+          <NavigationProperty Name="UNIT1" Relationship="MethodsModel.FK_MODE_UNIT1" FromRole="MODE" ToRole="UNIT" />
+          <NavigationProperty Name="RESULT" Relationship="MethodsModel.FK_RESULT_MODE" FromRole="MODE" ToRole="RESULT" />
+          <NavigationProperty Name="MEASURING_DATA" Relationship="MethodsModel.FK_MEASURING_DATA_MODE" FromRole="MODE" ToRole="MEASURING_DATA" />
+        </EntityType>
+        <Association Name="FK_MODE_ANTENNA_E">
+          <End Type="MethodsModel.ANTENNA" Role="ANTENNA" Multiplicity="0..1" />
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_ANT_E_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_ANTENNA_H">
+          <End Type="MethodsModel.ANTENNA" Role="ANTENNA" Multiplicity="0..1" />
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTENNA">
+              <PropertyRef Name="ANT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_ANT_H_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_ARM">
+          <End Type="MethodsModel.ARM" Role="ARM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARM">
+              <PropertyRef Name="ARM_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_ARM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_FOR_REPORT_MODE">
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MethodsModel.MEASURING_FOR_REPORT" Role="MEASURING_FOR_REPORT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE">
+              <PropertyRef Name="MODE_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_FOR_REPORT">
+              <PropertyRef Name="MFR_MODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_MODE_TYPE">
+          <End Type="MethodsModel.MODE_TYPE" Role="MODE_TYPE" Multiplicity="0..1" />
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE_TYPE">
+              <PropertyRef Name="MT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_MT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_UNIT">
+          <End Type="MethodsModel.UNIT" Role="UNIT" Multiplicity="0..1" />
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_FT_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODE_UNIT1">
+          <End Type="MethodsModel.UNIT" Role="UNIT" Multiplicity="0..1" />
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MODE">
+              <PropertyRef Name="MODE_TAU_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RESULT_MODE">
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MethodsModel.RESULT" Role="RESULT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE">
+              <PropertyRef Name="MODE_ID" />
+            </Principal>
+            <Dependent Role="RESULT">
+              <PropertyRef Name="RES_MODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MEASURING_DATA">
+          <Key>
+            <PropertyRef Name="MDA_ID" />
+          </Key>
+          <Property Name="MDA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MDA_MODE_ID" Type="Int32" Nullable="false" />
+          <Property Name="MDA_F" Type="Double" Nullable="false" />
+          <Property Name="MDA_F_UNIT_ID" Type="Int32" Nullable="false" />
+          <Property Name="MDA_I" Type="Int32" Nullable="false" />
+          <Property Name="MDA_ECN_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_EN_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0CN_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0N_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_UFCN_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_UFN_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_ES_VALUE_IZM" Type="Double" Nullable="false" />
+          <Property Name="MDA_ECN_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_EN_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0CN_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0N_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_UFCN_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_UFN_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_ES_VALUE_IZM_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_ECN_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_EN_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0CN_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0N_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_UFCN_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_UFN_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_ES_VALUE_IZM_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_EGS_DB" Type="Double" Nullable="false" />
+          <Property Name="MDA_EGS_MKV" Type="Double" Nullable="false" />
+          <Property Name="MDA_E" Type="Double" Nullable="false" />
+          <Property Name="MDA_UF" Type="Double" Nullable="false" />
+          <Property Name="MDA_U0" Type="Double" Nullable="false" />
+          <Property Name="MDA_EGS" Type="Double" Nullable="false" />
+          <Property Name="MDA_KP" Type="Double" Nullable="false" />
+          <Property Name="MDA_KPS" Type="Double" Nullable="false" />
+          <Property Name="MDA_RBW" Type="Double" Nullable="false" />
+          <Property Name="MDA_RBW_UNIT_ID" Type="Int32" Nullable="false" />
+          <Property Name="MDA_ANT_ID" Type="Int32" />
+          <Property Name="MDA_KA" Type="Double" Nullable="false" />
+          <Property Name="MDA_KF" Type="Double" Nullable="false" />
+          <Property Name="MDA_K0" Type="Double" Nullable="false" />
+          <Property Name="MDA_F_BEGIN" Type="Double" Nullable="false" />
+          <Property Name="MDA_F_END" Type="Double" Nullable="false" />
+          <Property Name="MDA_ECN_BEGIN" Type="Double" Nullable="false" />
+          <Property Name="MDA_EN_BEGIN" Type="Double" Nullable="false" />
+          <Property Name="MDA_ECN_END" Type="Double" Nullable="false" />
+          <Property Name="MDA_EN_END" Type="Double" Nullable="false" />
+          <Property Name="MDA_ANGLE" Type="Int32" Nullable="false" />
+          <Property Name="MDA_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MODE" Relationship="MethodsModel.FK_MEASURING_DATA_MODE" FromRole="MEASURING_DATA" ToRole="MODE" />
+          <NavigationProperty Name="UNIT" Relationship="MethodsModel.FK_MEASURING_DATA_UNIT" FromRole="MEASURING_DATA" ToRole="UNIT" />
+          <NavigationProperty Name="UNIT1" Relationship="MethodsModel.FK_MEASURING_DATA_UNIT1" FromRole="MEASURING_DATA" ToRole="UNIT" />
+        </EntityType>
+        <Association Name="FK_MEASURING_DATA_MODE">
+          <End Type="MethodsModel.MODE" Role="MODE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MethodsModel.MEASURING_DATA" Role="MEASURING_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODE">
+              <PropertyRef Name="MODE_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DATA">
+              <PropertyRef Name="MDA_MODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DATA_UNIT">
+          <End Type="MethodsModel.UNIT" Role="UNIT" Multiplicity="1" />
+          <End Type="MethodsModel.MEASURING_DATA" Role="MEASURING_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DATA">
+              <PropertyRef Name="MDA_F_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEASURING_DATA_UNIT1">
+          <End Type="MethodsModel.UNIT" Role="UNIT" Multiplicity="1" />
+          <End Type="MethodsModel.MEASURING_DATA" Role="MEASURING_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UNIT">
+              <PropertyRef Name="UNIT_ID" />
+            </Principal>
+            <Dependent Role="MEASURING_DATA">
+              <PropertyRef Name="MDA_RBW_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MethodsModelStoreContainer" CdmEntityContainer="MethodsEntities">
+          <EntitySetMapping Name="ANALYSIS">
+            <EntityTypeMapping TypeName="MethodsModel.ANALYSIS">
+              <MappingFragment StoreEntitySet="ANALYSIS">
+                <ScalarProperty Name="ANL_ID" ColumnName="ANL_ID" />
+                <ScalarProperty Name="ANL_ORG_ID" ColumnName="ANL_ORG_ID" />
+                <ScalarProperty Name="ANL_INVOICE" ColumnName="ANL_INVOICE" />
+                <ScalarProperty Name="ANL_REASON" ColumnName="ANL_REASON" />
+                <ScalarProperty Name="ANL_METHOD_ID" ColumnName="ANL_METHOD_ID" />
+                <ScalarProperty Name="ANL_DATE_BEGIN" ColumnName="ANL_DATE_BEGIN" />
+                <ScalarProperty Name="ANL_DATE_END" ColumnName="ANL_DATE_END" />
+                <ScalarProperty Name="ANL_NAME" ColumnName="ANL_NAME" />
+                <ScalarProperty Name="ANL_MANAGER_PERSON_ID" ColumnName="ANL_MANAGER_PERSON_ID" />
+                <ScalarProperty Name="ANL_EXECUTOR_PERSON_ID" ColumnName="ANL_EXECUTOR_PERSON_ID" />
+                <ScalarProperty Name="ANL_NOTE" ColumnName="ANL_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANTENNA">
+            <EntityTypeMapping TypeName="MethodsModel.ANTENNA">
+              <MappingFragment StoreEntitySet="ANTENNA">
+                <ScalarProperty Name="ANT_NAME" ColumnName="ANT_NAME" />
+                <ScalarProperty Name="ANT_ID" ColumnName="ANT_ID" />
+                <ScalarProperty Name="ANT_TYPE" ColumnName="ANT_TYPE" />
+                <ScalarProperty Name="ANT_MODEL" ColumnName="ANT_MODEL" />
+                <ScalarProperty Name="ANT_WORKNUMBER" ColumnName="ANT_WORKNUMBER" />
+                <ScalarProperty Name="ANT_SERTIFICAT" ColumnName="ANT_SERTIFICAT" />
+                <ScalarProperty Name="ANT_F_INTERVAL" ColumnName="ANT_F_INTERVAL" />
+                <ScalarProperty Name="ANT_ERROR" ColumnName="ANT_ERROR" />
+                <ScalarProperty Name="ANT_OWNER" ColumnName="ANT_OWNER" />
+                <ScalarProperty Name="ANT_CONDITIONS" ColumnName="ANT_CONDITIONS" />
+                <ScalarProperty Name="ANT_PERSON_ID" ColumnName="ANT_PERSON_ID" />
+                <ScalarProperty Name="ANT_EXECUTOR_ID" ColumnName="ANT_EXECUTOR_ID" />
+                <ScalarProperty Name="ANT_DATE" ColumnName="ANT_DATE" />
+                <ScalarProperty Name="ANT_F_UNIT_ID" ColumnName="ANT_F_UNIT_ID" />
+                <ScalarProperty Name="ANT_COMMENT" ColumnName="ANT_COMMENT" />
+                <ScalarProperty Name="ANT_DEFAULT" ColumnName="ANT_DEFAULT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANTENNA_ARM">
+            <EntityTypeMapping TypeName="MethodsModel.ANTENNA_ARM">
+              <MappingFragment StoreEntitySet="ANTENNA_ARM">
+                <ScalarProperty Name="ANTARM_ID" ColumnName="ANTARM_ID" />
+                <ScalarProperty Name="ANTARM_ARM_ID" ColumnName="ANTARM_ARM_ID" />
+                <ScalarProperty Name="ANTARM_ANT_ID" ColumnName="ANTARM_ANT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANTENNA_CALIBRATION">
+            <EntityTypeMapping TypeName="MethodsModel.ANTENNA_CALIBRATION">
+              <MappingFragment StoreEntitySet="ANTENNA_CALIBRATION">
+                <ScalarProperty Name="ANT_CAL_ID" ColumnName="ANT_CAL_ID" />
+                <ScalarProperty Name="ANT_CAL_ANT_ID" ColumnName="ANT_CAL_ANT_ID" />
+                <ScalarProperty Name="ANT_CAL_F" ColumnName="ANT_CAL_F" />
+                <ScalarProperty Name="ANT_CAL_VALUE" ColumnName="ANT_CAL_VALUE" />
+                <ScalarProperty Name="ANT_CAL_NOTE" ColumnName="ANT_CAL_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARM">
+            <EntityTypeMapping TypeName="MethodsModel.ARM">
+              <MappingFragment StoreEntitySet="ARM">
+                <ScalarProperty Name="ARM_ANT_ID" ColumnName="ARM_ANT_ID" />
+                <ScalarProperty Name="ARM_ID" ColumnName="ARM_ID" />
+                <ScalarProperty Name="ARM_AT_ID" ColumnName="ARM_AT_ID" />
+                <ScalarProperty Name="ARM_NUMBER" ColumnName="ARM_NUMBER" />
+                <ScalarProperty Name="ARM_KATEGORIA" ColumnName="ARM_KATEGORIA" />
+                <ScalarProperty Name="ARM_SVT" ColumnName="ARM_SVT" />
+                <ScalarProperty Name="ARM_NK" ColumnName="ARM_NK" />
+                <ScalarProperty Name="ARM_IK" ColumnName="ARM_IK" />
+                <ScalarProperty Name="ARM_TT" ColumnName="ARM_TT" />
+                <ScalarProperty Name="ARM_NOTE" ColumnName="ARM_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARM_TYPE">
+            <EntityTypeMapping TypeName="MethodsModel.ARM_TYPE">
+              <MappingFragment StoreEntitySet="ARM_TYPE">
+                <ScalarProperty Name="AT_ID" ColumnName="AT_ID" />
+                <ScalarProperty Name="AT_ANL_ID" ColumnName="AT_ANL_ID" />
+                <ScalarProperty Name="AT_NAME" ColumnName="AT_NAME" />
+                <ScalarProperty Name="AT_NOTE" ColumnName="AT_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COUNTRY">
+            <EntityTypeMapping TypeName="MethodsModel.COUNTRY">
+              <MappingFragment StoreEntitySet="COUNTRY">
+                <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="COUNTRY_NAME" ColumnName="COUNTRY_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EQUIPMENT">
+            <EntityTypeMapping TypeName="MethodsModel.EQUIPMENT">
+              <MappingFragment StoreEntitySet="EQUIPMENT">
+                <ScalarProperty Name="EQ_F_DEFAULT" ColumnName="EQ_F_DEFAULT" />
+                <ScalarProperty Name="EQ_IN_MODE" ColumnName="EQ_IN_MODE" />
+                <ScalarProperty Name="EQ_ID" ColumnName="EQ_ID" />
+                <ScalarProperty Name="EQ_EQT_ID" ColumnName="EQ_EQT_ID" />
+                <ScalarProperty Name="EQ_ARM_ID" ColumnName="EQ_ARM_ID" />
+                <ScalarProperty Name="EQ_MODEL" ColumnName="EQ_MODEL" />
+                <ScalarProperty Name="EQ_SERIAL" ColumnName="EQ_SERIAL" />
+                <ScalarProperty Name="EQ_PROD_ID" ColumnName="EQ_PROD_ID" />
+                <ScalarProperty Name="EQ_COUNTRY_ID" ColumnName="EQ_COUNTRY_ID" />
+                <ScalarProperty Name="EQ_PARENT_ID" ColumnName="EQ_PARENT_ID" />
+                <ScalarProperty Name="EQ_SZZ" ColumnName="EQ_SZZ" />
+                <ScalarProperty Name="EQ_NOTE" ColumnName="EQ_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EQUIPMENT_TYPE">
+            <EntityTypeMapping TypeName="MethodsModel.EQUIPMENT_TYPE">
+              <MappingFragment StoreEntitySet="EQUIPMENT_TYPE">
+                <ScalarProperty Name="EQT_ID" ColumnName="EQT_ID" />
+                <ScalarProperty Name="EQT_NAME" ColumnName="EQT_NAME" />
+                <ScalarProperty Name="EQT_NOTE" ColumnName="EQT_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FIDER">
+            <EntityTypeMapping TypeName="MethodsModel.FIDER">
+              <MappingFragment StoreEntitySet="FIDER">
+                <ScalarProperty Name="F_ID" ColumnName="F_ID" />
+                <ScalarProperty Name="F_TYPE" ColumnName="F_TYPE" />
+                <ScalarProperty Name="F_WORKNUMBER" ColumnName="F_WORKNUMBER" />
+                <ScalarProperty Name="F_SERTIFICAT" ColumnName="F_SERTIFICAT" />
+                <ScalarProperty Name="F_ERROR" ColumnName="F_ERROR" />
+                <ScalarProperty Name="F_OWNER" ColumnName="F_OWNER" />
+                <ScalarProperty Name="F_CONDITIONS" ColumnName="F_CONDITIONS" />
+                <ScalarProperty Name="F_PERSON_ID" ColumnName="F_PERSON_ID" />
+                <ScalarProperty Name="F_EXECUTOR_ID" ColumnName="F_EXECUTOR_ID" />
+                <ScalarProperty Name="F_DATE" ColumnName="F_DATE" />
+                <ScalarProperty Name="F_F_UNIT_ID" ColumnName="F_F_UNIT_ID" />
+                <ScalarProperty Name="F_VALUE_UNIT_ID" ColumnName="F_VALUE_UNIT_ID" />
+                <ScalarProperty Name="F_COMMENT" ColumnName="F_COMMENT" />
+                <ScalarProperty Name="F_MODEL" ColumnName="F_MODEL" />
+                <ScalarProperty Name="F_F_INTERVAL" ColumnName="F_F_INTERVAL" />
+                <ScalarProperty Name="F_DEFAULT" ColumnName="F_DEFAULT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FIDER_CALIBRATION">
+            <EntityTypeMapping TypeName="MethodsModel.FIDER_CALIBRATION">
+              <MappingFragment StoreEntitySet="FIDER_CALIBRATION">
+                <ScalarProperty Name="F_CAL_ID" ColumnName="F_CAL_ID" />
+                <ScalarProperty Name="F_CAL_F_ID" ColumnName="F_CAL_F_ID" />
+                <ScalarProperty Name="F_CAL_F" ColumnName="F_CAL_F" />
+                <ScalarProperty Name="F_CAL_VALUE" ColumnName="F_CAL_VALUE" />
+                <ScalarProperty Name="F_CAL_NOTE" ColumnName="F_CAL_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_DEVICE">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_DEVICE">
+              <MappingFragment StoreEntitySet="MEASURING_DEVICE">
+                <ScalarProperty Name="MD_ID" ColumnName="MD_ID" />
+                <ScalarProperty Name="MD_MDT_ID" ColumnName="MD_MDT_ID" />
+                <ScalarProperty Name="MD_MODEL" ColumnName="MD_MODEL" />
+                <ScalarProperty Name="MD_WORKNUMBER" ColumnName="MD_WORKNUMBER" />
+                <ScalarProperty Name="MD_F_INTERVAL" ColumnName="MD_F_INTERVAL" />
+                <ScalarProperty Name="MD_DATE" ColumnName="MD_DATE" />
+                <ScalarProperty Name="MD_ERROR" ColumnName="MD_ERROR" />
+                <ScalarProperty Name="MD_DEFAULT" ColumnName="MD_DEFAULT" />
+                <ScalarProperty Name="MD_OWNER" ColumnName="MD_OWNER" />
+                <ScalarProperty Name="MD_NOTE" ColumnName="MD_NOTE" />
+                <ScalarProperty Name="MD_IS_HELPER" ColumnName="MD_IS_HELPER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_DEVICE_ARM">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_DEVICE_ARM">
+              <MappingFragment StoreEntitySet="MEASURING_DEVICE_ARM">
+                <ScalarProperty Name="MDARM_ID" ColumnName="MDARM_ID" />
+                <ScalarProperty Name="MDARM_MD_ID" ColumnName="MDARM_MD_ID" />
+                <ScalarProperty Name="MDARM_ARM_ID" ColumnName="MDARM_ARM_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_DEVICE_TYPE">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_DEVICE_TYPE">
+              <MappingFragment StoreEntitySet="MEASURING_DEVICE_TYPE">
+                <ScalarProperty Name="MDT_ID" ColumnName="MDT_ID" />
+                <ScalarProperty Name="MDT_NAME" ColumnName="MDT_NAME" />
+                <ScalarProperty Name="MDT_NOTE" ColumnName="MDT_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_EQUIPMENT">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_EQUIPMENT">
+              <MappingFragment StoreEntitySet="MEASURING_EQUIPMENT">
+                <ScalarProperty Name="ME_ID" ColumnName="ME_ID" />
+                <ScalarProperty Name="ME_MET_ID" ColumnName="ME_MET_ID" />
+                <ScalarProperty Name="ME_MODEL" ColumnName="ME_MODEL" />
+                <ScalarProperty Name="ME_SERIAL" ColumnName="ME_SERIAL" />
+                <ScalarProperty Name="ME_INTERVAL" ColumnName="ME_INTERVAL" />
+                <ScalarProperty Name="ME_NOTE" ColumnName="ME_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_EQUIPMENT_ARM">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_EQUIPMENT_ARM">
+              <MappingFragment StoreEntitySet="MEASURING_EQUIPMENT_ARM">
+                <ScalarProperty Name="MEARM_ID" ColumnName="MEARM_ID" />
+                <ScalarProperty Name="MEARM_ME_ID" ColumnName="MEARM_ME_ID" />
+                <ScalarProperty Name="MEARM_ARM_ID" ColumnName="MEARM_ARM_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_FOR_REPORT">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_FOR_REPORT">
+              <MappingFragment StoreEntitySet="MEASURING_FOR_REPORT">
+                <ScalarProperty Name="MFR_ID" ColumnName="MFR_ID" />
+                <ScalarProperty Name="MFR_MODE_ID" ColumnName="MFR_MODE_ID" />
+                <ScalarProperty Name="MFR_NPP" ColumnName="MFR_NPP" />
+                <ScalarProperty Name="MFR_F" ColumnName="MFR_F" />
+                <ScalarProperty Name="MFR__I" ColumnName="MFR__I" />
+                <ScalarProperty Name="MFR_ECN" ColumnName="MFR_ECN" />
+                <ScalarProperty Name="MFR_EN" ColumnName="MFR_EN" />
+                <ScalarProperty Name="MFR_E" ColumnName="MFR_E" />
+                <ScalarProperty Name="MFR_R2_2" ColumnName="MFR_R2_2" />
+                <ScalarProperty Name="MFR_R2_3" ColumnName="MFR_R2_3" />
+                <ScalarProperty Name="MFR_UGS1" ColumnName="MFR_UGS1" />
+                <ScalarProperty Name="MFR_UGS2" ColumnName="MFR_UGS2" />
+                <ScalarProperty Name="MFR_R1_2" ColumnName="MFR_R1_2" />
+                <ScalarProperty Name="MFR_R1_3" ColumnName="MFR_R1_3" />
+                <ScalarProperty Name="MFR__R1_2" ColumnName="MFR__R1_2" />
+                <ScalarProperty Name="MFR__R1_3" ColumnName="MFR__R1_3" />
+                <ScalarProperty Name="MFR_KZAT" ColumnName="MFR_KZAT" />
+                <ScalarProperty Name="MFR_DELTA" ColumnName="MFR_DELTA" />
+                <ScalarProperty Name="MFR_F_BEGIN" ColumnName="MFR_F_BEGIN" />
+                <ScalarProperty Name="MFR_F_END" ColumnName="MFR_F_END" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="METHOD">
+            <EntityTypeMapping TypeName="MethodsModel.METHOD">
+              <MappingFragment StoreEntitySet="METHOD">
+                <ScalarProperty Name="METHOD_ID" ColumnName="METHOD_ID" />
+                <ScalarProperty Name="METHOD_NAME" ColumnName="METHOD_NAME" />
+                <ScalarProperty Name="METHOD_ABBREV" ColumnName="METHOD_ABBREV" />
+                <ScalarProperty Name="METHOD_NOTE" ColumnName="METHOD_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORGANIZATION">
+            <EntityTypeMapping TypeName="MethodsModel.ORGANIZATION">
+              <MappingFragment StoreEntitySet="ORGANIZATION">
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="ORG_NAME" ColumnName="ORG_NAME" />
+                <ScalarProperty Name="ORG_ABBREV" ColumnName="ORG_ABBREV" />
+                <ScalarProperty Name="ORG_ADDRES" ColumnName="ORG_ADDRES" />
+                <ScalarProperty Name="ORG_NOTE" ColumnName="ORG_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSON">
+            <EntityTypeMapping TypeName="MethodsModel.PERSON">
+              <MappingFragment StoreEntitySet="PERSON">
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="PERSON_FIO" ColumnName="PERSON_FIO" />
+                <ScalarProperty Name="PERSON_NOTE" ColumnName="PERSON_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCER">
+            <EntityTypeMapping TypeName="MethodsModel.PRODUCER">
+              <MappingFragment StoreEntitySet="PRODUCER">
+                <ScalarProperty Name="PROD_ID" ColumnName="PROD_ID" />
+                <ScalarProperty Name="PROD_NAME" ColumnName="PROD_NAME" />
+                <ScalarProperty Name="PROD_COUNTRY" ColumnName="PROD_COUNTRY" />
+                <ScalarProperty Name="PROD_NOTE" ColumnName="PROD_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REPORT_DATA">
+            <EntityTypeMapping TypeName="MethodsModel.REPORT_DATA">
+              <MappingFragment StoreEntitySet="REPORT_DATA">
+                <ScalarProperty Name="RD_ID" ColumnName="RD_ID" />
+                <ScalarProperty Name="RD_ANL_ID" ColumnName="RD_ANL_ID" />
+                <ScalarProperty Name="RD_LABEL" ColumnName="RD_LABEL" />
+                <ScalarProperty Name="RD_REPORT" ColumnName="RD_REPORT" />
+                <ScalarProperty Name="RD_DESCRIPTION" ColumnName="RD_DESCRIPTION" />
+                <ScalarProperty Name="RD_TEXT" ColumnName="RD_TEXT" />
+                <ScalarProperty Name="RD_DEFAULT" ColumnName="RD_DEFAULT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableUpdated">
+            <EntityTypeMapping TypeName="MethodsModel.TableUpdated">
+              <MappingFragment StoreEntitySet="TableUpdated">
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="DateTimeUpdate" ColumnName="DateTimeUpdate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UNIT">
+            <EntityTypeMapping TypeName="MethodsModel.UNIT">
+              <MappingFragment StoreEntitySet="UNIT">
+                <ScalarProperty Name="UNIT_ID" ColumnName="UNIT_ID" />
+                <ScalarProperty Name="UNIT_VALUE" ColumnName="UNIT_VALUE" />
+                <ScalarProperty Name="UNIT_NOTE" ColumnName="UNIT_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrentUserTask">
+            <EntityTypeMapping TypeName="MethodsModel.CurrentUserTask">
+              <MappingFragment StoreEntitySet="CurrentUserTask">
+                <ScalarProperty Name="CUT_USER_NAME" ColumnName="CUT_USER_NAME" />
+                <ScalarProperty Name="CUT_MODE_ID" ColumnName="CUT_MODE_ID" />
+                <ScalarProperty Name="CUT_ARM_ID" ColumnName="CUT_ARM_ID" />
+                <ScalarProperty Name="CUT_AT_ID" ColumnName="CUT_AT_ID" />
+                <ScalarProperty Name="CUT_ANL_ID" ColumnName="CUT_ANL_ID" />
+                <ScalarProperty Name="CUT_ORG_ID" ColumnName="CUT_ORG_ID" />
+                <ScalarProperty Name="CUT_ID" ColumnName="CUT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AllArmsView">
+            <EntityTypeMapping TypeName="MethodsModel.AllArmsView">
+              <MappingFragment StoreEntitySet="AllArmsView">
+                <ScalarProperty Name="armTypeNew" ColumnName="armTypeNew" />
+                <ScalarProperty Name="AT_ID" ColumnName="AT_ID" />
+                <ScalarProperty Name="ANL_ID" ColumnName="ANL_ID" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="ARM_ID" ColumnName="ARM_ID" />
+                <ScalarProperty Name="ARM_NUMBER" ColumnName="ARM_NUMBER" />
+                <ScalarProperty Name="AT_NAME" ColumnName="AT_NAME" />
+                <ScalarProperty Name="ANL_INVOICE" ColumnName="ANL_INVOICE" />
+                <ScalarProperty Name="ORG_NAME" ColumnName="ORG_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RESULT">
+            <EntityTypeMapping TypeName="MethodsModel.RESULT">
+              <MappingFragment StoreEntitySet="RESULT">
+                <ScalarProperty Name="RES_CARRY_K0_3" ColumnName="RES_CARRY_K0_3" />
+                <ScalarProperty Name="RES_CARRY_K0_2" ColumnName="RES_CARRY_K0_2" />
+                <ScalarProperty Name="RES_CARRY_K0_1" ColumnName="RES_CARRY_K0_1" />
+                <ScalarProperty Name="RES_CARRY_K0" ColumnName="RES_CARRY_K0" />
+                <ScalarProperty Name="RES_CARRY_KF_3" ColumnName="RES_CARRY_KF_3" />
+                <ScalarProperty Name="RES_CARRY_KF_2" ColumnName="RES_CARRY_KF_2" />
+                <ScalarProperty Name="RES_CARRY_KF_1" ColumnName="RES_CARRY_KF_1" />
+                <ScalarProperty Name="RES_CARRY_KF" ColumnName="RES_CARRY_KF" />
+                <ScalarProperty Name="RES_DRIVE_K0_3" ColumnName="RES_DRIVE_K0_3" />
+                <ScalarProperty Name="RES_DRIVE_K0_2" ColumnName="RES_DRIVE_K0_2" />
+                <ScalarProperty Name="RES_DRIVE_K0_1" ColumnName="RES_DRIVE_K0_1" />
+                <ScalarProperty Name="RES_DRIVE_K0" ColumnName="RES_DRIVE_K0" />
+                <ScalarProperty Name="RES_DRIVE_KF_3" ColumnName="RES_DRIVE_KF_3" />
+                <ScalarProperty Name="RES_DRIVE_KF_2" ColumnName="RES_DRIVE_KF_2" />
+                <ScalarProperty Name="RES_DRIVE_KF_1" ColumnName="RES_DRIVE_KF_1" />
+                <ScalarProperty Name="RES_DRIVE_KF" ColumnName="RES_DRIVE_KF" />
+                <ScalarProperty Name="RES_R1_SOSR_3" ColumnName="RES_R1_SOSR_3" />
+                <ScalarProperty Name="RES_R1_SOSR_2" ColumnName="RES_R1_SOSR_2" />
+                <ScalarProperty Name="RES_R1_SOSR_1" ColumnName="RES_R1_SOSR_1" />
+                <ScalarProperty Name="RES_R1_SOSR" ColumnName="RES_R1_SOSR" />
+                <ScalarProperty Name="RES_R2_PORTABLE_CARRY_3" ColumnName="RES_R2_PORTABLE_CARRY_3" />
+                <ScalarProperty Name="RES_R2_PORTABLE_CARRY_2" ColumnName="RES_R2_PORTABLE_CARRY_2" />
+                <ScalarProperty Name="RES_R2_PORTABLE_CARRY_1" ColumnName="RES_R2_PORTABLE_CARRY_1" />
+                <ScalarProperty Name="RES_R2_PORTABLE_CARRY" ColumnName="RES_R2_PORTABLE_CARRY" />
+                <ScalarProperty Name="RES_R2_PORTABLE_DRIVE_3" ColumnName="RES_R2_PORTABLE_DRIVE_3" />
+                <ScalarProperty Name="RES_R2_PORTABLE_DRIVE_2" ColumnName="RES_R2_PORTABLE_DRIVE_2" />
+                <ScalarProperty Name="RES_R2_PORTABLE_DRIVE_1" ColumnName="RES_R2_PORTABLE_DRIVE_1" />
+                <ScalarProperty Name="RES_R2_PORTABLE_DRIVE" ColumnName="RES_R2_PORTABLE_DRIVE" />
+                <ScalarProperty Name="RES_R2_PORTABLE_3" ColumnName="RES_R2_PORTABLE_3" />
+                <ScalarProperty Name="RES_R2_PORTABLE_2" ColumnName="RES_R2_PORTABLE_2" />
+                <ScalarProperty Name="RES_R2_PORTABLE_1" ColumnName="RES_R2_PORTABLE_1" />
+                <ScalarProperty Name="RES_R2_PORTABLE" ColumnName="RES_R2_PORTABLE" />
+                <ScalarProperty Name="RES_SAZ" ColumnName="RES_SAZ" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE_CARRY_U0" ColumnName="RES_DELTA_PORTABLE_CARRY_U0" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE_DRIVE_U0" ColumnName="RES_DELTA_PORTABLE_DRIVE_U0" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE_CARRY_UF" ColumnName="RES_DELTA_PORTABLE_CARRY_UF" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE_DRIVE_UF" ColumnName="RES_DELTA_PORTABLE_DRIVE_UF" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE_CARRY" ColumnName="RES_DELTA_PORTABLE_CARRY" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE_DRIVE" ColumnName="RES_DELTA_PORTABLE_DRIVE" />
+                <ScalarProperty Name="RES_DELTA_PORTABLE" ColumnName="RES_DELTA_PORTABLE" />
+                <ScalarProperty Name="RES_SIGNAL" ColumnName="RES_SIGNAL" />
+                <ScalarProperty Name="RES_SIGNAL_U0" ColumnName="RES_SIGNAL_U0" />
+                <ScalarProperty Name="RES_SIGNAL_UF" ColumnName="RES_SIGNAL_UF" />
+                <ScalarProperty Name="RES_NORMA_3" ColumnName="RES_NORMA_3" />
+                <ScalarProperty Name="RES_NORMA_2" ColumnName="RES_NORMA_2" />
+                <ScalarProperty Name="RES_NORMA_1" ColumnName="RES_NORMA_1" />
+                <ScalarProperty Name="RES_NORMA" ColumnName="RES_NORMA" />
+                <ScalarProperty Name="RES_I" ColumnName="RES_I" />
+                <ScalarProperty Name="RES_I_ZATUCHANIJA" ColumnName="RES_I_ZATUCHANIJA" />
+                <ScalarProperty Name="RES_TYPE" ColumnName="RES_TYPE" />
+                <ScalarProperty Name="RES_MODE_ID" ColumnName="RES_MODE_ID" />
+                <ScalarProperty Name="RES_ID" ColumnName="RES_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MODE_TYPE">
+            <EntityTypeMapping TypeName="MethodsModel.MODE_TYPE">
+              <MappingFragment StoreEntitySet="MODE_TYPE">
+                <ScalarProperty Name="MT_F_DEFAULT" ColumnName="MT_F_DEFAULT" />
+                <ScalarProperty Name="MT_ISVISILABLE" ColumnName="MT_ISVISILABLE" />
+                <ScalarProperty Name="MT_M" ColumnName="MT_M" />
+                <ScalarProperty Name="MT_N" ColumnName="MT_N" />
+                <ScalarProperty Name="MT_CK" ColumnName="MT_CK" />
+                <ScalarProperty Name="MT_KN" ColumnName="MT_KN" />
+                <ScalarProperty Name="MT_NOTE" ColumnName="MT_NOTE" />
+                <ScalarProperty Name="MT_NAME" ColumnName="MT_NAME" />
+                <ScalarProperty Name="MT_ID" ColumnName="MT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Merge" FunctionName="MethodsModel.Store.Merge" />
+          <EntitySetMapping Name="MEASURING_EQUIPMENT_TYPE">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_EQUIPMENT_TYPE">
+              <MappingFragment StoreEntitySet="MEASURING_EQUIPMENT_TYPE">
+                <ScalarProperty Name="MET_NOTE" ColumnName="MET_NOTE" />
+                <ScalarProperty Name="MET_NAME" ColumnName="MET_NAME" />
+                <ScalarProperty Name="MET_ID" ColumnName="MET_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MODE">
+            <EntityTypeMapping TypeName="MethodsModel.MODE">
+              <MappingFragment StoreEntitySet="MODE">
+                <ScalarProperty Name="MODE_ANT_H_ID" ColumnName="MODE_ANT_H_ID" />
+                <ScalarProperty Name="MODE_ANT_E_ID" ColumnName="MODE_ANT_E_ID" />
+                <ScalarProperty Name="MODE_CONTR_E" ColumnName="MODE_CONTR_E" />
+                <ScalarProperty Name="MODE_R1" ColumnName="MODE_R1" />
+                <ScalarProperty Name="MODE_R2" ColumnName="MODE_R2" />
+                <ScalarProperty Name="MODE_IS_SOLID" ColumnName="MODE_IS_SOLID" />
+                <ScalarProperty Name="MODE_EQ_ID" ColumnName="MODE_EQ_ID" />
+                <ScalarProperty Name="MODE_KS" ColumnName="MODE_KS" />
+                <ScalarProperty Name="MODE_NORMA" ColumnName="MODE_NORMA" />
+                <ScalarProperty Name="MODE_SVT" ColumnName="MODE_SVT" />
+                <ScalarProperty Name="MODE_RBW_UNIT_ID" ColumnName="MODE_RBW_UNIT_ID" />
+                <ScalarProperty Name="MODE_RBW" ColumnName="MODE_RBW" />
+                <ScalarProperty Name="MODE_ANT_GS" ColumnName="MODE_ANT_GS" />
+                <ScalarProperty Name="MODE_L" ColumnName="MODE_L" />
+                <ScalarProperty Name="MODE_RMAX" ColumnName="MODE_RMAX" />
+                <ScalarProperty Name="MODE_R" ColumnName="MODE_R" />
+                <ScalarProperty Name="MODE_D" ColumnName="MODE_D" />
+                <ScalarProperty Name="MODE_TAU_UNIT_ID" ColumnName="MODE_TAU_UNIT_ID" />
+                <ScalarProperty Name="MODE_TAU" ColumnName="MODE_TAU" />
+                <ScalarProperty Name="MODE_FT_UNIT_ID" ColumnName="MODE_FT_UNIT_ID" />
+                <ScalarProperty Name="MODE_FT" ColumnName="MODE_FT" />
+                <ScalarProperty Name="MODE_ITUNIFIED" ColumnName="MODE_ITUNIFIED" />
+                <ScalarProperty Name="MODE_AUTORBW" ColumnName="MODE_AUTORBW" />
+                <ScalarProperty Name="MODE_MT_ID" ColumnName="MODE_MT_ID" />
+                <ScalarProperty Name="MODE_ITEM" ColumnName="MODE_ITEM" />
+                <ScalarProperty Name="MODE_ARM_ID" ColumnName="MODE_ARM_ID" />
+                <ScalarProperty Name="MODE_ID" ColumnName="MODE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEASURING_DATA">
+            <EntityTypeMapping TypeName="MethodsModel.MEASURING_DATA">
+              <MappingFragment StoreEntitySet="MEASURING_DATA">
+                <ScalarProperty Name="MDA_TYPE" ColumnName="MDA_TYPE" />
+                <ScalarProperty Name="MDA_ANGLE" ColumnName="MDA_ANGLE" />
+                <ScalarProperty Name="MDA_EN_END" ColumnName="MDA_EN_END" />
+                <ScalarProperty Name="MDA_ECN_END" ColumnName="MDA_ECN_END" />
+                <ScalarProperty Name="MDA_EN_BEGIN" ColumnName="MDA_EN_BEGIN" />
+                <ScalarProperty Name="MDA_ECN_BEGIN" ColumnName="MDA_ECN_BEGIN" />
+                <ScalarProperty Name="MDA_F_END" ColumnName="MDA_F_END" />
+                <ScalarProperty Name="MDA_F_BEGIN" ColumnName="MDA_F_BEGIN" />
+                <ScalarProperty Name="MDA_K0" ColumnName="MDA_K0" />
+                <ScalarProperty Name="MDA_KF" ColumnName="MDA_KF" />
+                <ScalarProperty Name="MDA_KA" ColumnName="MDA_KA" />
+                <ScalarProperty Name="MDA_ANT_ID" ColumnName="MDA_ANT_ID" />
+                <ScalarProperty Name="MDA_RBW_UNIT_ID" ColumnName="MDA_RBW_UNIT_ID" />
+                <ScalarProperty Name="MDA_RBW" ColumnName="MDA_RBW" />
+                <ScalarProperty Name="MDA_KPS" ColumnName="MDA_KPS" />
+                <ScalarProperty Name="MDA_KP" ColumnName="MDA_KP" />
+                <ScalarProperty Name="MDA_EGS" ColumnName="MDA_EGS" />
+                <ScalarProperty Name="MDA_U0" ColumnName="MDA_U0" />
+                <ScalarProperty Name="MDA_UF" ColumnName="MDA_UF" />
+                <ScalarProperty Name="MDA_E" ColumnName="MDA_E" />
+                <ScalarProperty Name="MDA_EGS_MKV" ColumnName="MDA_EGS_MKV" />
+                <ScalarProperty Name="MDA_EGS_DB" ColumnName="MDA_EGS_DB" />
+                <ScalarProperty Name="MDA_ES_VALUE_IZM_MKV" ColumnName="MDA_ES_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_UFN_VALUE_IZM_MKV" ColumnName="MDA_UFN_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_UFCN_VALUE_IZM_MKV" ColumnName="MDA_UFCN_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_U0N_VALUE_IZM_MKV" ColumnName="MDA_U0N_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_U0CN_VALUE_IZM_MKV" ColumnName="MDA_U0CN_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_EN_VALUE_IZM_MKV" ColumnName="MDA_EN_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_ECN_VALUE_IZM_MKV" ColumnName="MDA_ECN_VALUE_IZM_MKV" />
+                <ScalarProperty Name="MDA_ES_VALUE_IZM_DB" ColumnName="MDA_ES_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_UFN_VALUE_IZM_DB" ColumnName="MDA_UFN_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_UFCN_VALUE_IZM_DB" ColumnName="MDA_UFCN_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_U0N_VALUE_IZM_DB" ColumnName="MDA_U0N_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_U0CN_VALUE_IZM_DB" ColumnName="MDA_U0CN_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_EN_VALUE_IZM_DB" ColumnName="MDA_EN_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_ECN_VALUE_IZM_DB" ColumnName="MDA_ECN_VALUE_IZM_DB" />
+                <ScalarProperty Name="MDA_ES_VALUE_IZM" ColumnName="MDA_ES_VALUE_IZM" />
+                <ScalarProperty Name="MDA_UFN_VALUE_IZM" ColumnName="MDA_UFN_VALUE_IZM" />
+                <ScalarProperty Name="MDA_UFCN_VALUE_IZM" ColumnName="MDA_UFCN_VALUE_IZM" />
+                <ScalarProperty Name="MDA_U0N_VALUE_IZM" ColumnName="MDA_U0N_VALUE_IZM" />
+                <ScalarProperty Name="MDA_U0CN_VALUE_IZM" ColumnName="MDA_U0CN_VALUE_IZM" />
+                <ScalarProperty Name="MDA_EN_VALUE_IZM" ColumnName="MDA_EN_VALUE_IZM" />
+                <ScalarProperty Name="MDA_ECN_VALUE_IZM" ColumnName="MDA_ECN_VALUE_IZM" />
+                <ScalarProperty Name="MDA_I" ColumnName="MDA_I" />
+                <ScalarProperty Name="MDA_F_UNIT_ID" ColumnName="MDA_F_UNIT_ID" />
+                <ScalarProperty Name="MDA_F" ColumnName="MDA_F" />
+                <ScalarProperty Name="MDA_MODE_ID" ColumnName="MDA_MODE_ID" />
+                <ScalarProperty Name="MDA_ID" ColumnName="MDA_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

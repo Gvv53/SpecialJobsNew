@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b36da43db5164f00a77eaf9e2b61b16c" Name="Diagram1" ZoomLevel="68">
+        <EntityTypeShape EntityType="MethodsModel.ANALYSIS" Width="1.5" PointX="1.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.ANTENNA" Width="1.5" PointX="3" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.ANTENNA_ARM" Width="1.5" PointX="5.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.ANTENNA_CALIBRATION" Width="1.5" PointX="5.25" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.ARM" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.ARM_TYPE" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.COUNTRY" Width="1.5" PointX="4" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.EQUIPMENT" Width="1.5" PointX="6.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.EQUIPMENT_TYPE" Width="1.5" PointX="4" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.FIDER" Width="1.5" PointX="6" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.FIDER_CALIBRATION" Width="1.5" PointX="8.25" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_DEVICE" Width="1.5" PointX="12" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_DEVICE_ARM" Width="1.5" PointX="14.25" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_DEVICE_TYPE" Width="1.5" PointX="9.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_EQUIPMENT" Width="1.5" PointX="6" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_EQUIPMENT_ARM" Width="1.5" PointX="8.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_FOR_REPORT" Width="1.5" PointX="11.25" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.METHOD" Width="1.5" PointX="1.5" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.ORGANIZATION" Width="1.5" PointX="1.5" PointY="26.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.PERSON" Width="1.5" PointX="0.75" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.PRODUCER" Width="1.5" PointX="4" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.REPORT_DATA" Width="1.5" PointX="3.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.TableUpdated" Width="1.5" PointX="8.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MethodsModel.UNIT" Width="1.5" PointX="0.75" PointY="21.375" IsExpanded="true" />
+        <AssociationConnector Association="MethodsModel.FK_ANALYSIS_METHOD" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANALYSIS_ORGANIZATION" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANALYSIS_PERSON" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANALYSIS_PERSON1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ARM_TYPE_ANALYSIS" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_REPORT_DATA_ANALYSIS" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANTENNA_ARM_ANTENNA1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANTENNA_CALIBRATION_ANTENNA" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANTENNA_PERSON" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANTENNA_PERSON1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANTENNA_UNIT1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ANTENNA_ARM_ARM" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_ARM_ARM_TYPE" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_EQUIPMENT_ARM" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DEVICE_ARM_ARM" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_EQUIPMENT_COUNTRY" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_EQUIPMENT_EQUIPMENT_TYPE" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_EQUIPMENT_PRODUCER" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_FIDER_CALIBRATION_FIDER" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_FIDER_PERSON" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_FIDER_PERSON1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_FIDER_UNIT" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_FIDER_UNIT1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DEVICE_ARM_ARM1" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DEVICE_MEASURING_DEVICE" ManuallyRouted="false" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DEVICE_ARM_MEASURING_DEVICE" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MethodsModel.CurrentUserTask" Width="1.5" PointX="8.375" PointY="4.75" />
+        <EntityTypeShape EntityType="MethodsModel.AllArmsView" Width="1.5" PointX="8.375" PointY="8.75" />
+        <EntityTypeShape EntityType="MethodsModel.RESULT" Width="1.5" PointX="11.25" PointY="22.375" />
+        <EntityTypeShape EntityType="MethodsModel.MODE_TYPE" Width="1.5" PointX="10.375" PointY="5" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_TYPE_MODE_TYPE" />
+        <AssociationConnector Association="MethodsModel.FK_ARM_ANTENNA" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_EQUIPMENT_TYPE" Width="1.5" PointX="3.75" PointY="33.875" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_EQUIPMENT_MEASURING_EQUIPMENT_TYPE" />
+        <EntityTypeShape EntityType="MethodsModel.MODE" Width="1.5" PointX="13.625" PointY="15.5" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_ANTENNA_E" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_ANTENNA_H" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_ARM" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_FOR_REPORT_MODE" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_MODE_TYPE" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_UNIT" />
+        <AssociationConnector Association="MethodsModel.FK_MODE_UNIT1" />
+        <AssociationConnector Association="MethodsModel.FK_RESULT_MODE" />
+        <EntityTypeShape EntityType="MethodsModel.MEASURING_DATA" Width="1.5" PointX="15.875" PointY="15.5" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DATA_MODE" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DATA_UNIT" />
+        <AssociationConnector Association="MethodsModel.FK_MEASURING_DATA_UNIT1" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

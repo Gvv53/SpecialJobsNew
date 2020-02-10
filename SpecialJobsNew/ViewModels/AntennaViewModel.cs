@@ -382,7 +382,7 @@ namespace SpecialJobs.ViewModels
                 key = false;
                 foreach (ANTENNA_CALIBRATION ac in data)
                 {
-                    if (ac.ANT_CAL_F == null || ac.ANT_CAL_VALUE == null || ac.ANT_CAL_F == 0 || ac.ANT_CAL_VALUE == 0)
+                    if ( ac.ANT_CAL_F == 0 || ac.ANT_CAL_VALUE == 0)
                     {
                         data.Remove(ac);
                         methodsEntities.ANTENNA_CALIBRATION.Remove(

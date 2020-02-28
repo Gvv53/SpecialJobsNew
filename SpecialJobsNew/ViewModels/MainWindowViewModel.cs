@@ -1738,7 +1738,12 @@ namespace SpecialJobs.ViewModels
 #pragma warning restore CS0618 // Тип или член устарел
                 keySuspend = true;
             }
-            WriteConfig(); //запомнили текущее состояние
+            try
+            {
+                WriteConfig(); //запомнили текущее состояние
+            }
+            catch (Exception e)
+            { MessageBox.Show("Ошибка сохранения параметров выбора. " + e.Message); }
             try
             {
                 int selectedModeId = selectedMode != null ? selectedMode.MODE_ID : 0;
@@ -1791,7 +1796,7 @@ namespace SpecialJobs.ViewModels
                 return;
             }
             //фиксация в БД восстановленного состояния
-            dbSaveSelectedParameter();
+            //dbSaveSelectedParameter(); //убрала,т.к. строка при пересоздании контекста не поменялась
 
 
             if (!keySuspendParent) // функция вызывалась с работающим потоком, который был остановлен
@@ -2411,7 +2416,11 @@ namespace SpecialJobs.ViewModels
             {
                 MessageBox.Show("Ошибка сохранения данных. " + eM.Message);
             }
-
+            Value = "Выполняется расчёт ";
+            CalculateMode(selectedMode, false); //после расчёта обновляется интерфейс главного окна
+         
+           // if (selectedMode != null && selectedMode.MODE_R2 != 0)
+             //   client.SendR2(selectedMode.MODE_ID, selectedMode.MODE_R2);
         }
 
         public void BackgroundWorkerExcel_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -2807,8 +2816,11 @@ namespace SpecialJobs.ViewModels
             if (dataList != null && dataList.Any() && dataList.Where(p => p.ID == selectedMode.MODE_ID).FirstOrDefault() != null)
             try
             {
-                //удаляем обработанные данные из очереди
-                dataList.RemoveAll(p => p.ID == selectedMode.MODE_ID);
+                if (dataList.Count == 1 && selectedMode != null && selectedMode.MODE_R2 != 0)
+                    client.SendR2(selectedMode.MODE_ID, selectedMode.MODE_R2);
+
+                    //удаляем обработанные данные из очереди
+                    dataList.RemoveAll(p => p.ID == selectedMode.MODE_ID);
                 //список не обработанных ID
                 var idList = dataList.Select(p => p.ID).Distinct();
                 if (idList.Count() != 0)
@@ -3202,9 +3214,6 @@ namespace SpecialJobs.ViewModels
                     InitialDirectory = Properties.Settings.Default.pathTemplateUtilite,
                     RestoreDirectory = false
                 };
-                //ofd.Filter = "(*.*)|*.*";
-                //ofd.FilterIndex = 1;
-
                 if (ofd.ShowDialog() == DialogResult.Cancel)
                 {
 
@@ -3228,9 +3237,17 @@ namespace SpecialJobs.ViewModels
                     Process.Start(startInfo);
                     Thread.Sleep(2000);
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO
+                    MessageBox.Show("Ошибка запуска утилиты измерений. " + e.Message);
+                    if (keySuspend)
+                    {
+                        keySuspend = false;
+#pragma warning disable CS0618 // Type or member is obsolete
+                        dbChanged.Resume();
+#pragma warning restore CS0618 // Type or member is obsolete
+                    }
+                    return;
                 }
             }
             //подключение к утилите и передача списка режимов для выполнения измерений
@@ -3263,7 +3280,7 @@ namespace SpecialJobs.ViewModels
                     client.SendExchangeContract(new ExchangeContract() { ID = row.MODE_ID, Description = row.MODE_TYPE.MT_NAME });
                 }
             }
-            catch (Exception e)
+            catch (Exception e) //пересоздание клиента
             {
                 try
                 {
@@ -3295,27 +3312,18 @@ namespace SpecialJobs.ViewModels
 
         void PrepareDataFromClient(ExchangeContract data)
         {
-            if (data != null && data.ID != 0 && Modes != null && !Modes.Where(p => p.MODE_ID == data.ID).Any())
-                return;
-            //добавляем данные в очередь
-            if (dataList == null)
-            {
-                dataList = new List<ExchangeContract>();
-                dataList.Add(data);
-            }
-            if (!dataList.Where(p=>p.ID == data.ID).Any()) //ф-я вызвана не из очереди
-                dataList.Add(data);
-            if (backgroundWorkerDelete.IsBusy || backgroundWorkerUtilite.IsBusy)
+            if (data != null && data.ID != 0 && Modes != null && !Modes.Where(p => p.MODE_ID == data.ID).Any())//нет режима в списке режимов, возможно его удалили, некуда добавлять данные измерений
             {
                 return;
             }
+            //проверка полученных данных
             if (data.ID == 0)
             {
                 MessageBox.Show("Незаполнено поле ID");
                 return;
             }
             if (String.IsNullOrEmpty(data.Type))
-                data.Type = "E";         
+                data.Type = "E";
             MeasuringType = data.Type as string;
             if (data.Frequencys == null || !data.Frequencys.Any())
             {
@@ -3332,15 +3340,56 @@ namespace SpecialJobs.ViewModels
                 MessageBox.Show("Незаполнен  список шумов");
                 return;
             }
-            if (data.Signal.Count != data.Frequencys.Count || data.Frequencys.Count != data.Noise.Count )
+            if (data.Signal.Count != data.Frequencys.Count || data.Frequencys.Count != data.Noise.Count)
             {
                 MessageBox.Show("Количество строк в списках не совпадает");
                 return;
             }
+
+            //добавляем данные в очередь
+            if (dataList == null)
+            {
+                dataList = new List<ExchangeContract>();
+                dataList.Add(data);
+            }
+            if (!dataList.Where(p=>p.ID == data.ID).Any()) //ф-я вызвана не из очереди
+                dataList.Add(data);
+            if (backgroundWorkerDelete.IsBusy || backgroundWorkerUtilite.IsBusy)
+            {
+                return;
+            }
+            //if (data.ID == 0)
+            //{
+            //    MessageBox.Show("Незаполнено поле ID");
+            //    return;
+            //}
+            //if (String.IsNullOrEmpty(data.Type))
+            //    data.Type = "E";         
+            //MeasuringType = data.Type as string;
+            //if (data.Frequencys == null || !data.Frequencys.Any())
+            //{
+            //    MessageBox.Show("Незаполнен  список частот");
+            //    return;
+            //}
+            //if (data.Signal == null || !data.Signal.Any())
+            //{
+            //    MessageBox.Show("Незаполнен  список сигналов");
+            //    return;
+            //}
+            //if (data.Noise == null || !data.Noise.Any())
+            //{
+            //    MessageBox.Show("Незаполнен  список шумов");
+            //    return;
+            //}
+            //if (data.Signal.Count != data.Frequencys.Count || data.Frequencys.Count != data.Noise.Count )
+            //{
+            //    MessageBox.Show("Количество строк в списках не совпадает");
+            //    return;
+            //}
             selectedMode = methodsEntities.MODE.Where(p => p.MODE_ID == data.ID).FirstOrDefault();
             if (selectedMode == null)
             {
-
+                //ситуация не реальная, т.к. наличие режима проверяется в начале ф-ии
             }
             //удаление пред. измерений, вставка новых записей 
             //удалим все предыдущие измерения в режиме и результаты рассчёта
@@ -3380,10 +3429,6 @@ namespace SpecialJobs.ViewModels
             }
             else
             {
-                //while (backgroundWorkerUtilite.IsBusy)
-                //{
-                //    Thread.Sleep(1000);
-                //}
                 backgroundWorkerUtilite.RunWorkerAsync(data); //когда не надо удалять, только вызываем асинхронную вставку                       
             }
 
@@ -9067,10 +9112,7 @@ namespace SpecialJobs.ViewModels
         public ICommand CopyArmTypeCommand { get { return new RelayCommand<Object>(CopyArmType); } }
         public ICommand DeleteAnalysisCommand { get { return new RelayCommand<Object>(DeleteAnalysis); } }
         public ICommand AddAnalysisCommand { get { return new RelayCommand<Object>(AddAnalysis, canAddAnalysis); } }
-        // public ICommand GetDataCommand { get { return new RelayCommand<Object>(GetData); } }
-        // public ICommand GetDataSPCommand { get { return new DelegateCommand(GetDataSP); } }       
         public ICommand DeleteModeCommand { get { return new DelegateCommandMy<MODE>(DeleteMode, canDeleteMode); } }
-      //  public ICommand NoiseFromGSCommand { get { return new DelegateCommandMy<MEASURING_DATA>(NoiseFromGS, canDeleteMeasuringData); } }
         public ICommand DeleteMeasuringDataCommand { get { return new DelegateCommandMy<MEASURING_DATA>(DeleteMeasuringData, canDeleteMeasuringData); } }
         public ICommand DeleteMeasuringDataModeCommand { get { return new DelegateCommandMy<MEASURING_DATA>(DeleteMeasuringDataMode, canDeleteMeasuringDataMode); } }
         public ICommand SaveDataCommand { get { return new RelayCommand<Object>(SaveData); } }
@@ -9134,39 +9176,39 @@ namespace SpecialJobs.ViewModels
         public string Note { get; set; }
     }
 
-    public class ModesResultForReport
-    {
-        public string Tag { get; set; } //для объединения строк в режиме (таблица в отчёте)
-        public string NPP { get; set; }
-        public string i { get; set; }
-        public string EH { get; set; }
-        public string ModeName { get; set; }
-        //public string R2_st_1 { get; set; }
-        public string R2_st_2 { get; set; }
-        public string R2_st_3 { get; set; }
-        //public string R2_drive_1 { get; set; }
-        public string R2_drive_2 { get; set; }
-        public string R2_drive_3 { get; set; }
-        //public string R2_carry_1 { get; set; }
-        public string R2_carry_2 { get; set; }
-        public string R2_carry_3 { get; set; }
-       // public string R1_sosr_1 { get; set; }
-        public string R1_sosr_2 { get; set; }
-        public string R1_sosr_3 { get; set; }
-        //public string KF_drive_1 { get; set; }
-        public string KF_drive_2 { get; set; }
-        public string KF_drive_3 { get; set; }
-        //public string KF_carry_1 { get; set; }
-        public string KF_carry_2 { get; set; }
-        public string KF_carry_3 { get; set; }
-        //public string K0_drive_1 { get; set; }
-        public string K0_drive_2 { get; set; }
-        public string K0_drive_3 { get; set; }
-        //public string K0_carry_1 { get; set; }
-        public string K0_carry_2 { get; set; }
-        public string K0_carry_3 { get; set; }
+    //public class ModesResultForReport
+    //{
+    //    public string Tag { get; set; } //для объединения строк в режиме (таблица в отчёте)
+    //    public string NPP { get; set; }
+    //    public string i { get; set; }
+    //    public string EH { get; set; }
+    //    public string ModeName { get; set; }
+    //    //public string R2_st_1 { get; set; }
+    //    public string R2_st_2 { get; set; }
+    //    public string R2_st_3 { get; set; }
+    //    //public string R2_drive_1 { get; set; }
+    //    public string R2_drive_2 { get; set; }
+    //    public string R2_drive_3 { get; set; }
+    //    //public string R2_carry_1 { get; set; }
+    //    public string R2_carry_2 { get; set; }
+    //    public string R2_carry_3 { get; set; }
+    //   // public string R1_sosr_1 { get; set; }
+    //    public string R1_sosr_2 { get; set; }
+    //    public string R1_sosr_3 { get; set; }
+    //    //public string KF_drive_1 { get; set; }
+    //    public string KF_drive_2 { get; set; }
+    //    public string KF_drive_3 { get; set; }
+    //    //public string KF_carry_1 { get; set; }
+    //    public string KF_carry_2 { get; set; }
+    //    public string KF_carry_3 { get; set; }
+    //    //public string K0_drive_1 { get; set; }
+    //    public string K0_drive_2 { get; set; }
+    //    public string K0_drive_3 { get; set; }
+    //    //public string K0_carry_1 { get; set; }
+    //    public string K0_carry_2 { get; set; }
+    //    public string K0_carry_3 { get; set; }
 
-    }
+    //}
     public class MODE_NPP : MODE
     {
         public string NPP { get; set; }

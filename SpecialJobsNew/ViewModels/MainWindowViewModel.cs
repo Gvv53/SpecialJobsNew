@@ -2417,10 +2417,7 @@ namespace SpecialJobs.ViewModels
                 MessageBox.Show("Ошибка сохранения данных. " + eM.Message);
             }
             Value = "Выполняется расчёт ";
-            CalculateMode(selectedMode, false); //после расчёта обновляется интерфейс главного окна
-         
-           // if (selectedMode != null && selectedMode.MODE_R2 != 0)
-             //   client.SendR2(selectedMode.MODE_ID, selectedMode.MODE_R2);
+            CalculateMode(selectedMode, true); //после расчёта обновляется интерфейс главного окна                   
         }
 
         public void BackgroundWorkerExcel_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -2845,8 +2842,13 @@ namespace SpecialJobs.ViewModels
 
             RefreshGcE?.Invoke();
             RefreshGcSaz?.Invoke();
-            RefreshGcCollection?.Invoke();            
-
+            RefreshGcCollection?.Invoke();
+            RefreshGcModes?.Invoke();
+            MakeMaxValue();
+            Results = new ObservableCollection<RESULT>(methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_one.ARM_ID));
+            //обновим таблицы
+            RefreshGcResults?.Invoke();
+            
             keyInsert = String.Empty;
             Clipboard.Clear();
             //запускаем обработчик таймера, который сотрёт через 5 сек. запись
@@ -3074,7 +3076,8 @@ namespace SpecialJobs.ViewModels
 
             RaisePropertyChanged(() => selectedMode);
             MakeMaxValue(); //формирование и сохранение в БД max R2 в режиме и АРМе
-
+            //обновим таблицы
+            RefreshGcResults?.Invoke();
             //int selectedModeId = selectedMode != null ? selectedMode.MODE_ID : 0;
             //RefreshModes(selectedModeId);
 
@@ -4875,6 +4878,8 @@ namespace SpecialJobs.ViewModels
         }
         private void Calculate_Ecn(MEASURING_DATA md)
         {
+            if (md.MDA_ECN_VALUE_IZM == 0) //нет измерения
+                return;
             MakeSimpleData(out double value_dB, out double value_mkV, md.MDA_KA, md.MDA_ECN_VALUE_IZM);
             if (value_mkV == -1)
             {
@@ -4914,6 +4919,8 @@ namespace SpecialJobs.ViewModels
         }
         private void Calculate_En(MEASURING_DATA md)
         {
+            if (md.MDA_EN_VALUE_IZM == 0) //нет измерения
+                return;
             MakeSimpleData(out double value_dB, out double value_mkV, md.MDA_KA, md.MDA_EN_VALUE_IZM);
             if (value_mkV == -1)
             {
@@ -5777,6 +5784,8 @@ namespace SpecialJobs.ViewModels
             if (arm_one != null)
             {
                 MakeMaxValue();
+                //обновим таблицы
+                RefreshGcResults?.Invoke();
                 ArmEquipments = new ObservableCollection<EQUIPMENT>(methodsEntities.EQUIPMENT.Where(p => p.EQ_ARM_ID == arm_id && p.EQ_PARENT_ID == null));
                 RaisePropertyChanged(() => armSVT);
                 RaisePropertyChanged(() => armTT);
@@ -6801,6 +6810,8 @@ namespace SpecialJobs.ViewModels
                                    methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_one.ARM_ID));
             filterResults = "RES_MODE_ID = " + mode.MODE_ID.ToString();
             MakeMaxValue();
+            //обновим таблицы
+            RefreshGcResults?.Invoke();
             RefreshGcResultsScen?.Invoke();
         }
         //обнуление результатов расчёта для выбранного режима,активность кнопки "Расчёт", перекраска результатов других режимов
@@ -7163,11 +7174,14 @@ namespace SpecialJobs.ViewModels
                 }
 
             }
+            mode.MODE_R2 = arR2_2[1];
             SaveData(null);
             if (isAsinc) //асинхронный расчёт всех режимов
                 return;
             MakeMaxValue(); 
             Results = new ObservableCollection<RESULT>(methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_one.ARM_ID));
+            //обновим таблицы
+            RefreshGcResults?.Invoke();
             RefreshGcResultsScen?.Invoke();
             if (!Results.Any())
             {
@@ -8256,8 +8270,8 @@ namespace SpecialJobs.ViewModels
                                   methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_one.ARM_ID)); // p.RES_MODE_ID == selectedMode.MODE_ID));
 
             filterResults = "RES_MODE_ID = " + selectedMode.MODE_ID.ToString();
-            //обновим таблицы
-            RefreshGcResults?.Invoke();
+            //обновим таблицы , вынесено, чтобы можно было вызывать в потоке
+            //RefreshGcResults?.Invoke();
             
         } 
         //значение частоты и тау по умолчанию для выбранного режима

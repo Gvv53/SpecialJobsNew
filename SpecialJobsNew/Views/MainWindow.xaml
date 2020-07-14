@@ -36,6 +36,21 @@
             <Setter Property="HorizontalContentAlignment" Value="Left" />
         </Style>
         <converters:CellStyleConverter x:Key="cellStyleConverter"  />
+
+            <Style x:Key="SelectedRowStyle" TargetType="{x:Type dxg:RowControl}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                        <Setter Property="Background" Value="Gray" />
+                        <Setter Property="Foreground" Value="White" />
+                    </DataTrigger>
+                    <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
+                        <Setter Property="Background" Value="Pink" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+
     </Window.Resources>
     <Window.InputBindings >
         <KeyBinding  Command ="{ Binding Path=ExitCommand}" 
@@ -115,9 +130,7 @@
                     <dxb:BarButtonItem x:Name="barButtonItem12_1" Content="Режимы,Ctrl+F4"  Command ="{Binding NextModeCommand}"/>
                     <dxb:BarButtonItem x:Name="barButtonItem13" Content="Измерения,Ctrl+F5"  Command ="{Binding ScenarioCommand}" CommandParameter="3"
                                        IsEnabled="{Binding canScenarioF5Enabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
-                    <!--IsEnabled="{Binding gcMeasuringDiscr,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"-->
-                    <!--<dxb:BarButtonItem x:Name="barButtonItem13_1" Content="Измерения,сплошной спектр,F6"  Command ="{Binding ScenarioCommand}" CommandParameter="4" 
-                                       IsEnabled="{Binding gcMeasuringSolid,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>-->
+                   
                     <dxb:BarButtonItem x:Name="barButtonItem15" Content="Анализ результатов расчёта"  Command ="{Binding ScenarioCommand}" CommandParameter="5" />
                     <dxb:BarButtonItem x:Name="barButtonItem16" Content="Формирование документов,F12"  Command ="{Binding ScenarioCommand}" CommandParameter="6" />
                     <dxb:BarButtonItem x:Name="barButtonItem17" Content="Аналитика(запросы к БД)"  Command ="{Binding ScenarioCommand}"  CommandParameter="7" IsEnabled="False"/>
@@ -393,7 +406,7 @@
                 </Grid>
                 <Label Grid.Row="12"  Grid.Column="1" Grid.ColumnSpan="2" Content="Исследуемые режимы АРМ" HorizontalContentAlignment="Center" 
                        FontSize="14" FontWeight="SemiBold" VerticalContentAlignment="Center"/>
-                <dxe:CheckEdit Grid.Row="12" Grid.Column="3" IsChecked="{Binding  isMultiSelect,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                <dxe:CheckEdit Grid.Row="12" Grid.Column="3" x:Name="cbModeMeas" x:FieldModifier="public" IsChecked="{Binding  isMultiSelect,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
                                Content="Режим автоизмерений" HorizontalAlignment="Left" 
                                ToolTip="Включённая галочка разрешает множественный выбор строк режимов для передачи их утилите измерений"
                                VerticalAlignment="Center" >
@@ -401,8 +414,8 @@
                         <system:Boolean>False</system:Boolean>
                     </dxe:CheckEdit.EditValue>
                 </dxe:CheckEdit>
-                <dxe:ButtonEdit Grid.Row="12" Grid.Column="3" HorizontalAlignment="Right"   ShowNullText="False" ShowText="False" 
-                                 AllowDefaultButton="False" ToolTip="Переход к утилите измерений"  VerticalAlignment="Center" HorizontalContentAlignment="Left" >
+                <dxe:ButtonEdit Grid.Row="12" Grid.Column="3" x:Name="buttonModeMeas" x:FieldModifier="public" HorizontalAlignment="Right"   ShowNullText="False" ShowText="False" 
+                                 AllowDefaultButton="False" ToolTip="Переход к утилите измерений"  VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Margin="0,0,0,4" >
                     <dxe:ButtonInfo Command="{Binding MeasuringsUtiliteCommand}"  Content ="Измерить"  />
                 </dxe:ButtonEdit>
                 <Grid Grid.Row="13" Grid.RowSpan="17" Grid.ColumnSpan="4">
@@ -602,10 +615,11 @@
                                        VerticalScrollbarVisibility="Auto" HorizontalScrollbarVisibility="Auto" ScrollingMode="Smart"                                      
                                        EditorButtonShowMode="ShowForFocusedRow" AllowFilterEditor="False" EditorShowMode="MouseDown" 
                                        CellValueChanged="TableViewModes_CellValueChanged" 
-                                       Loaded="TableView_Loaded" 
+                                       Loaded="TableView_Loaded"                                            
                                        HiddenColumnChooser="TableView_HiddenColumnChooser" 
                                        CellValueChanging="TableViewModes_CellValueChanging" ShowFilterPanelMode="Never"
-                                       FocusedRow="{Binding focusedMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                       FocusedRow="{Binding focusedMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       RowStyle="{StaticResource SelectedRowStyle}"/>
                             <!--FocusedRow="{Binding focusedMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"-->
                         </dxg:GridControl.View>
                     </dxg:GridControl>

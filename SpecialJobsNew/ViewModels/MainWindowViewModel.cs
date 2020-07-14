@@ -32,6 +32,7 @@ using Xceed.Words.NET;
 using Z.EntityFramework.Plus;
 using MessageBox = System.Windows.Forms.MessageBox;
 using DevExpress.Xpf.Editors;
+using System.Text;
 
 //LINQ Delete() требует пересоздания контекста, иначе контекст не обновить!!!
 
@@ -49,7 +50,8 @@ namespace SpecialJobs.ViewModels
         bool refreshAfterReload = false; //перезагрузка таблиц, изменённых другими пользователями
         bool refreshAfterConfig = false; //восстановление выбора из косфига
         public static Thread dbChanged;
-        private string userName,currentUser;
+        public string userName { get; set; }
+        public string currentUser { get; set; }
         DateTime dtPrev; //время последнего обработанного изменения в БД
         bool prev;
         System.Timers.Timer aTimer, iTimer;
@@ -83,7 +85,7 @@ namespace SpecialJobs.ViewModels
 
         #endregion Fields
         #region Свойства        
-        
+
         public List<ExchangeContract> dataList { get; set; }
         public bool keyModeEnabled { get { return arm_id != 0; } }
         public string dFromExcel { get; set; }
@@ -320,7 +322,7 @@ namespace SpecialJobs.ViewModels
                 RaisePropertyChanged(() => focusedMode);
             }
         }
-     
+
         public ANTENNA AntennaE
         { get; set; }
         public ANTENNA AntennaH
@@ -546,8 +548,9 @@ namespace SpecialJobs.ViewModels
         {
             get
             {
-                if (selectedMode == null)
+                if (selectedMode == null || selectedMode.MODE_ID == 0) //
                     return 0;
+                //выполняется для не новых строк
                 return Functions.F_kGc(selectedMode.MODE_FT, Functions.GetUnitValue(Units, (int)selectedMode.MODE_FT_UNIT_ID));
             }
         }
@@ -857,7 +860,7 @@ namespace SpecialJobs.ViewModels
         public ObservableCollection<MODE> selectedItemsMode
         {
             get
-            {                
+            {
                 return _selectedItemsMode == null ? new ObservableCollection<MODE>() : _selectedItemsMode;
             }
             set
@@ -865,7 +868,7 @@ namespace SpecialJobs.ViewModels
                 _selectedItemsMode = value;
                 RaisePropertyChanged(() => selectedItemsMode);
             }
-         }
+        }
 
         private MODE _selectedMode;
         public MODE selectedMode
@@ -876,8 +879,20 @@ namespace SpecialJobs.ViewModels
             }
             set
             {
+                //если с этим режимом работает другой пользователь, выдаётся предупреждение
+                var temp = methodsEntities.CurrentUserTask.Where(p => p.CUT_USER_NAME != userName && p.CUT_MODE_ID == value.MODE_ID);
+                if (value != null && userName != null && temp.Any())
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var n in temp)
+                    {
+                        sb.Append(n.CUT_USER_NAME + "  ");
+                    }
+                    MessageBox.Show("С выбранным режимом уже работают пользователи: " + sb.ToString() + "." + Environment.NewLine + " Согласуйте с ними свои намерения.");
+                }
                 if (value == null && _selectedMode == null)
-                        return; //ничего не изменилось
+                    return; //ничего не изменилось
+
                 //обновление после пересоздания контекста
                 if (value != null && _selectedMode != null && value.MODE_ID == _selectedMode.MODE_ID)
                 {
@@ -885,16 +900,16 @@ namespace SpecialJobs.ViewModels
                     RaisePropertyChanged(() => selectedMode);
                     return; //ничего не изменилось
                 }
-               
+
                 //сохранение новой строки
                 _selectedMode = value;
                 RaisePropertyChanged(() => selectedMode);
 
                 if (value != null)
-                {   
+                {
                     if (refreshAfterConfig)
                         Results = new ObservableCollection<RESULT>(
-                               methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == _arm_id)); 
+                               methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == _arm_id));
                     filterResults = "RES_MODE_ID = " + value.MODE_ID.ToString();
                     if (Antennas != null && Antennas.Any())
                     {
@@ -918,18 +933,14 @@ namespace SpecialJobs.ViewModels
                     AntennaE = null;
                     AntennaH = null;
                 }
-                //if (_selectedMode != null && (Results == null || Results != null && !Results.Where(p => p.RES_MODE_ID == _selectedMode.MODE_ID).Any() && _selectedMode.MODE_R2 != 0)) //нет результата
-                //{
-                //    _selectedMode.MODE_R2 = 0;
-                //    RefreshGcModes?.Invoke();
-                //}
+
                 RaisePropertyChanged(() => gcMeasuringEnabled);
                 RaisePropertyChanged(() => gcMeasuringSAZEnabled);
                 RaisePropertyChanged(() => modeKN);
                 RaisePropertyChanged(() => buttonCsvEnabled);
 
                 if (!String.IsNullOrEmpty(userName))
-                    dbSaveSelectedParameter();                
+                    dbSaveSelectedParameter();
             }
         }
         private ANALYSIS _analysis_one;
@@ -1002,21 +1013,7 @@ namespace SpecialJobs.ViewModels
                 RaisePropertyChanged(() => cbeTTEnabled);
                 RaisePropertyChanged(() => cbeSVTEnabled);
                 RaisePropertyChanged(() => cbeArmParamEnabled);
-                //if (value == null)
-                //    selectedMode = null;
 
-
-                //if (value != null)
-                //{
-                //    var temp = methodsEntities.MODE.Where(p => p.MODE_ARM_ID == _arm_one.ARM_ID).Select(p => p.MODE_ID);
-                //    var temp1 = methodsEntities.RESULT;
-                //    Results = new ObservableCollection<RESULT>(
-                //               methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == _arm_one.ARM_ID)); // p.RES_MODE_ID == selectedMode.MODE_ID));
-                //                                                                                          //filterResults = "RES_MODE_ID = " + selectedMode.MODE_ID.ToString();
-                //                                                                                          // RefreshGcResultsScen?.Invoke();
-                //}
-                //else
-                //    selectedMode = null;
             }
         }
         private int _org_id;
@@ -1032,7 +1029,7 @@ namespace SpecialJobs.ViewModels
                 if (value == 0 || !methodsEntities.ORGANIZATION.Where(p => p.ORG_ID == value).Any())
                     return;
 
-                    //Все исследования одной работы (с разными счетами)     
+                //Все исследования одной работы (с разными счетами)     
                 if (refreshAfterConfig && Properties.Settings.Default.anlId != 0 && !String.IsNullOrEmpty(Properties.Settings.Default.Invoice)
                     && methodsEntities.ANALYSIS.Where(p => p.ANL_ID == Properties.Settings.Default.anlId).Any())
                     RefreshAnalysis(Properties.Settings.Default.Invoice);
@@ -1227,7 +1224,7 @@ namespace SpecialJobs.ViewModels
                 _esmsWithSAZ = value;
                 RaisePropertyChanged(() => esmsWithSAZ);
             }
-        }     
+        }
 
         private List<MEASURING_DATA> _Measurings;
         public List<MEASURING_DATA> Measurings
@@ -1239,7 +1236,7 @@ namespace SpecialJobs.ViewModels
                 RaisePropertyChanged(() => Measurings);
                 RaisePropertyChanged(() => buttonCalculateEnabled);
 
-               
+
             }
         }
 
@@ -1286,14 +1283,6 @@ namespace SpecialJobs.ViewModels
         {
             get
             {
-                //if (selectedMode == null)
-                //    _Results = null;
-                //else
-                //{
-                //    return _Results;
-
-                //}
-
                 return _Results;
             }
             set
@@ -1339,7 +1328,7 @@ namespace SpecialJobs.ViewModels
                             break;
                     }
                 }
-                RaisePropertyChanged(() => Results);             
+                RaisePropertyChanged(() => Results);
             }
         }
 
@@ -1360,7 +1349,7 @@ namespace SpecialJobs.ViewModels
         private double _EcnValue;
         public double EcnValue
         {
-            get{ return _EcnValue;  }
+            get { return _EcnValue; }
             set
             {
                 _EcnValue = value;
@@ -1507,12 +1496,15 @@ namespace SpecialJobs.ViewModels
                 IncludeSAZ = true;
                 dtPrev = DateTime.Now.AddMilliseconds(-1000);
 
-                methodsEntities = new MethodsEntities();                
+                methodsEntities = new MethodsEntities();
                 DXGridDataController.DisableThreadingProblemsDetection = true;//Обнаружение проблем с поточностью отключено, по умолчанию
                 methodsEntities.Configuration.AutoDetectChangesEnabled = true; //по умолчанию 
                 methodsEntities.Configuration.ValidateOnSaveEnabled = false;
+                var processes = Process.GetProcessesByName("SpecialJobsNew");
                 //Удаление неактуальных строк текущего состояния
-                if (methodsEntities.CurrentUserTask.Any() && DialogResult.Yes == MessageBox.Show("Обнаружены строки актуальных пользователей БД, подтвердите их удаление, если вы единственный пользователь задачи в настоящее время?", "", MessageBoxButtons.YesNo))
+                if (methodsEntities.CurrentUserTask.Any() && processes.Length == 1) //нет загруженных задач, очищаем строки актуальных пользователей в базе
+
+                // && DialogResult.Yes == MessageBox.Show("Обнаружены строки актуальных пользователей БД, подтвердите их удаление, если вы единственный пользователь задачи в настоящее время?", "", MessageBoxButtons.YesNo))
 
                 {
                     methodsEntities.CurrentUserTask.RemoveRange(methodsEntities.CurrentUserTask);
@@ -1534,6 +1526,22 @@ namespace SpecialJobs.ViewModels
 
                 Producers = (new ObservableCollection<PRODUCER>(methodsEntities.PRODUCER.OrderBy(p => p.PROD_NAME)));
                 Organizations = new ObservableCollection<ORGANIZATION>(methodsEntities.ORGANIZATION.OrderBy(p => p.ORG_NAME));
+                userName = GetUserName(); //имя пользователя в строке подключения к БД   
+                //проверим, не повторный ли запуск задачи от имени этого пользователя
+                var t = methodsEntities.CurrentUserTask.Where(p => p.CUT_USER_NAME == userName).FirstOrDefault();
+                if (t != null && processes.Length > 1)
+                    if (MessageBox.Show("Уже есть выполняющаяся задача от пользователь с именем " + userName + "." + Environment.NewLine +
+                                   "Действительно ли такой пользователь реально работает?", "", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    {
+                        methodsEntities.CurrentUserTask.Remove(methodsEntities.CurrentUserTask.Where(p => p.CUT_USER_NAME == userName).FirstOrDefault());
+                        SaveData(null);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Измените имя пользователя в конфигурационном файле и перезапустите задачу.");
+                        Error = true;
+                        return;
+                    }
                 //восстановление последнего(перед закрытием задачи) состояния
                 refreshAfterConfig = true;
                 try
@@ -1563,14 +1571,30 @@ namespace SpecialJobs.ViewModels
                     methodsEntities.TableUpdated.RemoveRange(temp);
                     SaveData(null);
                 }
-                userName = GetUserName(); //имя пользователя в строке подключения к БД   
+                //userName = GetUserName(); //имя пользователя в строке подключения к БД   
+                ////проверим, не повторный ли запуск задачи от имени этого пользователя
+                //var t = methodsEntities.CurrentUserTask.Where(p => p.CUT_USER_NAME == userName).FirstOrDefault();
+                //if (t != null && processes.Length > 1)
+                //     if (MessageBox.Show("Уже есть выполняющаяся задача от пользователь с именем " + userName + "." + Environment.NewLine +
+                //                    "Действительно ли такой пользователь реально работает?","",MessageBoxButtons.YesNo) != DialogResult.Yes)
+                //{
+                //    methodsEntities.CurrentUserTask.Remove(methodsEntities.CurrentUserTask.Where(p => p.CUT_USER_NAME == userName).FirstOrDefault());
+                //    SaveData(null);
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Измените имя пользователя в конфигурационном файле и перезапустите задачу.");
+                //    Error = true;
+                //    return;
+                //}
+
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.InnerException.Message);
                 Error = true;
                 return;
-            }            
+            }
             //фиксация в БД восстановленного состояния
             dbSaveSelectedParameter();
             #region background
@@ -1630,7 +1654,7 @@ namespace SpecialJobs.ViewModels
             backgroundWorkerCalculate = new System.ComponentModel.BackgroundWorker()
             {
                 WorkerReportsProgress = true,
-            WorkerSupportsCancellation = true
+                WorkerSupportsCancellation = true
             };
             backgroundWorkerCalculate.DoWork += BackgroundWorkerCalculate_DoWork;
             backgroundWorkerCalculate.RunWorkerCompleted += bgWorkerCalculate_RunWorkerCompleted;
@@ -1822,7 +1846,7 @@ namespace SpecialJobs.ViewModels
         }
         //асинхронное удаление измерений по виду  и типу ПЭМИ
         public void BackgroundWorkerDelete_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {            
+        {
             string mdaType;
             if (String.IsNullOrEmpty(MeasuringType))
             {
@@ -1830,12 +1854,12 @@ namespace SpecialJobs.ViewModels
                 return;
             }
             else
-                mdaType = (MeasuringType == "E" || MeasuringType == "H") ? MeasuringType :  MeasuringType.Contains("Э") ? "E" : "H";
+                mdaType = (MeasuringType == "E" || MeasuringType == "H") ? MeasuringType : MeasuringType.Contains("Э") ? "E" : "H";
             Value = "Идёт удаление предыдущих значений ";
             IQueryable<MEASURING_DATA> temp;
             bool prev = methodsEntities.Configuration.AutoDetectChangesEnabled;
             methodsEntities.Configuration.AutoDetectChangesEnabled = true;
-            
+
             //switch (Tag)
             switch (mdaType)
             {
@@ -2001,7 +2025,7 @@ namespace SpecialJobs.ViewModels
             if (selectedMode == null)  //при удалении вновь созданного режима
                 return;
             Value = "Идёт удаление данных измерений";
-           // IQueryable<MEASURING_DATA> temp;
+            // IQueryable<MEASURING_DATA> temp;
             prev = methodsEntities.Configuration.AutoDetectChangesEnabled;
             methodsEntities.Configuration.AutoDetectChangesEnabled = true;
             try
@@ -2022,10 +2046,10 @@ namespace SpecialJobs.ViewModels
             }
             catch (Exception ee)
             {
-                 MessageBox.Show("Ошибка удаления данных измерений E из БД. " + ee.Message);
+                MessageBox.Show("Ошибка удаления данных измерений E из БД. " + ee.Message);
             }
 
-           // methodsEntities.Configuration.AutoDetectChangesEnabled = prev; //перенесём в _Completed
+            // methodsEntities.Configuration.AutoDetectChangesEnabled = prev; //перенесём в _Completed
             Value = "Удаление данных измерений завершено";
         }
 
@@ -2034,15 +2058,15 @@ namespace SpecialJobs.ViewModels
         {
             keyCalculate = false;
             //обновление Modes
-           // RefreshModes(selectedMode.MODE_ID);
+            // RefreshModes(selectedMode.MODE_ID);
             foreach (MODE mode in Modes)
-            {               
-               
+            {
+
                 if (mode.RESULT != null && mode.RESULT.Any() || mode.MEASURING_DATA != null && !mode.MEASURING_DATA.Any() || mode.MODE_FT == 0)
                     continue; //выполняем расчёт только для нерассчитанных режимов
                 //чистый расчёт
                 Value = "Выполняется расчёт режима - '" + mode.MODE_TYPE.MT_NAME + "'";
-                CalculateMode(mode, true);                
+                CalculateMode(mode, true);
             }
 
         }
@@ -2073,7 +2097,7 @@ namespace SpecialJobs.ViewModels
         {
             keyCalculate = false;
             Value = "Выполняется расчёт режима - '" + selectedMode.MODE_TYPE.MT_NAME + "'";
-                
+
             CalculateMode(selectedMode, true); //только чистый расчёт
 
         }
@@ -2234,13 +2258,13 @@ namespace SpecialJobs.ViewModels
                 Calculate_UFn(md);
                 RefreshUF(md);
             }
-           // RefreshI(selectedMode);
+            // RefreshI(selectedMode);
         }
         //ген-ся значвения наводок на частотах измерений ПЭМИ
         public void BackgroundWorkerU0_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             keyCalculate = false;
-            int count = Measurings.Count();            
+            int count = Measurings.Count();
             var rnd = new Random();
             //заполнение массива случайными данными
             foreach (var md in selectedMode.MEASURING_DATA)
@@ -2260,13 +2284,13 @@ namespace SpecialJobs.ViewModels
         }
         //вставка автоизмерений
         public void BackgroundWorkerAuto_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {           
+        {
             keyCalculate = false;
             Experiment Exp;
             Value = "Чтение данных из файла.";
             try
             {
-                Exp = Experiment.LoadFromFile(fileForCopyName);                
+                Exp = Experiment.LoadFromFile(fileForCopyName);
 
             }
             catch (Exception ee)
@@ -2367,7 +2391,7 @@ namespace SpecialJobs.ViewModels
             }
             MEASURING_DATA md = new MEASURING_DATA();
             Value = "Вставка в БД данных измерений";
-            
+
             int fUnitID = methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц") != null
                         ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц").FirstOrDefault().UNIT_ID
                         : 0;
@@ -2375,7 +2399,7 @@ namespace SpecialJobs.ViewModels
                         ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц").FirstOrDefault().UNIT_ID
                         : 0;
             List<MEASURING_DATA> coll = new List<MEASURING_DATA>();
-            for (int i=0; i< data.Frequencys.Count; i++)
+            for (int i = 0; i < data.Frequencys.Count; i++)
             {
                 if (data.Frequencys[i] == 0)
                     continue;
@@ -2401,7 +2425,7 @@ namespace SpecialJobs.ViewModels
                 md.MDA_EN_VALUE_IZM = noise;
                 RefreshKa(md);
                 Calculate_Ecn(md);
-                Calculate_En(md);                    
+                Calculate_En(md);
                 RefreshE(md);
                 coll.Add(md);
             }
@@ -2448,7 +2472,7 @@ namespace SpecialJobs.ViewModels
                     }
                     catch (Exception ee)
                     {
-                        MessageBox.Show("Ошибочные данные в строке " + arStr[0] + ". " + ee.Message) ;
+                        MessageBox.Show("Ошибочные данные в строке " + arStr[0] + ". " + ee.Message);
                         System.Windows.Clipboard.Clear();
                         return;
                     }
@@ -2495,9 +2519,9 @@ namespace SpecialJobs.ViewModels
                         MDA_ANGLE = 0,//Int32.Parse(!String.IsNullOrEmpty(angle) ? angle : "0"),
                         MDA_MODE_ID = selectedMode.MODE_ID,
                         MDA_F_UNIT_ID = methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц") != null
-                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц").FirstOrDefault().UNIT_ID: 0,
+                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц").FirstOrDefault().UNIT_ID : 0,
                         MDA_RBW_UNIT_ID = methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц") != null
-                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц").FirstOrDefault().UNIT_ID: 0,
+                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц").FirstOrDefault().UNIT_ID : 0,
                         MDA_TYPE = MeasuringType.Contains("Элек") ? "E" : "H"
                     };
                     MakeRBW(md);
@@ -2624,12 +2648,12 @@ namespace SpecialJobs.ViewModels
                         MDA_F_END = f_end,
                         MDA_MODE_ID = selectedMode.MODE_ID,
                         MDA_F_UNIT_ID = methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц") != null
-                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц").FirstOrDefault().UNIT_ID: 0,
+                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "мГц").FirstOrDefault().UNIT_ID : 0,
                         MDA_RBW_UNIT_ID = methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц") != null
-                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц").FirstOrDefault().UNIT_ID: 0,
+                            ? methodsEntities.UNIT.Where(p => p.UNIT_VALUE == "кГц").FirstOrDefault().UNIT_ID : 0,
                         MDA_TYPE = MeasuringType.Contains("Элек") ? "E" : "H"
                     };
-                        coll.Add(md);
+                    coll.Add(md);
                     if (Tag == "E")
                     {
                         md.MDA_ECN_VALUE_IZM = Ucn_SP;
@@ -2650,7 +2674,7 @@ namespace SpecialJobs.ViewModels
                     MakeRBW(md);
 
                     if (paramTAU != 0)        //добавлено, нужно?
-                        RefreshI(md, paramTAU); 
+                        RefreshI(md, paramTAU);
 
                     RefreshKa(md);
                     Calculate_Ecn(md);
@@ -2662,14 +2686,14 @@ namespace SpecialJobs.ViewModels
             Value = "Подготовлено для сохраниения " + coll.Count().ToString() + " строк. Идёт сохранение";
             try
             {
-                    Update.CopyAndMerge(coll);
+                Update.CopyAndMerge(coll);
                 Value = "Сохранение завершено";
             }
             catch (Exception eM)
             {
                 MessageBox.Show("Ошибка сохранения данных. " + eM.Message);
             }
-        }    
+        }
         public void BackgroundWorkerGenerateSAZ_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             keyCalculate = false;
@@ -2678,9 +2702,9 @@ namespace SpecialJobs.ViewModels
                 Value = "Выполняется генерация данных САЗ для режима - '" + mode.MODE_TYPE.MT_NAME + "'";
                 GenerateSAZ(mode, true);
             }
-            
+
         }
-   
+
         public void BackgroundWorkerClearSAZ_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             keyCalculate = false;
@@ -2711,7 +2735,7 @@ namespace SpecialJobs.ViewModels
             //модифицируем С+Ш и Ш в ДБ и МкВ  для всех строк            
             if (selectedIValues == null || selectedIValues.Count == 0)
             {
-                methodsEntities.MEASURING_DATA.Where(p=>p.MDA_MODE_ID == selectedMode.MODE_ID). 
+                methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID).
                        Update(p => new MEASURING_DATA()
                        {
                            MDA_E = 0,
@@ -2719,7 +2743,7 @@ namespace SpecialJobs.ViewModels
                            MDA_EN_VALUE_IZM = p.MDA_EN_VALUE_IZM + EnValue,
                            MDA_ECN_VALUE_IZM_DB = p.MDA_ECN_VALUE_IZM + EcnValue + p.MDA_KA,
                            MDA_EN_VALUE_IZM_DB = p.MDA_EN_VALUE_IZM + EnValue + p.MDA_KA,
-                           MDA_ECN_VALUE_IZM_MKV = Math.Round(Math.Pow(10, 0.05 * (p.MDA_ECN_VALUE_IZM + EcnValue + p.MDA_KA))/ Math.Pow(p.MDA_RBW, 1 / 2f), 3),                           
+                           MDA_ECN_VALUE_IZM_MKV = Math.Round(Math.Pow(10, 0.05 * (p.MDA_ECN_VALUE_IZM + EcnValue + p.MDA_KA)) / Math.Pow(p.MDA_RBW, 1 / 2f), 3),
                            MDA_EN_VALUE_IZM_MKV = Math.Round(Math.Pow(10, 0.05 * (p.MDA_EN_VALUE_IZM + EnValue + p.MDA_KA)) / Math.Pow(p.MDA_RBW, 1 / 2f), 3)
                        });
             }
@@ -2765,7 +2789,7 @@ namespace SpecialJobs.ViewModels
             {
                 foreach (var i in selectedIValues)
                 {
-                    methodsEntities.MEASURING_DATA.Where(p =>p.MDA_MODE_ID == selectedMode.MODE_ID && p.MDA_I == (int)i && (p.MDA_ECN_VALUE_IZM - p.MDA_EN_VALUE_IZM) > contr).
+                    methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID && p.MDA_I == (int)i && (p.MDA_ECN_VALUE_IZM - p.MDA_EN_VALUE_IZM) > contr).
                   Update(p => new MEASURING_DATA()
                   {
                       MDA_E = Math.Round(
@@ -2811,26 +2835,26 @@ namespace SpecialJobs.ViewModels
         public void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (dataList != null && dataList.Any() && dataList.Where(p => p.ID == selectedMode.MODE_ID).FirstOrDefault() != null)
-            try
-            {
-                if (dataList.Count == 1 && selectedMode != null && selectedMode.MODE_R2 != 0)
-                    client.SendR2(selectedMode.MODE_ID, selectedMode.MODE_R2);
+                try
+                {
+                    if (dataList.Count == 1 && selectedMode != null && selectedMode.MODE_R2 != 0)
+                        client.SendR2(selectedMode.MODE_ID, selectedMode.MODE_R2);
 
                     //удаляем обработанные данные из очереди
                     dataList.RemoveAll(p => p.ID == selectedMode.MODE_ID);
-                //список не обработанных ID
-                var idList = dataList.Select(p => p.ID).Distinct();
-                if (idList.Count() != 0)
+                    //список не обработанных ID
+                    var idList = dataList.Select(p => p.ID).Distinct();
+                    if (idList.Count() != 0)
+                    {
+                        PrepareDataFromClient(dataList.Where(p => p.ID == idList.FirstOrDefault()).FirstOrDefault() as ExchangeContract);
+                        return;
+                    }
+                }
+                catch (Exception ee)
                 {
-                    PrepareDataFromClient(dataList.Where(p => p.ID == idList.FirstOrDefault()).FirstOrDefault() as ExchangeContract);
-                    return;
-                }           
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("Ошибка обновления интерфейса " + ee.Message);
-                (sender as BackgroundWorker).CancelAsync();
-            }
+                    MessageBox.Show("Ошибка обновления интерфейса " + ee.Message);
+                    (sender as BackgroundWorker).CancelAsync();
+                }
             methodsEntities.Configuration.AutoDetectChangesEnabled = true;
             //расчёт I выполняется при заполнении строк, иначе очень медленно
             Value = "Обновление интерфейса";
@@ -2848,7 +2872,7 @@ namespace SpecialJobs.ViewModels
             Results = new ObservableCollection<RESULT>(methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_one.ARM_ID));
             //обновим таблицы
             RefreshGcResults?.Invoke();
-            
+
             keyInsert = String.Empty;
             Clipboard.Clear();
             //запускаем обработчик таймера, который сотрёт через 5 сек. запись
@@ -2904,7 +2928,7 @@ namespace SpecialJobs.ViewModels
                 //пересоздадим контекст
                 NewDBContext();
                 ModeResultClear(selectedMode, false);//очистка результатов рассчёта с сохранением в БД
-               // SaveData(null); //сохранено в пред строке
+                                                     // SaveData(null); //сохранено в пред строке
                 MeasuringsRefresh();
                 keyCalculate = true;
                 RefreshGcResults?.Invoke();
@@ -2916,7 +2940,7 @@ namespace SpecialJobs.ViewModels
         }
         public void bgWorkerE_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-           
+
 
             if (e.Error != null)
             {
@@ -2948,7 +2972,7 @@ namespace SpecialJobs.ViewModels
 
             if (e.Error != null)
             {
-                MessageBox.Show( "Ошибка модификации сигналов " + e.Error.Message);
+                MessageBox.Show("Ошибка модификации сигналов " + e.Error.Message);
             }
             else
                 backgroundWorkerRecalc2.RunWorkerAsync();
@@ -2990,7 +3014,7 @@ namespace SpecialJobs.ViewModels
 
         public void bgWorkerDelete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            
+
             if (e.Error != null)
             {
                 Value = "Ошибка удаления. " + e.Error.Message;
@@ -3021,7 +3045,7 @@ namespace SpecialJobs.ViewModels
                 RefreshGcModes?.Invoke();
             }
             RefreshGcE?.Invoke();
-            RefreshGcCollection?.Invoke();           
+            RefreshGcCollection?.Invoke();
             //удаление результатов рассчёта
             if (selectedMode.RESULT != null && selectedMode.RESULT.Any())
                 ModeResultClear(selectedMode, false);
@@ -3059,7 +3083,7 @@ namespace SpecialJobs.ViewModels
             aTimer.AutoReset = true;
             aTimer.Enabled = true;
 
-            keyCalculate = true;         
+            keyCalculate = true;
         }
         public void bgWorkerCalculate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -3068,7 +3092,7 @@ namespace SpecialJobs.ViewModels
             else
             {
                 Value = "Расчёт выполнен";
-                
+
             }
             //запускаем обработчик таймера, который сотрёт сообщение через 5 сек. запись
             aTimer.AutoReset = true;
@@ -3098,7 +3122,7 @@ namespace SpecialJobs.ViewModels
 #pragma warning restore CS0618 // Type or member is obsolete
             }
         }
-       
+
 
         private bool canRandomData(Object o)
         {
@@ -3134,7 +3158,7 @@ namespace SpecialJobs.ViewModels
         private void GetDataAfterMeasuringAuto(object o)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-                         pathData = Properties.Settings.Default.pathData;
+            pathData = Properties.Settings.Default.pathData;
             if (!String.IsNullOrEmpty(pathData))
                 ofd.InitialDirectory = pathData;
             else
@@ -3192,7 +3216,7 @@ namespace SpecialJobs.ViewModels
         }
         private void MeasuringsUtilite(Object o)
         {
-            
+
             //buttonAutoMeasuring?.Invoke(); //заполнение коллекции выбранных режимов
             if (!selectedItemsMode.Any())
             {
@@ -3274,14 +3298,35 @@ namespace SpecialJobs.ViewModels
                     return;
                 }
                 client.IncomingExchangeContract += PrepareDataFromClient;
-                //пересылаем ID и название режима по одному из выбранных
+            }
+            //пересылаем ID и название режима по одному из выбранных
+            //каждый выбранный режим фиксируем в БД (чтобы с ним не могли работать другие пользователи)
+            //предварительно удалив из БД строки предыдущего выбора
+            var selectedModes = methodsEntities.CurrentUserTask.Where(p => p.CUT_USER_NAME == userName);
+            if (selectedModes != null)
+            {
+                methodsEntities.CurrentUserTask.RemoveRange(selectedModes);
+                SaveData(null);
             }
             try
             {
                 foreach (MODE row in selectedItemsMode)
                 {
                     client.SendExchangeContract(new ExchangeContract() { ID = row.MODE_ID, Description = row.MODE_TYPE.MT_NAME });
+                    //фиксируем переданный на измерение режим в БД
+                    methodsEntities.CurrentUserTask.Add(new CurrentUserTask()
+                    {
+                        CUT_USER_NAME = userName + "meas",
+                        CUT_ARM_ID = arm_id,
+                        CUT_AT_ID = at_id,
+                        CUT_ANL_ID = anl_id,
+                        CUT_ORG_ID = org_id,
+                        CUT_MODE_ID = row.MODE_ID
+                    });
+                    //if (!methodsEntities.Configuration.AutoDetectChangesEnabled)
+                    //    methodsEntities.Entry(t).State = EntityState.Added;                               
                 }
+                SaveData(null);
             }
             catch (Exception e) //пересоздание клиента
             {
@@ -3355,7 +3400,7 @@ namespace SpecialJobs.ViewModels
                 dataList = new List<ExchangeContract>();
                 dataList.Add(data);
             }
-            if (!dataList.Where(p=>p.ID == data.ID).Any()) //ф-я вызвана не из очереди
+            if (!dataList.Where(p => p.ID == data.ID).Any()) //ф-я вызвана не из очереди
                 dataList.Add(data);
             if (backgroundWorkerDelete.IsBusy || backgroundWorkerUtilite.IsBusy)
             {
@@ -3401,7 +3446,7 @@ namespace SpecialJobs.ViewModels
             //switch ((string)data.Type)
             //{
             //    case "E":
-           keyCurrentMeasurings = Measurings.Where(p => (p.MDA_ECN_VALUE_IZM != 0 || p.MDA_EN_VALUE_IZM != 0) && p.MDA_TYPE == (string)data.Type).Any();
+            keyCurrentMeasurings = Measurings.Where(p => (p.MDA_ECN_VALUE_IZM != 0 || p.MDA_EN_VALUE_IZM != 0) && p.MDA_TYPE == (string)data.Type).Any();
             //  break;
             //case "UF":
             //    keyCurrentMeasurings = Measurings.Where(p => p.MDA_UFCN_VALUE_IZM != 0 || p.MDA_UFN_VALUE_IZM != 0).Any();
@@ -3452,7 +3497,7 @@ namespace SpecialJobs.ViewModels
                     currentMeasurings = Measurings.Where(p => p.MDA_UFCN_VALUE_IZM != 0 || p.MDA_UFN_VALUE_IZM != 0).ToList<MEASURING_DATA>();
                     break;
                 case "U0":
-                    currentMeasurings = Measurings.Where(p => p.MDA_U0CN_VALUE_IZM != 0 || p.MDA_U0N_VALUE_IZM != 0).ToList<MEASURING_DATA>(); 
+                    currentMeasurings = Measurings.Where(p => p.MDA_U0CN_VALUE_IZM != 0 || p.MDA_U0N_VALUE_IZM != 0).ToList<MEASURING_DATA>();
                     break;
                 case "Saz":
                     currentMeasurings = Measurings.Where(p => p.MDA_ES_VALUE_IZM == 0).ToList<MEASURING_DATA>();
@@ -3462,7 +3507,7 @@ namespace SpecialJobs.ViewModels
             if (currentMeasurings.Any() && !AppendMode && Tag == "E") //удаляются данные только измерений ПЭМИ. Наводки формируются на частотах ПЭМИ
             {
                 try
-                {                    
+                {
                     backgroundWorkerDelete.RunWorkerAsync();
                 }
                 catch (Exception e)
@@ -3470,7 +3515,7 @@ namespace SpecialJobs.ViewModels
                     MessageBox.Show("Ошибка удаления предыдущих измерений." + e.Message);
                     return;
                 }
-            }  
+            }
             else
                 switch (Tag)
                 {
@@ -3483,7 +3528,7 @@ namespace SpecialJobs.ViewModels
                     case "U0":
                         backgroundWorkerU0.RunWorkerAsync();
                         break;
-            }
+                }
         }
         private void AddRandomData(List<MEASURING_DATA> coll, double fCurrent, double fMax, double step, int angle, int UMinEn, int UMaxEn, int UMinn, int UMaxn)
         {
@@ -3579,7 +3624,7 @@ namespace SpecialJobs.ViewModels
             }
         }
         public void contrEChanged(bool contrE)
-        {            
+        {
             ContraintE = contrE;
             if (selectedMode != null)
                 selectedMode.MODE_CONTR_E = contrE;
@@ -3606,12 +3651,12 @@ namespace SpecialJobs.ViewModels
                 if (methodsEntities.ORGANIZATION != null && methodsEntities.ORGANIZATION.Count() != 0 &&
                     methodsEntities.ORGANIZATION.Where(p => p.ORG_ID == Properties.Settings.Default.orgId).Any())
                     org_id = Properties.Settings.Default.orgId;
-            
+
             //остальное восстановится по цепочке
         }
         //сохранение настроек при закрытии формы
         public void WriteConfig()
-        {            
+        {
             Properties.Settings.Default.orgId = org_id;
             Properties.Settings.Default.anlId = anl_id;
             Properties.Settings.Default.atId = at_id;
@@ -3635,11 +3680,11 @@ namespace SpecialJobs.ViewModels
                 try
                 {
                     var temp = methodsEntities.TableUpdated.Where(p => p.DateTimeUpdate > dtPrev && p.UserName != userName).
-                        GroupBy(s => s.TableName, (k, g)=>g.Select(s => new
+                        GroupBy(s => s.TableName, (k, g) => g.Select(s => new
                         {
                             TableName = s.TableName,
-                            maxData = g.Max(t=>t.DateTimeUpdate)
-                        })).SelectMany(a=>a).ToList();                                                       
+                            maxData = g.Max(t => t.DateTimeUpdate)
+                        })).SelectMany(a => a).ToList();
                     if (temp != null && temp.Count() != 0)
                     {
                         refreshAfterReload = true; // для того, чтобы сохранять выбор в таблицах при синхронизации локальной БД
@@ -3664,7 +3709,10 @@ namespace SpecialJobs.ViewModels
                                     break;
                                 case "MODE":
                                     if (selectedMode != null)
+                                    {
+                                        methodsEntities.Entry<MODE>(selectedMode).Reload(); //принудительная перезагрузка изменённой строки режима
                                         RefreshModes(selectedMode.MODE_ID);
+                                    }
                                     break;
                                 case "MODE_TYPE":
                                     ModeTypes = new ObservableCollection<MODE_TYPE>(methodsEntities.MODE_TYPE.OrderBy(p => p.MT_NAME));
@@ -3697,7 +3745,7 @@ namespace SpecialJobs.ViewModels
                                     RaisePropertyChanged(() => Devices);
                                     break;
                                 case "MEASURING_DEVICE_TYPE":
-                                     Devices = new ObservableCollection<MEASURING_DEVICE>(methodsEntities.MEASURING_DEVICE.Where(p => p.MD_IS_HELPER != "да" || p.MD_IS_HELPER == null).OrderBy(p => p.MEASURING_DEVICE_TYPE.MDT_NAME));
+                                    Devices = new ObservableCollection<MEASURING_DEVICE>(methodsEntities.MEASURING_DEVICE.Where(p => p.MD_IS_HELPER != "да" || p.MD_IS_HELPER == null).OrderBy(p => p.MEASURING_DEVICE_TYPE.MDT_NAME));
                                     RaisePropertyChanged(() => Devices);
                                     break;
                             }
@@ -3707,7 +3755,7 @@ namespace SpecialJobs.ViewModels
                     }
                     Thread.Sleep(2000);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 { Thread.Sleep(2000); }
             }
 
@@ -3780,7 +3828,7 @@ namespace SpecialJobs.ViewModels
             //удалим результаты предыдущего расчёта в режиме
             ModeResultClear(selectedMode, false);
             //сохранено в пред строке
-           // SaveData(null);
+            // SaveData(null);
             //обновим таблицы и активность кнопки
             RaisePropertyChanged(() => buttonCalculateEnabled);
             switch (Tag)
@@ -3844,10 +3892,10 @@ namespace SpecialJobs.ViewModels
             }
             else
                 PasteFromExcel_Insert();
-            
+
         }
 
-       private void PasteFromExcel_Insert()
+        private void PasteFromExcel_Insert()
         {
             dFromExcel = Clipboard.GetText();
             if (String.IsNullOrEmpty(dFromExcel))
@@ -3857,7 +3905,7 @@ namespace SpecialJobs.ViewModels
             }
             backgroundWorkerExcel.RunWorkerAsync();
         }
-      
+
 
         void MakeEQ()
         {
@@ -3919,7 +3967,7 @@ namespace SpecialJobs.ViewModels
                 AllIP.Add(new IP()
                 {
                     NPP = npp.ToString() + ".",
-                    Type =  mda.MEASURING_DEVICE.MEASURING_DEVICE_TYPE != null &&
+                    Type = mda.MEASURING_DEVICE.MEASURING_DEVICE_TYPE != null &&
                             mda.MEASURING_DEVICE.MEASURING_DEVICE_TYPE.MDT_NAME != null
                                           ? mda.MEASURING_DEVICE.MEASURING_DEVICE_TYPE.MDT_NAME
                                           : String.Empty,
@@ -3974,7 +4022,7 @@ namespace SpecialJobs.ViewModels
                     WorkNumber = mda.MEASURING_DEVICE.MD_WORKNUMBER ?? String.Empty,
                     Date = mda.MEASURING_DEVICE.MD_DATE != null
                                           ? ((DateTime)mda.MEASURING_DEVICE.MD_DATE).ToShortDateString()
-                                          : (countAll == 1 ? "begin-end" : (AllIPHelper.Count == 0 ? "begin" : (AllIPHelper.Count == countAll - 1 && AllIPHelper.Count > 0 ? "end" :"")))
+                                          : (countAll == 1 ? "begin-end" : (AllIPHelper.Count == 0 ? "begin" : (AllIPHelper.Count == countAll - 1 && AllIPHelper.Count > 0 ? "end" : "")))
                 });
             }
         }
@@ -4024,8 +4072,8 @@ namespace SpecialJobs.ViewModels
         {
 
             if (selectedMode != null)
-            {                
-                Measurings = methodsEntities.MEASURING_DATA.Where(p=>p.MDA_MODE_ID == selectedMode.MODE_ID).ToList<MEASURING_DATA>();
+            {
+                Measurings = methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID).ToList<MEASURING_DATA>();
             }
             else
                 Measurings = null;
@@ -4077,26 +4125,28 @@ namespace SpecialJobs.ViewModels
             try
             {
                 if (ContraintE && isSolid || !isSolid)
-                methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID
-                                                          && p.MDA_ECN_VALUE_IZM_DB > p.MDA_EN_VALUE_IZM_DB
-                                                          && (p.MDA_ECN_VALUE_IZM_DB - p.MDA_EN_VALUE_IZM_DB) <= 3).
-                    Update(p => new MEASURING_DATA() { MDA_E = 0 });
+                    methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID
+                                                              && p.MDA_ECN_VALUE_IZM_DB > p.MDA_EN_VALUE_IZM_DB
+                                                              && (p.MDA_ECN_VALUE_IZM_DB - p.MDA_EN_VALUE_IZM_DB) <= 3).
+                        Update(p => new MEASURING_DATA() { MDA_E = 0 });
                 else
                     methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID
                                                           && p.MDA_ECN_VALUE_IZM_DB > p.MDA_EN_VALUE_IZM_DB
                                                           && (p.MDA_ECN_VALUE_IZM_DB - p.MDA_EN_VALUE_IZM_DB) <= 3).
-                        Update(p => new MEASURING_DATA() { MDA_E = Math.Round(
+                        Update(p => new MEASURING_DATA()
+                        {
+                            MDA_E = Math.Round(
                         Math.Pow(
-                            Math.Pow((double) p.MDA_ECN_VALUE_IZM_MKV, 2) -
-                            Math.Pow((double) p.MDA_EN_VALUE_IZM_MKV, 2),
+                            Math.Pow((double)p.MDA_ECN_VALUE_IZM_MKV, 2) -
+                            Math.Pow((double)p.MDA_EN_VALUE_IZM_MKV, 2),
                             1 / 2f), 3)
-                            
-            });
+
+                        });
                 MeasuringsRefresh();
-                ModeResultClear(selectedMode,false);
+                ModeResultClear(selectedMode, false);
             }
             catch { }
-            
+
         }
 
         //сигнал без шума - E  для одной строки
@@ -4204,7 +4254,7 @@ namespace SpecialJobs.ViewModels
             keyCalculate = false;
             backgroundWorkerI.RunWorkerAsync();
         }
-        
+
         //частотный интервал для строк измерений выбранного режима, исп-ся после изменения тактовой частоты Ft
         //без контроля количества попадания частот в один интервал
         public void RefreshI(MODE mode)
@@ -4227,7 +4277,7 @@ namespace SpecialJobs.ViewModels
             //calcI(rowsU0, "U0", mode_paramTAU, isSolid);
             //var rowsSAZ = methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID && p.MDA_E == 0 && p.MDA_UF == 0 && p.MDA_U0 == 0 && p.MDA_ES_VALUE_IZM_MKV != 0); //для SAZ
             //calcI(rowsSAZ, "SAZ", mode_paramTAU,isSolid);
-     
+
         }
         private void calcI(IEnumerable<MEASURING_DATA> rows, string type, double mode_paramTAU)
         {
@@ -4258,12 +4308,12 @@ namespace SpecialJobs.ViewModels
             {
                 md.MDA_I = 0;
             }
- 
+
             double mode_paramTAU = Functions.Tau_nsek(mode.MODE_TAU, Functions.GetUnitValue(Units, (int)mode.MODE_TAU_UNIT_ID));
             var rowsE = methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID && p.MDA_E != 0).ToList<MEASURING_DATA>(); //для E
             CalcIIWithContrains(rowsE, mode_paramTAU);
             SaveData(null); //нужно ли сохранение промежуточных рез-в? проверить...
-           
+
 
 
             //не нужно ничего обновлять, т.к. ф-я выполняется в составе расчёта ОЗ
@@ -4286,7 +4336,7 @@ namespace SpecialJobs.ViewModels
                 if (t > 2)
                 {
                     currentI = md.MDA_I;
-                    f_law = Math.Round(currentI * 1000 / mode_paramTAU,3); //мГц нижняя граница след. интервала, начнём изменять частоту  с неё
+                    f_law = Math.Round(currentI * 1000 / mode_paramTAU, 3); //мГц нижняя граница след. интервала, начнём изменять частоту  с неё
                     step = (Functions.GetUnitValue(Units, md.MDA_F_UNIT_ID) == "кГц" ? 100 : 0.1);
                     md.MDA_F = f_law;
                     while (true) //пока модифицированная частота не останется единственной в коллекции E
@@ -4759,9 +4809,9 @@ namespace SpecialJobs.ViewModels
             RaisePropertyChanged(() => Results);
             RefreshGcResults?.Invoke();
         }
-        
+
         //перерасчёт всех значений измерений после изменения выбора антенны
-        private void ITUpdate(MODE mode,string mdaType)
+        private void ITUpdate(MODE mode, string mdaType)
         {
             bool keySuspendParent = keySuspend; //состояние потока слежения на момент вызова ф-ии. True - поток приостановлен
             if (!keySuspendParent) //поток не остановлен, останоавливаем на время выполнения ф-ии,иначе ничего делать не надо
@@ -4772,8 +4822,8 @@ namespace SpecialJobs.ViewModels
                 keySuspend = true;
             }
             if (AntennaE == null && AntennaH == null || Measurings == null || !Measurings.Any())
-              //  if (selectedRow == null || Antenna == null || Measurings == null || !Measurings.Any())
-                    return;
+                //  if (selectedRow == null || Antenna == null || Measurings == null || !Measurings.Any())
+                return;
             var temp = methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID && p.MDA_TYPE == mdaType);
             if (temp == null || !temp.Any())
             {
@@ -4786,10 +4836,10 @@ namespace SpecialJobs.ViewModels
                 }
 
             }
-                
+
             foreach (MEASURING_DATA md in temp)
-            { 
-                RefreshKa(md);                
+            {
+                RefreshKa(md);
                 Calculate_All(md);
                 //изменение непосредственно в БД
                 //methodsEntities.MEASURING_DATA.Where(p => p.MDA_ID == md.MDA_ID).Update
@@ -4803,7 +4853,7 @@ namespace SpecialJobs.ViewModels
                 //        MDA_EN_VALUE_IZM_DB = md.MDA_EN_VALUE_IZM_DB,
                 //        MDA_E = md.MDA_E
                 //    });
-               // methodsEntities.MEASURING_DATA.Where(p => p.MDA_ID == md.MDA_ID).Update
+                // methodsEntities.MEASURING_DATA.Where(p => p.MDA_ID == md.MDA_ID).Update
                 //   (u => md);
             }
             SaveData(null);
@@ -5125,7 +5175,7 @@ namespace SpecialJobs.ViewModels
                 return;
             }
             MODE mode = row;
-            
+
 
             if (mode.MODE_ID == 0) //новая строка
             {
@@ -5207,7 +5257,7 @@ namespace SpecialJobs.ViewModels
             //methodsEntities.SaveChanges();
             SaveData(null);      //зависает      
             if (selectedMode == null)//добавлена новая строка            
-                RefreshModes(mode.MODE_ID);                            
+                RefreshModes(mode.MODE_ID);
             RaisePropertyChanged(() => paramFT);
             RaisePropertyChanged(() => paramTAU);
             //поменялся признак ограничения сигнала, надо сигналы пересчитать
@@ -5282,7 +5332,7 @@ namespace SpecialJobs.ViewModels
             MEASURING_DATA md = row;
             if (md.MDA_MODE_ID == 0) //новая строка
             {
-               // IRemake = false; //для новой строки просто вычисляем I
+                // IRemake = false; //для новой строки просто вычисляем I
                 if (md.MDA_F == 0)
                 {
                     MessageBox.Show("Новая строка с не заполненной частотой будет удалена.");
@@ -5298,7 +5348,7 @@ namespace SpecialJobs.ViewModels
                     : 0;
                 //измерительный тракт
                 //IT(md);//добавление антенны в новую строку(по умолчанию или, как в первой строке)
-                       //для обновление UI на лету, до окончания редактирования                    
+                //для обновление UI на лету, до окончания редактирования                    
                 if (md.MDA_ECN_BEGIN != 0 && md.MDA_F_END != 0)
                 // ШП сигнал,нельзя вводить руками, он вычисляется
                 {
@@ -5322,7 +5372,7 @@ namespace SpecialJobs.ViewModels
                 //сохраним новую строку и продолжим обработку                
                 methodsEntities.MEASURING_DATA.Add(md);
                 SaveData(null);
-                selectedRow = md; 
+                selectedRow = md;
                 FocusedRow = md;
                 RefreshGcCollection?.Invoke();
                 Measurings.Add(md);
@@ -5363,7 +5413,7 @@ namespace SpecialJobs.ViewModels
                         //if (IRemake) //расчёт I с перераспределением частот по интервалам(если их в лепестке > 2)
                         //    RefreshI(selectedMode);
                         //else
-                            RefreshI(md, paramTAU);
+                        RefreshI(md, paramTAU);
                         //перерасчёт значений элементов строки, связанных с частотой
                         After_F(md);
                         break;
@@ -5444,7 +5494,7 @@ namespace SpecialJobs.ViewModels
             }
             if (AntennaE == null && AntennaH == null)
                 return;
-            foreach(MEASURING_DATA md in methodsEntities.MEASURING_DATA.Where(p=>p.MDA_MODE_ID == mode.MODE_ID))
+            foreach (MEASURING_DATA md in methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID))
             {
                 RefreshKa(md);
             }
@@ -5456,7 +5506,7 @@ namespace SpecialJobs.ViewModels
                 keySuspend = false;
             }
         }
-            private void RefreshKa(MEASURING_DATA md)
+        private void RefreshKa(MEASURING_DATA md)
         {
             if (String.IsNullOrEmpty(md.MDA_TYPE)) //если не заполнено поле типа измерения, присваиваем E
             {
@@ -5753,7 +5803,7 @@ namespace SpecialJobs.ViewModels
                 Arms = new ObservableCollection<ARM>(methodsEntities.ARM.Where(p => p.ARM_AT_ID == at_id).OrderBy(p => p.ARM_NUMBER)); //.OrderBy(p => p.ARM_NUMBER)
             else
                 Arms = null;
-                //Arms = new ObservableCollection<ARM>();
+            //Arms = new ObservableCollection<ARM>();
             if (refreshAfterReload) // после перечитывания таблицы после обновления другим пользователем, выбранные данные обновлять не надо
                 return;
             if (Arms != null && Arms.Count > 0)
@@ -5772,11 +5822,11 @@ namespace SpecialJobs.ViewModels
             var tt = methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_id);
             //count = tt.Count();
             Results = new ObservableCollection<RESULT>(); // 
-            foreach(var result in tt)
+            foreach (var result in tt)
             {
                 Results.Add(result);
             }
-              
+
             // people.Where(p => animals.Any(a => p.Pet.Contains(a)));
             //filterResults = String.Empty;
             //обновим таблицы
@@ -5813,9 +5863,12 @@ namespace SpecialJobs.ViewModels
                 Modes = new ObservableCollection<MODE>(methodsEntities.MODE.Where(p => p.MODE_ARM_ID == arm_id));//.OrderBy(p => p.MODE_TYPE.MT_NAME));
             else
                 Modes = new ObservableCollection<MODE>();
-            
+
             if (refreshAfterReload) // после перечитывания таблицы после обновления другим пользователем, выбранные данные обновлять не надо
+            {
+                RefreshGcModes?.Invoke();
                 return;
+            }
             if (Modes != null && Modes.Count > 0)
             {
                 if (modeId == 0) //формирование списка после смены АРМа
@@ -5842,7 +5895,7 @@ namespace SpecialJobs.ViewModels
                     }
                     selectedMode = Modes.Where(p => p.MODE_ARM_ID == arm_id).FirstOrDefault();
                 }
-                else                 
+                else
                     selectedMode = Modes.Where(p => p.MODE_ID == modeId).FirstOrDefault();
             }
             focusedMode = selectedMode;
@@ -5941,7 +5994,7 @@ namespace SpecialJobs.ViewModels
                 Title = "Переименование тира АРМ",
             };
             renameWindow.ShowDialog();
-                
+
             if (String.IsNullOrEmpty(at.AT_NAME))
                 return;
             if (methodsEntities.ARM_TYPE.Where(p => p.AT_ANL_ID == at.AT_ANL_ID && p.AT_NAME == at.AT_NAME).Any())
@@ -6143,7 +6196,7 @@ namespace SpecialJobs.ViewModels
 #pragma warning disable CS0618 // Type or member is obsolete
                             dbChanged.Resume();
 #pragma warning restore CS0618 // Type or member is obsolete
-                             keySuspend = false;
+                            keySuspend = false;
                         }
                         return;
                     }
@@ -6161,9 +6214,9 @@ namespace SpecialJobs.ViewModels
                     if (keySuspend)
                     {
 #pragma warning disable CS0618 // Type or member is obsolete
-                    dbChanged.Resume();
+                        dbChanged.Resume();
 #pragma warning restore CS0618 // Type or member is obsolete
-                    keySuspend = false;
+                        keySuspend = false;
                     }
                 }
             }
@@ -6207,7 +6260,7 @@ namespace SpecialJobs.ViewModels
                     {
                         MDARM_MD_ID = md.MD_ID
                     };
-                    arm_new.MEASURING_DEVICE_ARM.Add(newMda);                    
+                    arm_new.MEASURING_DEVICE_ARM.Add(newMda);
                 }
                 //добавим антенну по умолчанию
                 arm_new.ANTENNA_ARM = new Collection<ANTENNA_ARM>();
@@ -6555,7 +6608,7 @@ namespace SpecialJobs.ViewModels
             if (Measurings == null)
                 return false;
             return (Measurings.Any());
-        }              
+        }
         //Удаление строки MEASURING_DATA
         private void DeleteMeasuringData(MEASURING_DATA focusedRow)
         {
@@ -6564,17 +6617,17 @@ namespace SpecialJobs.ViewModels
             //if (methodsEntities.Entry(focusedRow).State == EntityState.Detached) //попытка удалить новую запись
             //{
             //    Measurings.Remove(focusedRow);
-                
+
             //    return;
             //}
             //для серверного режима отображения данных
             var delRow = methodsEntities.MEASURING_DATA.Where(p => p.MDA_ID == FocusedRow.MDA_ID).FirstOrDefault();
             if (delRow != null)
-            methodsEntities.MEASURING_DATA.Remove(delRow); //удаление из контекста 
+                methodsEntities.MEASURING_DATA.Remove(delRow); //удаление из контекста 
             //methodsEntities.MEASURING_DATA.Remove(focusedRow); //удаление из контекста 
             SaveData(null);
             ModeResultClear(selectedMode, false);
-            MeasuringsRefresh(); 
+            MeasuringsRefresh();
         }
         //Удаление или обнуление всех строк MEASURING_DATA для выбранного режима выбраного вида измерения
         private void DeleteMeasuringDataMode(MEASURING_DATA focusedRow)
@@ -6611,7 +6664,7 @@ namespace SpecialJobs.ViewModels
 
             }
         }
-       
+
         //Удаление всех строк строки MEASURING_DATA для выбранного режима
         private void ClearMeasuringDataMode_UF(MEASURING_DATA focusedRow)
         {
@@ -6690,19 +6743,19 @@ namespace SpecialJobs.ViewModels
             wmu = new WindowMeasuringUpdate();
             wmu.DataContext = this;
             wmuIsEnabled = true;
-            IValues = new ObservableCollection<int>( methodsEntities.MEASURING_DATA.Where(p=>p.MDA_MODE_ID == selectedMode.MODE_ID).OrderBy(p=>p.MDA_I).Select(p=>p.MDA_I).Distinct()) ;
+            IValues = new ObservableCollection<int>(methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == selectedMode.MODE_ID).OrderBy(p => p.MDA_I).Select(p => p.MDA_I).Distinct());
             IValues.OrderBy(p => p);
 
-            EcnValue = 0;  EnValue = 0;
+            EcnValue = 0; EnValue = 0;
             wmu.ShowDialog();
             wmu = null;
-//            if (dbChanged != null && !keySuspendParent) // функция вызывалась с работающим потоком, который был остановлен
-//            {
-//                keySuspend = false;
-//#pragma warning disable CS0618 // Type or member is obsolete
-//                dbChanged.Resume();
-//#pragma warning restore CS0618 // Type or member is obsolete
-//            }
+            //            if (dbChanged != null && !keySuspendParent) // функция вызывалась с работающим потоком, который был остановлен
+            //            {
+            //                keySuspend = false;
+            //#pragma warning disable CS0618 // Type or member is obsolete
+            //                dbChanged.Resume();
+            //#pragma warning restore CS0618 // Type or member is obsolete
+            //            }
         }
         //перерасчёт сигналов после заданного изменения
         private void Recalculate(Object o)
@@ -6758,7 +6811,7 @@ namespace SpecialJobs.ViewModels
             var t = f < 150 ? 0.2 : (f < 30000 ? 9 : ((f < 1000000 || !isSolid) ? 120 : 1000));
             return f < 150 ? 0.2 : (f < 30000 ? 9 : ((f < 1000000 || !isSolid) ? 120 : 1000));
         }
-     
+
         public void ResultClear()
         {
             if (Modes == null)
@@ -6777,7 +6830,7 @@ namespace SpecialJobs.ViewModels
         {
             if (Modes == null)
                 return;
-            foreach (var mode in Modes.Where(p=>!p.MODE_IS_SOLID))
+            foreach (var mode in Modes.Where(p => !p.MODE_IS_SOLID))
             {
                 if (selectedMode != null && mode.MODE_ID != selectedMode.MODE_ID)
                     ModeResultClear(mode, false);
@@ -6794,14 +6847,14 @@ namespace SpecialJobs.ViewModels
                 return;
             try
             {
-                methodsEntities.RESULT.RemoveRange(methodsEntities.RESULT.Where(p=>p.RES_MODE_ID == mode.MODE_ID));
+                methodsEntities.RESULT.RemoveRange(methodsEntities.RESULT.Where(p => p.RES_MODE_ID == mode.MODE_ID));
                 //нельзя брать просто selectedMode.RESULT, т.к. после перезагрузки контекста при удалени больших данных, св-во не обновляется
             }
             catch (Exception ed)
             {
                 MessageBox.Show("Ошибка удаления результатов расчёта в режиме.   " + ed.Message);
             }
-            SaveData(null); 
+            SaveData(null);
 
             if (mode.MODE_ID != selectedMode.MODE_ID)
                 return;
@@ -6843,7 +6896,7 @@ namespace SpecialJobs.ViewModels
         //расчёт и перерасчёт из окна измерений
         private void CalculateMode(MODE mode)
         {
-            
+
             if (!keySuspend) //функция вызвана с работающим фоновым потоком
             {
                 keySuspend = true;
@@ -6853,7 +6906,7 @@ namespace SpecialJobs.ViewModels
             }
             if (mode.RESULT != null && mode.RESULT.Any())
                 ModeResultClear(mode, false);
-            
+
             backgroundWorkerCalculateMode.RunWorkerAsync();
         }
         private void CalculateMode(MODE mode, bool isAsinc)
@@ -6878,7 +6931,7 @@ namespace SpecialJobs.ViewModels
                 {
                     if (row.Count > 2) //перерасчёт MDA_I
                     {
-                       // Value = "Выполняется перерасчёт I режима - '" + mode.MODE_TYPE.MT_NAME + "'";
+                        // Value = "Выполняется перерасчёт I режима - '" + mode.MODE_TYPE.MT_NAME + "'";
                         RefreshIWithContrains(mode); //перерасчёт MDA_I с сохранением рез-в
                         break;
                     }
@@ -6896,14 +6949,14 @@ namespace SpecialJobs.ViewModels
 
             double signal_i, signal_iR1, k_zatuchanija_i;
             double[] signal_i_u;
-            double E_schuma_SAZ=0;
+            double E_schuma_SAZ = 0;
 
             double NORMA_2 = 0, NORMA_3 = 0;
 
             //расчёт по электрическому полю
             //все данные измерений режима. Создаётся локально, чтобы не вызывал принудительную чистку памяти
             ObservableCollection<MEASURING_DATA> measurings = new ObservableCollection<MEASURING_DATA>(
-                    methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID && p.MDA_E != 0 ));
+                    methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID && p.MDA_E != 0));
             if (measurings == null || !measurings.Any()) //отсутствуют данные измерений
                 return;
 
@@ -6911,7 +6964,7 @@ namespace SpecialJobs.ViewModels
             {
                 //расчёт с ГШ
                 if (!measurings.Where(p => p.MDA_ES_VALUE_IZM_MKV != 0).Any()) //не заполнены значения шума от ГШ 
-                    {
+                {
                     string ValuePrev = Value;
                     Value = "Выполняется генерация данных САЗ для режима - '" + mode.MODE_TYPE.MT_NAME + "'";
                     GenerateSAZ(mode, true); //без обновления таблиц измерений
@@ -6925,9 +6978,9 @@ namespace SpecialJobs.ViewModels
                 }
             }
 
-                if (mode.MODE_TAU_UNIT_ID == 0 || mode.MODE_FT_UNIT_ID == 0 ||
-                mode.MODE_TAU == 0 || mode.MODE_FT == 0 || mode.MODE_D == 0 ||
-                mode.MODE_R == 0)
+            if (mode.MODE_TAU_UNIT_ID == 0 || mode.MODE_FT_UNIT_ID == 0 ||
+            mode.MODE_TAU == 0 || mode.MODE_FT == 0 || mode.MODE_D == 0 ||
+            mode.MODE_R == 0)
             {
                 MessageBox.Show("Не все параметры режима " + mode.MODE_TYPE.MT_NAME +
                                 " заполнены. Расчёт для этого режима не может быть выполнен.");
@@ -6967,7 +7020,7 @@ namespace SpecialJobs.ViewModels
                 Functions.GetUnitValue(Units, (int)mode.MODE_RBW_UNIT_ID));
             result = new RESULT();
             int[] arR2 = new int[3], arR2_2 = new int[3], arR2_3 = new int[3];
-            int R2=0, R2_2=0, R2_3=0; //для САЗ
+            int R2 = 0, R2_2 = 0, R2_3 = 0; //для САЗ
             double R1 = 0, R1_2 = 0, R1_3 = 0;
             bool existDataMeerAs100DB = measurings.Where(p => p.MDA_ECN_VALUE_IZM_DB >= 100).Any() && mode.MODE_IS_SOLID; //есть измерения сигнал+шум >= 100 дБ для сплошного спектра
             bool keyInclude = true; //включать в расчёт измерения > 100 дБ
@@ -7049,10 +7102,10 @@ namespace SpecialJobs.ViewModels
                         continue;
 
                     //Если выбран ГШ, то E_schuma_stationary = E_schuma_SAZ
-                    if (armGS != null && armGS != 0 &&  AntennasGS.Where(p => p.ANT_ID == armGS && p.ANT_MODEL != "Без ГШ").Any())
+                    if (armGS != null && armGS != 0 && AntennasGS.Where(p => p.ANT_ID == armGS && p.ANT_MODEL != "Без ГШ").Any())
                     {
                         listSAZ = measurings.Where(p => p.MDA_I == i && p.MDA_ES_VALUE_IZM_MKV != 0);
-                        E_schuma_SAZ = Functions.E_schumaSAZ_New(i,tau,listSAZ);
+                        E_schuma_SAZ = Functions.E_schumaSAZ_New(i, tau, listSAZ);
                         if (E_schuma_SAZ != 0)
                         {
                             R2 = Functions.R2(signal_i * alpha, (double)mode.MODE_TYPE.MT_KN, E_schuma_SAZ, mode.MODE_NORMA, i, mode.MODE_D, tau, mode.MODE_IS_SOLID);
@@ -7128,7 +7181,7 @@ namespace SpecialJobs.ViewModels
                         RES_R2_PORTABLE = arR2[0],
                         RES_R2_PORTABLE_DRIVE = arR2[1],
                         RES_R2_PORTABLE_CARRY = arR2[2],
-                        RES_R2_PORTABLE_1 = deltaSAZ == 0 ? 0 : Math.Round(mode.MODE_NORMA /deltaSAZ,2),
+                        RES_R2_PORTABLE_1 = deltaSAZ == 0 ? 0 : Math.Round(mode.MODE_NORMA / deltaSAZ, 2),
                         RES_R2_PORTABLE_DRIVE_1 = deltaSAZ == 0 ? 0 : Math.Round(NORMA_2 / deltaSAZ, 2),
                         RES_R2_PORTABLE_CARRY_1 = deltaSAZ == 0 ? 0 : Math.Round(NORMA_3 / deltaSAZ, 2),
 
@@ -7178,7 +7231,7 @@ namespace SpecialJobs.ViewModels
             SaveData(null);
             if (isAsinc) //асинхронный расчёт всех режимов
                 return;
-            MakeMaxValue(); 
+            MakeMaxValue();
             Results = new ObservableCollection<RESULT>(methodsEntities.RESULT.Where(p => p.MODE.MODE_ARM_ID == arm_one.ARM_ID));
             //обновим таблицы
             RefreshGcResults?.Invoke();
@@ -7200,7 +7253,7 @@ namespace SpecialJobs.ViewModels
             keyCalculate = true;
             RaisePropertyChanged(() => buttonCalculateEnabled);
         }
-      
+
         //генерация САЗ в арм. Выполняется по запросу при смене САЗ или по умолчанию при расчёте
         void GenerateSAZ()
         {
@@ -7216,14 +7269,14 @@ namespace SpecialJobs.ViewModels
             ResultClear(); //очистка результатов всех режимов  АРМ            
             methodsEntities.Configuration.AutoDetectChangesEnabled = false;
             backgroundWorkerGenerateSAZ.RunWorkerAsync();
-        }        
+        }
         //генерация САЗ в режиме. Выполняется по запросу при смене ГШ для всех режимов или при расчёте режима только для рассчитываемого режима
-        void GenerateSAZ(MODE mode,bool isAsinc)
-        {           
+        void GenerateSAZ(MODE mode, bool isAsinc)
+        {
             if (mode.MEASURING_DATA == null || !mode.MEASURING_DATA.Where(p => p.MDA_I != 0 && (p.MDA_E != 0 || p.MDA_UF != 0 || p.MDA_U0 != 0)).Any()) //нет измерений в режиме
                 return;
             var k = AntennasGS.Where(p => p.ANT_ID == armGS && p.ANTENNA_CALIBRATION != null).FirstOrDefault().ANT_ERROR;
-            mode.MODE_KS = k!= 0 ? k: 0.8;
+            mode.MODE_KS = k != 0 ? k : 0.8;
             var t = methodsEntities.MEASURING_DATA.Where(p => p.MDA_MODE_ID == mode.MODE_ID && p.MDA_I != 0 && (p.MDA_E != 0 || p.MDA_UF != 0 || p.MDA_U0 != 0)).Select(p => p.MDA_I).Distinct();
             foreach (int i in t)
             {
@@ -7240,11 +7293,11 @@ namespace SpecialJobs.ViewModels
                 return;
             }
             //коэффициент шума
-            
+
             double tau = Functions.Tau_nsek(mode.MODE_TAU,
-                        Functions.GetUnitValue(Units, (int)mode.MODE_TAU_UNIT_ID));           
+                        Functions.GetUnitValue(Units, (int)mode.MODE_TAU_UNIT_ID));
             double f_law, f_top;  //мГц границы лепестка, к котором генерируем шум.
-            f_law = i == 1 ? 0.3 : Math.Round((i - 1) * 1000/ tau,0); 
+            f_law = i == 1 ? 0.3 : Math.Round((i - 1) * 1000 / tau, 0);
             f_top = i * 1000 / tau < 10000 ? Math.Round(i * 1000 / tau, 0) : 60000;
 
             double f = f_law;
@@ -7352,17 +7405,17 @@ namespace SpecialJobs.ViewModels
             if (mode.MEASURING_DATA == null || !mode.MEASURING_DATA.Any()) //нет измерений в режиме
                 return;
             bool ChangesEnabledPrev = methodsEntities.Configuration.AutoDetectChangesEnabled;
-            
+
             methodsEntities.Configuration.AutoDetectChangesEnabled = true;
             //обнуляем измерения САЗ в строках, в которых есть другие измерения
             foreach (var md in mode.MEASURING_DATA.Where(p => p.MDA_ES_VALUE_IZM_MKV != 0 &&
                                                               (p.MDA_ECN_VALUE_IZM != 0 || p.MDA_EN_VALUE_IZM != 0 ||
                                                                p.MDA_UFCN_VALUE_IZM != 0 || p.MDA_UFCN_VALUE_IZM != 0 ||
-                                                               p.MDA_U0CN_VALUE_IZM != 0 || p.MDA_U0N_VALUE_IZM != 0 )))
+                                                               p.MDA_U0CN_VALUE_IZM != 0 || p.MDA_U0N_VALUE_IZM != 0)))
             {
                 md.MDA_ES_VALUE_IZM = 0;
                 md.MDA_ES_VALUE_IZM_DB = 0;
-                md.MDA_ES_VALUE_IZM_MKV = 0;                
+                md.MDA_ES_VALUE_IZM_MKV = 0;
                 md.MDA_KPS = 0;
 
             }
@@ -7439,7 +7492,7 @@ namespace SpecialJobs.ViewModels
                 if (methodsEntities.ChangeTracker.Entries().Where(p => p.State == EntityState.Modified || p.State == EntityState.Added || p.State == EntityState.Deleted).Count() != 0)
                     SaveData(null);//сохраненим изменения
             }
-        }     
+        }
         void PrepareDataForReport()
         {
             SaveData(null);
@@ -7494,7 +7547,7 @@ namespace SpecialJobs.ViewModels
 #pragma warning disable CS0618 // Type or member is obsolete
             dbChanged.Suspend();//остановим фоновый поток, т.к. даные измерений в реальном времени другим пользователям не нужны
 #pragma warning restore CS0618 // Type or member is obsolete
-           
+
             OpenFileDialog ofd = new OpenFileDialog()
             {
                 InitialDirectory = Properties.Settings.Default.pathTemplateWord,
@@ -7506,7 +7559,7 @@ namespace SpecialJobs.ViewModels
 
             if (ofd.ShowDialog() == DialogResult.Cancel)
             {
-                
+
                 if (keySuspend)
                 {
                     keySuspend = false;
@@ -7525,10 +7578,10 @@ namespace SpecialJobs.ViewModels
                 return;
             //директория выбранного шаблона.
             int index = ofd.FileName.LastIndexOfAny("\\".ToCharArray());
-            Properties.Settings.Default.pathTemplateWord = ofd.FileName.Substring(0, index+1);
+            Properties.Settings.Default.pathTemplateWord = ofd.FileName.Substring(0, index + 1);
             Properties.Settings.Default.Save();
 
-            using (DocX doc = DocX.Create( @"c:\Temp\Test.docx"))
+            using (DocX doc = DocX.Create(@"c:\Temp\Test.docx"))
             {
 
                 try
@@ -7547,7 +7600,7 @@ namespace SpecialJobs.ViewModels
                         var boommarks = paragraph.GetBookmarks();
                         if (boommarks != null && boommarks.Count() > 0)
                         {
-                            foreach(var bm in boommarks)
+                            foreach (var bm in boommarks)
                             {
                                 switch (bm.Name)
                                 {
@@ -7559,7 +7612,7 @@ namespace SpecialJobs.ViewModels
                                         //функция заполнения таблицы "Изм.инструменты"
                                         Table_2_Make(table);
                                         break;
-                                    case "Таблица_3":                                        
+                                    case "Таблица_3":
                                         Table_3_Make(table);
                                         break;
                                     case "Таблица_4":
@@ -7568,7 +7621,7 @@ namespace SpecialJobs.ViewModels
                                     case "Таблица_5":
                                         Table_5_Make(table);
                                         break;
-                                    case "Таблица_2_pred":                                        
+                                    case "Таблица_2_pred":
                                         Table_2_pred_Make(table);
                                         break;
                                     case "Таблица_3_pred":
@@ -7578,7 +7631,7 @@ namespace SpecialJobs.ViewModels
                             }
                         }
                     }
-                      
+
                 }
                 SaveFileDialog sfd = new SaveFileDialog();
                 if (Properties.Settings.Default.pathReportWord != String.Empty)
@@ -7592,11 +7645,11 @@ namespace SpecialJobs.ViewModels
                 {
                     try
                     {
-                    doc.SaveAs(sfd.FileName);
-                    //сохранение
-                    index = sfd.FileName.LastIndexOfAny("\\".ToCharArray());
-                    Properties.Settings.Default.pathReportWord = sfd.FileName.Substring(0, index+1);
-                    Properties.Settings.Default.Save();
+                        doc.SaveAs(sfd.FileName);
+                        //сохранение
+                        index = sfd.FileName.LastIndexOfAny("\\".ToCharArray());
+                        Properties.Settings.Default.pathReportWord = sfd.FileName.Substring(0, index + 1);
+                        Properties.Settings.Default.Save();
                     }
                     catch (Exception e)
                     {
@@ -7616,7 +7669,7 @@ namespace SpecialJobs.ViewModels
 #pragma warning disable CS0618 // Type or member is obsolete
                 dbChanged.Resume();
 #pragma warning restore CS0618 // Type or member is obsolete
-            }            
+            }
         }
         void Table_1_Make(Table table)
         {
@@ -7625,7 +7678,7 @@ namespace SpecialJobs.ViewModels
                 Bold = false,
                 FontFamily = table.Rows[0].Cells[0].Paragraphs[0].MagicText[0].formatting.FontFamily
             };
-            var size = table.Rows[0].Cells[0].Paragraphs[0].MagicText[0].formatting.Size;            
+            var size = table.Rows[0].Cells[0].Paragraphs[0].MagicText[0].formatting.Size;
             if (size != null)
                 formatting.Size = (double)size;
             //текущая строка
@@ -7666,7 +7719,7 @@ namespace SpecialJobs.ViewModels
             //текущая строка
             Row rowNew;
             //отформатированная строка данных, сформированная из строки заголовка, исп-ся в качестве шаблона при добавлении строки
-            Row rowNewData = table.InsertRow(table.Rows[0],true);
+            Row rowNewData = table.InsertRow(table.Rows[0], true);
             int index = table.Rows.Count() - 1;
             foreach (var cell in rowNewData.Cells)
             {
@@ -7675,13 +7728,13 @@ namespace SpecialJobs.ViewModels
                     p.ReplaceText(p.Text, "");
             }
             //отформатированная строка заголовка, исп-ся в качестве шаблона при добавлении строки
-            Row rowNewHeader = table.InsertRow(table.Rows[0], true); 
-            rowNewHeader.MergeCells(0, rowNewHeader.Cells.Count-1);
+            Row rowNewHeader = table.InsertRow(table.Rows[0], true);
+            rowNewHeader.MergeCells(0, rowNewHeader.Cells.Count - 1);
             foreach (var p in rowNewHeader.Cells[0].Paragraphs)
                 p.ReplaceText(p.Text, "");
             rowNewHeader.Cells[0].FillColor = Color.White;
 
-            rowNew = table.InsertRow(rowNewHeader, true);          
+            rowNew = table.InsertRow(rowNewHeader, true);
             rowNew.Cells[0].Paragraphs[0].InsertText("Измерительное оборудование", false, formatting);
             //rowNew.Cells[0].FillColor = Color.White;
 
@@ -7700,7 +7753,7 @@ namespace SpecialJobs.ViewModels
             }
             rowNew = table.InsertRow(rowNewHeader, true);
             rowNew.Cells[0].Paragraphs[0].InsertText("Вспомогательное оборудование", false, formatting);
-            
+
             var allIPHelperEmptyDate = AllIPHelper.Where(p => p.Date.Contains("begin") || p.Date.Contains("end"));
             int npp = AllIP.Count();
             foreach (var rowIP in allIPHelperEmptyDate)
@@ -7716,10 +7769,10 @@ namespace SpecialJobs.ViewModels
                 rowNew.Cells[5].Paragraphs[0].InsertText(String.Empty, false, formatting);
             }
             //объединение ячеек в столбце
-            table.MergeCellsInColumn(5,table.RowCount- allIPHelperEmptyDate.Count(),table.RowCount - 1);
-            table.Rows[table.RowCount - allIPHelperEmptyDate.Count()].Cells[5].Paragraphs[0].InsertText("Поверка и калибровка метрологической службой не требуется", false, formatting);            
+            table.MergeCellsInColumn(5, table.RowCount - allIPHelperEmptyDate.Count(), table.RowCount - 1);
+            table.Rows[table.RowCount - allIPHelperEmptyDate.Count()].Cells[5].Paragraphs[0].InsertText("Поверка и калибровка метрологической службой не требуется", false, formatting);
 
-            var allIPHelperWithDate = AllIPHelper.Where(p => !p.Date.Contains("begin") && !p.Date.Contains("end"));            
+            var allIPHelperWithDate = AllIPHelper.Where(p => !p.Date.Contains("begin") && !p.Date.Contains("end"));
             foreach (var rowIP in allIPHelperWithDate)
             {
                 rowNew = table.InsertRow(rowNewData, true);
@@ -7739,12 +7792,12 @@ namespace SpecialJobs.ViewModels
         {
             XceedW.Formatting formatting = new XceedW.Formatting()
             {
-                Bold = false,            
+                Bold = false,
                 FontFamily = table.Rows[0].Cells[0].Paragraphs[0].MagicText[0].formatting.FontFamily
             };
             var size = table.Rows[0].Cells[0].Paragraphs[0].MagicText[0].formatting.Size;
-                if (size != null)
-                    formatting.Size = (double)size;
+            if (size != null)
+                formatting.Size = (double)size;
             //текущая строка
             Row rowNew;
             //отформатированная строка данных, сформированная из строки заголовка, исп-ся в качестве шаблона при добавлении строки
@@ -7762,7 +7815,7 @@ namespace SpecialJobs.ViewModels
                 rowNew = table.InsertRow(rowNewData, true);
                 rowNew.Cells[0].Paragraphs[0].InsertText(row.NPP + ".", false, formatting);
                 rowNew.Cells[1].Paragraphs[0].InsertText(row.mode.MODE_TYPE.MT_NAME, false, formatting);
-                rowNew.Cells[2].Paragraphs[0].InsertText(row.mode.MODE_IS_SOLID ? "сплошной" : "дискретный" , false, formatting);
+                rowNew.Cells[2].Paragraphs[0].InsertText(row.mode.MODE_IS_SOLID ? "сплошной" : "дискретный", false, formatting);
                 rowNew.Cells[3].Paragraphs[0].InsertText(Math.Round(row.mode.MODE_TAU, 3).ToString(), false, formatting);
                 rowNew.Cells[4].Paragraphs[0].InsertText(Math.Round(row.mode.MODE_TAU * 2, 3).ToString(), false, formatting);
                 rowNew.Cells[5].Paragraphs[0].InsertText(row.mode.MODE_TYPE.MT_KN.ToString(), false, formatting);
@@ -7789,9 +7842,9 @@ namespace SpecialJobs.ViewModels
             int index = table.Rows.Count() - 1;
             foreach (var cell in rowNewData.Cells)
             {
-                cell.FillColor = Color.White;                
+                cell.FillColor = Color.White;
                 foreach (var p in cell.Paragraphs)
-                    
+
                     p.Remove(false);
                 cell.Paragraphs[0].Alignment = Xceed.Words.NET.Alignment.center;
             }
@@ -7806,23 +7859,23 @@ namespace SpecialJobs.ViewModels
                 //rowNew.Cells[0].Paragraphs[0].InsertText("Режим № " + row.NPP + ". " + row.mode.MODE_TYPE.MT_NAME, false, formatting);
 
                 foreach (var rowData in row.mode.RESULT.Where(p => p.RES_I != 0).OrderBy(p => p.RES_I))
-                    {
+                {
                     string c1 = rowData.RES_I == 1 ? "0,009" : Math.Round((rowData.RES_I - 1) / rowData.MODE.MODE_TAU * 1000, 3).ToString();
-                                                            
-                    string c2 = Math.Round(rowData.RES_I / rowData.MODE.MODE_TAU * 1000, 3).ToString() ;
+
+                    string c2 = Math.Round(rowData.RES_I / rowData.MODE.MODE_TAU * 1000, 3).ToString();
 
                     string c4 = rowData.RES_TYPE.ToUpper().Contains("E") ? "Эл" : "Маг";
                     npp++;
                     rowNew = table.InsertRow(rowNewData, true);
-                    
-                  // rowNew.Cells[0].Paragraphs[0].InsertText(npp + ".", false, formatting);
+
+                    // rowNew.Cells[0].Paragraphs[0].InsertText(npp + ".", false, formatting);
                     rowNew.Cells[0].Paragraphs[0].InsertText(rowData.RES_I.ToString(), false, formatting);
                     rowNew.Cells[1].Paragraphs[0].InsertText(c1, false, formatting);
                     rowNew.Cells[2].Paragraphs[0].InsertText(c2, false, formatting);
-                  //  rowNew.Cells[4].Paragraphs[0].InsertText(c4, false, formatting);
+                    //  rowNew.Cells[4].Paragraphs[0].InsertText(c4, false, formatting);
                     rowNew.Cells[3].Paragraphs[0].InsertText(c4, false, formatting);
-                   // rowNew.Cells[6].Paragraphs[0].InsertText(rowData.MDA_ECN_VALUE_IZM_MKV.ToString(), false, formatting);
-                   // rowNew.Cells[7].Paragraphs[0].InsertText(rowData.MDA_EN_VALUE_IZM_MKV.ToString(), false, formatting);
+                    // rowNew.Cells[6].Paragraphs[0].InsertText(rowData.MDA_ECN_VALUE_IZM_MKV.ToString(), false, formatting);
+                    // rowNew.Cells[7].Paragraphs[0].InsertText(rowData.MDA_EN_VALUE_IZM_MKV.ToString(), false, formatting);
                     rowNew.Cells[4].Paragraphs[0].InsertText(rowData.RES_SIGNAL.ToString(), false, formatting);
 
                 }
@@ -7888,7 +7941,7 @@ namespace SpecialJobs.ViewModels
             //Строки с R2, r1
             rowNew = table.InsertRow(rowNewData, true);
             rowNew.MergeCells(0, 3);
-            rowNew.Cells[0].FillColor = Color.LightGray;            
+            rowNew.Cells[0].FillColor = Color.LightGray;
             rowNew.Cells[0].Paragraphs[0].InsertText("Максимальные значения ", false, formatting);
             rowNew.Cells[1].Paragraphs[0].InsertText("R2ст", false, formatting);
             rowNew.Cells[2].Paragraphs[0].InsertText("R2воз", false, formatting);
@@ -7900,7 +7953,7 @@ namespace SpecialJobs.ViewModels
             rowNew.Cells[8].Paragraphs[0].InsertText("r1", false, formatting);
             rowNew = table.InsertRow(rowNewData, true);
             rowNew.MergeCells(0, 3);
-            rowNew.Cells[0].FillColor = Color.LightGray;            
+            rowNew.Cells[0].FillColor = Color.LightGray;
             rowNew.Cells[0].Paragraphs[0].InsertText("R2 и r1", false, formatting);
             rowNew.Cells[1].Paragraphs[0].InsertText(R2_MAX_P_2.ToString(), false, formatting);
             rowNew.Cells[2].Paragraphs[0].InsertText(R2_MAX_D_2.ToString(), false, formatting);
@@ -7930,7 +7983,7 @@ namespace SpecialJobs.ViewModels
             };
             if (arm_one != null)
             {
-                table.Rows[2].Cells[0].Paragraphs[0].InsertText(arm_one.ARM_NUMBER, false, formattingBold);           
+                table.Rows[2].Cells[0].Paragraphs[0].InsertText(arm_one.ARM_NUMBER, false, formattingBold);
             }
             if (R2_MAX_P_2 != 0)
                 table.Rows[2].Cells[3].Paragraphs[0].InsertText(R2_MAX_P_2.ToString(), false, formatting);
@@ -7981,7 +8034,7 @@ namespace SpecialJobs.ViewModels
             //MakeResume();   //вывод о защищённости ТС в режимах
             MakeReport(n);
             //ReportShow();
-            
+
         }
         public void MakeReport(string n) //заглушка
         {
@@ -8063,43 +8116,43 @@ namespace SpecialJobs.ViewModels
             xr.DataSource = bs;
             ReportShow();
         }
-            public void ReportShow()
+        public void ReportShow()
+        {
+            if (xr == null)
+                return;
+            try
             {
-                if (xr == null)
-                    return;
-                try
-                {
-                    //работающий код
-                    //XtraReportPreviewModel model = new XtraReportPreviewModel(xr);
-                    //DocumentPreviewWindow window = new DocumentPreviewWindow();
-                    //window.Model = model;
-                    //xr.CreateDocument();
-                    //window.Topmost = true;
-                    //window.ShowDialog();
+                //работающий код
+                //XtraReportPreviewModel model = new XtraReportPreviewModel(xr);
+                //DocumentPreviewWindow window = new DocumentPreviewWindow();
+                //window.Model = model;
+                //xr.CreateDocument();
+                //window.Topmost = true;
+                //window.ShowDialog();
 
 
 
-                    WindowReport window = new WindowReport();
-                    window.dpc.DocumentSource = xr;
-                    //    xr.RequestParameters = true;
-                    xr.CreateDocument();
-                    window.dpc.Document.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.A4;
-                    window.dpc.Document.PageSettings.LeftMargin = 65; //в сотых долях дюйма                              
-                    window.dpc.Document.PageSettings.RightMargin = 60;
-                    window.dpc.Document.PageSettings.TopMargin = 88;
-                    window.dpc.Document.PageSettings.BottomMargin = 60;
-                    window.ShowDialog();
+                WindowReport window = new WindowReport();
+                window.dpc.DocumentSource = xr;
+                //    xr.RequestParameters = true;
+                xr.CreateDocument();
+                window.dpc.Document.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.A4;
+                window.dpc.Document.PageSettings.LeftMargin = 65; //в сотых долях дюйма                              
+                window.dpc.Document.PageSettings.RightMargin = 60;
+                window.dpc.Document.PageSettings.TopMargin = 88;
+                window.dpc.Document.PageSettings.BottomMargin = 60;
+                window.ShowDialog();
 
-                }
-                catch (Exception eView)
-                {
-                    {
-                        MessageBox.Show("Ошибка вывода файл на экран. " + eView.Message);
-                    }
-                }
-                finally { }
             }
-        
+            catch (Exception eView)
+            {
+                {
+                    MessageBox.Show("Ошибка вывода файл на экран. " + eView.Message);
+                }
+            }
+            finally { }
+        }
+
         private void MakeMaxValue()
         {
             CellStyleConverter.RES_SAZ_MAX = 0;
@@ -8118,7 +8171,7 @@ namespace SpecialJobs.ViewModels
             R2_MAX_D_3 = 0;
             R2_MAX_C_3 = 0;
 
-           // R2_MAX_1 = 0;
+            // R2_MAX_1 = 0;
             R2_MAX_2 = 0;
             R2_MAX_3 = 0;
 
@@ -8147,7 +8200,7 @@ namespace SpecialJobs.ViewModels
                 //R2_C_1 = 0;
                 R2_C_2 = 0;
                 R2_C_3 = 0;
-               // R2_D_1 = 0;
+                // R2_D_1 = 0;
                 R2_D_2 = 0;
                 R2_D_3 = 0;
                 //R1_SOSR_1 = 0;
@@ -8225,7 +8278,7 @@ namespace SpecialJobs.ViewModels
                 R2_MAX_P_2 = Math.Max(R2_MAX_P_2, R2_P_2);
                 R2_MAX_P_3 = Math.Max(R2_MAX_P_3, R2_P_3);
 
-               // R2_MAX_C_1 = Math.Max(R2_MAX_C_1, R2_C_1);
+                // R2_MAX_C_1 = Math.Max(R2_MAX_C_1, R2_C_1);
                 R2_MAX_C_2 = Math.Max(R2_MAX_C_2, R2_C_2);
                 R2_MAX_C_3 = Math.Max(R2_MAX_C_3, R2_C_3);
 
@@ -8251,9 +8304,9 @@ namespace SpecialJobs.ViewModels
                 K_MAX_C_F_3 = Math.Max(K_MAX_C_F_3, K_C_F_3);
                 K_MAX_C_0_2 = Math.Max(K_MAX_C_0_2, K_C_0_2);
                 K_MAX_C_0_3 = Math.Max(K_MAX_C_0_3, K_C_0_3);
-                
+
             }
-             RaisePropertyChanged(() => R2_MAX_D_2);
+            RaisePropertyChanged(() => R2_MAX_D_2);
             //SaveData(null);
             try
             {
@@ -8272,8 +8325,8 @@ namespace SpecialJobs.ViewModels
             filterResults = "RES_MODE_ID = " + selectedMode.MODE_ID.ToString();
             //обновим таблицы , вынесено, чтобы можно было вызывать в потоке
             //RefreshGcResults?.Invoke();
-            
-        } 
+
+        }
         //значение частоты и тау по умолчанию для выбранного режима
         public void ModeMtUpdated(MODE mode) //
         {
@@ -8281,7 +8334,7 @@ namespace SpecialJobs.ViewModels
             if (mode == null)
                 return;
             if (mode.MODE_MT_ID != 0 && methodsEntities.MODE_TYPE.Where(p => p.MT_ID == mode.MODE_MT_ID && p.MT_F_DEFAULT != 0).Any())
-            {                
+            {
                 var mt = methodsEntities.MODE_TYPE.Where(p => p.MT_ID == mode.MODE_MT_ID && p.MT_F_DEFAULT != 0).FirstOrDefault();
                 mode.MODE_FT = (double)mt.MT_F_DEFAULT;
                 double ft = Functions.F_kGc(mode.MODE_FT,
@@ -8334,7 +8387,7 @@ namespace SpecialJobs.ViewModels
                     pw = null;
                     methodsEntities.PERSON.Load();
                     Persons = new ObservableCollection<PERSON>(methodsEntities.PERSON.OrderBy(p => p.PERSON_FIO));
-                    Persons_M = new ObservableCollection<PERSON>(methodsEntities.PERSON.Where(p=>p.PERSON_NOTE.Contains("М") || String.IsNullOrEmpty(p.PERSON_NOTE)));
+                    Persons_M = new ObservableCollection<PERSON>(methodsEntities.PERSON.Where(p => p.PERSON_NOTE.Contains("М") || String.IsNullOrEmpty(p.PERSON_NOTE)));
                     Persons_I = new ObservableCollection<PERSON>(methodsEntities.PERSON.Where(p => p.PERSON_NOTE.Contains("И") || String.IsNullOrEmpty(p.PERSON_NOTE)));
                     RaisePropertyChanged(() => Persons_M);
                     RaisePropertyChanged(() => Persons_I);
@@ -8406,7 +8459,7 @@ namespace SpecialJobs.ViewModels
                         AntennaViewModel vm = new AntennaViewModel(methodsEntities);
                         aw.newCalibr += vm.NewCalibr;
                         vm.FocusUI += aw.FocusUI;
-                        vm.RefreshGcAntennas += aw.RefrashGcAntennas;                        
+                        vm.RefreshGcAntennas += aw.RefrashGcAntennas;
                         aw.DataContext = vm;
                     }
                     aw.ShowDialog();
@@ -8416,7 +8469,7 @@ namespace SpecialJobs.ViewModels
                     RaisePropertyChanged(() => Antennas);
                     RaisePropertyChanged(() => AntennasGS);
                     break;
-                
+
                 case "MEASURING_DEVICE":
                     if (mdw == null)
                     {
@@ -8471,7 +8524,7 @@ namespace SpecialJobs.ViewModels
         {
             Value = String.Empty;
             AppendMode = false;
-           
+
 
             switch (number)
             {
@@ -8502,7 +8555,7 @@ namespace SpecialJobs.ViewModels
                     dbChanged.Suspend();//остановим фоновый поток, т.к. даные измерений в реальном времени другим пользователям не нужны
 #pragma warning restore CS0618 // Type or member is obsolete
                     WindowOrgAnalysis_1 wo1 = new WindowOrgAnalysis_1();
-                    OrgAnalysis_1_ViewModel vm = new OrgAnalysis_1_ViewModel(methodsEntities, userName, org_id, anl_id, analysis_one!= null && analysis_one.ANL_INVOICE!=null? analysis_one.ANL_INVOICE : String.Empty);
+                    OrgAnalysis_1_ViewModel vm = new OrgAnalysis_1_ViewModel(methodsEntities, userName, org_id, anl_id, analysis_one != null && analysis_one.ANL_INVOICE != null ? analysis_one.ANL_INVOICE : String.Empty);
                     wo1.DataContext = vm;
                     vm.closeWindow += wo1.WindowClose;
                     vm.focusName += wo1.focusName;
@@ -8517,7 +8570,7 @@ namespace SpecialJobs.ViewModels
                     }
                     //выбор на последнем вводе
                     Organizations = new ObservableCollection<ORGANIZATION>(methodsEntities.ORGANIZATION.OrderBy(p => p.ORG_NAME));
-                    org_id = OrgAnalysis_1_ViewModel.orgId;                    
+                    org_id = OrgAnalysis_1_ViewModel.orgId;
                     break;
                 case "1_1": //добавление счетов
                     keySuspend = true; //фоновый поток приостановили. Во всех вложеных ф-ях с потоком ничего не делаем
@@ -8598,30 +8651,30 @@ namespace SpecialJobs.ViewModels
 #pragma warning restore CS0618 // Type or member is obsolete
                     MeasuringType = "Электрическое";
                     if (!isSolid) //дифференцированный спектр
-                    { 
-                    if (wmDiff == null || !wmDiff.IsLoaded)
                     {
-                        wmDiff = new WindowMeasuringDiff_1();
-                        try
+                        if (wmDiff == null || !wmDiff.IsLoaded)
                         {
-                            wmDiff.Title = selectedMode.MODE_TYPE != null ? selectedMode.MODE_TYPE.MT_NAME: String.Empty;
+                            wmDiff = new WindowMeasuringDiff_1();
+                            try
+                            {
+                                wmDiff.Title = selectedMode.MODE_TYPE != null ? selectedMode.MODE_TYPE.MT_NAME : String.Empty;
 
+                            }
+                            catch (Exception e) { MessageBox.Show("Ошибка формирования заголовка окна. Сценарий 3." + e.Message); }
+
+                            wmDiff.DataContext = this;
+
+                            WindowClose1 += wmDiff.WindowClose;
+                            wmDiff.CellUpdated += CellUpdated;
+                            wmDiff.ResultClear += ResultClear;
+                            RefreshGcE += wmDiff.RefreshGcE;
                         }
-                        catch (Exception e) { MessageBox.Show("Ошибка формирования заголовка окна. Сценарий 3." + e.Message); }
-
-                        wmDiff.DataContext = this;
-
-                        WindowClose1 += wmDiff.WindowClose;
-                        wmDiff.CellUpdated += CellUpdated;
-                        wmDiff.ResultClear += ResultClear;
-                        RefreshGcE += wmDiff.RefreshGcE;
-                    }
-                    tcSelectedItemChanged(0); //Устанавливаем вкладку на основной форме, для того, чтобы правильно копировать данные измерений
-                    System.Windows.Clipboard.Clear();
-                    canAuto = true;
-                    RaisePropertyChanged(() => AutoRBW);
-                    wmDiff.ShowDialog();
-                    wmDiff = null;
+                        tcSelectedItemChanged(0); //Устанавливаем вкладку на основной форме, для того, чтобы правильно копировать данные измерений
+                        System.Windows.Clipboard.Clear();
+                        canAuto = true;
+                        RaisePropertyChanged(() => AutoRBW);
+                        wmDiff.ShowDialog();
+                        wmDiff = null;
                     }
                     else //сплошной спектр
                     {
@@ -8647,7 +8700,7 @@ namespace SpecialJobs.ViewModels
                         wmSolid.ShowDialog();
                         wmSolid = null;
                     }
-                   
+
                     RefreshGcResults?.Invoke();
                     RefreshGcE?.Invoke();
                     RefreshGcCollection?.Invoke();
@@ -8845,7 +8898,7 @@ namespace SpecialJobs.ViewModels
                                "Тип АРМ - " + ArmTypes.Where(p => p.AT_ID == at_id).FirstOrDefault().AT_NAME + ".   " + "АРМ -  " + arm_one.ARM_NUMBER
             };
             wt3.DataContext = this;
-          
+
             wt3.CellModesUpdated += CellModesUpdated;
             RefreshGcModes += wt3.RefreshGcModes;
             wt3.solidChanged += solidChanged;
@@ -8887,7 +8940,7 @@ namespace SpecialJobs.ViewModels
                     Tag = "UF";
                     wm1.ShowDialog();
                     RefreshGcUF -= wm1.RefreshGc;
-                    RefreshGcUF?.Invoke();                    
+                    RefreshGcUF?.Invoke();
                     break;
                 case "DiffNull":
                     WindowMeasuringDiff_2_null wm2 = new WindowMeasuringDiff_2_null();
@@ -8967,7 +9020,7 @@ namespace SpecialJobs.ViewModels
                     break;
             }
             tcSelectedItemChanged(0); //Устанавливаем предыдущую вкладку на основной форме, для того, чтобы правильно копировать данные измерений
-        }   
+        }
         private void NextMeasuring_3(Object o)
         {
             WindowMeasuring_3 wm3 = new WindowMeasuring_3();
@@ -9135,7 +9188,7 @@ namespace SpecialJobs.ViewModels
         public ICommand CalculateCommand { get { return new RelayCommand<Object>(Calculate); } }
         public ICommand ReportCommand { get { return new RelayCommand<string>(Report); } }
         public ICommand ReportWordCommand { get { return new RelayCommand<Object>(ReportWord); } }
-        
+
         public ICommand EquipmentDataCommand { get { return new RelayCommand<Object>(EquipmentData, canEquipmentData); } }
         public ICommand MdDataCommand { get { return new RelayCommand<Object>(MdData, canEquipmentData); } }
         public ICommand GetNSICommand { get { return new RelayCommand<string>(GetNSI); } }
@@ -9144,7 +9197,7 @@ namespace SpecialJobs.ViewModels
         public ICommand RandomU0Command { get { return new RelayCommand<Object>(RandomData, canRandomUF0Data); } }
 
         public ICommand GetDataAfterMeasuringAutoCommand { get { return new RelayCommand<object>(GetDataAfterMeasuringAuto, canGetDataAfterMeasuringAuto); } }
-        
+
         public ICommand MeasuringsUtiliteCommand { get { return new RelayCommand<Object>(MeasuringsUtilite, canMeasuringsUtilite); } }
         public ICommand ScenarioCommand { get { return new RelayCommand<string>(Scenario); } }
         public ICommand ExitCommand { get { return new RelayCommand<Object>(ExitEsc); } }
@@ -9154,18 +9207,17 @@ namespace SpecialJobs.ViewModels
         public ICommand NextModeCommand { get { return new RelayCommand<Object>(NextMode, canNextMode); } }
         public ICommand PasteCommand { get { return new DelegateCommandMy<Object>(PasteFromExcel, canPasteFromExcel); } }
         public ICommand RefreshIWithContrainsCommand { get { return new DelegateCommandMy<Object>(RefreshIWithContrains, canRefreshIWithContrains); } }
-        
-        public ICommand ClearMeasuringDataCommand { get { return new DelegateCommandMy<MODE>(ClearMeasuringData); }
+
+        public ICommand ClearMeasuringDataCommand
+        {
+            get { return new DelegateCommandMy<MODE>(ClearMeasuringData); }
         }
         public ICommand NextMeasuring_2Command { get { return new DelegateCommandMy<Object>(NextMeasuring_2, canNextMeasuring); } }
 
-        public ICommand NextMeasuring_3Command { get { return new DelegateCommandMy<Object>(NextMeasuring_3, canNextMeasuring); } } 
+        public ICommand NextMeasuring_3Command { get { return new DelegateCommandMy<Object>(NextMeasuring_3, canNextMeasuring); } }
         public ICommand NextMeasuring_4Command { get { return new DelegateCommandMy<Object>(NextMeasuring_4, canNextMeasuring); } }
         public ICommand CalculateModeCommand { get { return new DelegateCommandMy<MODE>(CalculateMode, canCalculate); } }
-
-        //public WindowSearch Ws { get => ws; set => ws = value; }
-        //public WindowSearch Ws1 { get => ws; set => ws = value; }
-
+     
 
         #endregion
 
@@ -9190,39 +9242,7 @@ namespace SpecialJobs.ViewModels
         public string Note { get; set; }
     }
 
-    //public class ModesResultForReport
-    //{
-    //    public string Tag { get; set; } //для объединения строк в режиме (таблица в отчёте)
-    //    public string NPP { get; set; }
-    //    public string i { get; set; }
-    //    public string EH { get; set; }
-    //    public string ModeName { get; set; }
-    //    //public string R2_st_1 { get; set; }
-    //    public string R2_st_2 { get; set; }
-    //    public string R2_st_3 { get; set; }
-    //    //public string R2_drive_1 { get; set; }
-    //    public string R2_drive_2 { get; set; }
-    //    public string R2_drive_3 { get; set; }
-    //    //public string R2_carry_1 { get; set; }
-    //    public string R2_carry_2 { get; set; }
-    //    public string R2_carry_3 { get; set; }
-    //   // public string R1_sosr_1 { get; set; }
-    //    public string R1_sosr_2 { get; set; }
-    //    public string R1_sosr_3 { get; set; }
-    //    //public string KF_drive_1 { get; set; }
-    //    public string KF_drive_2 { get; set; }
-    //    public string KF_drive_3 { get; set; }
-    //    //public string KF_carry_1 { get; set; }
-    //    public string KF_carry_2 { get; set; }
-    //    public string KF_carry_3 { get; set; }
-    //    //public string K0_drive_1 { get; set; }
-    //    public string K0_drive_2 { get; set; }
-    //    public string K0_drive_3 { get; set; }
-    //    //public string K0_carry_1 { get; set; }
-    //    public string K0_carry_2 { get; set; }
-    //    public string K0_carry_3 { get; set; }
-
-    //}
+    
     public class MODE_NPP : MODE
     {
         public string NPP { get; set; }
@@ -9230,6 +9250,6 @@ namespace SpecialJobs.ViewModels
         public MODE mode { get; set; }
 
     }
-    
-    
+
+
 }

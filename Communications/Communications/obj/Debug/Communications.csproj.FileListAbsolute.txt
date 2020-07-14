@@ -1,0 +1,19 @@
+C:\Users\VYSchagin\OneDrive\Documents\CurrentProjects\Project.PEMIN\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.dll
+C:\Users\VYSchagin\OneDrive\Documents\CurrentProjects\Project.PEMIN\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.pdb
+C:\Users\VYSchagin\OneDrive\Documents\CurrentProjects\Project.PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.dll
+C:\Users\VYSchagin\OneDrive\Documents\CurrentProjects\Project.PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.pdb
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.dll
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.pdb
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.dll
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.pdb
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.csprojAssemblyReference.cache
+D:\OneDrive\Мои разработки - софт\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.dll
+D:\OneDrive\Мои разработки - софт\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.pdb
+D:\OneDrive\Мои разработки - софт\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.csprojAssemblyReference.cache
+D:\OneDrive\Мои разработки - софт\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.dll
+D:\OneDrive\Мои разработки - софт\ПО сбора информации PEMIN\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.pdb
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\УСР - ПО съема информации ПЭМИН\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.dll
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\УСР - ПО съема информации ПЭМИН\PeminSpectrumAnalyser\Communications\bin\Debug\Communications.pdb
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\УСР - ПО съема информации ПЭМИН\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.csprojAssemblyReference.cache
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\УСР - ПО съема информации ПЭМИН\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.dll
+C:\Users\VYSchagin\OneDrive\Documents\Текущие проекты\УСР - ПО съема информации ПЭМИН\PeminSpectrumAnalyser\Communications\obj\Debug\Communications.pdb

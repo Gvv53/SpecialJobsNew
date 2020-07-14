@@ -39,14 +39,16 @@ namespace SpecialJobs.Views
             
             GridControl.AllowInfiniteGridSize = true;
             vm = new MainWindowViewModel();
-            if (vm.Error) //ошибка подключения к БД
+            
+            if (vm.Error) //ошибка подключения к БД или повторный запуск от имени уже работающего пользователя
             {
                 return;
             }
             ApplicationThemeHelper.ApplicationThemeName = "DevExpress.Xpf.Themes.Office2016White.v19.1";
             InitializeComponent();
+
             string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();          
-            Title = "Версия № " + assemblyVersion.Substring(4, assemblyVersion.Length-4);
+            Title = "Версия № " + assemblyVersion.Substring(4, assemblyVersion.Length-4) + "   Пользователь - " + vm.userName;
             try
             {
                 DataContext = vm;
@@ -205,8 +207,8 @@ namespace SpecialJobs.Views
             gcModes.SelectionMode = isMultiSelect ? MultiSelectMode.Row : MultiSelectMode.None;
             if (isMultiSelect)
             {
-                if (vm.selectedItemsMode.Count == gcModes.SelectedItems.Count )
-                    return;
+                //if (vm.selectedItemsMode.Count == gcModes.SelectedItems.Count )
+                //    return;
                 vm.selectedItemsMode.Clear();
                 ObservableCollection<MODE> temp = new ObservableCollection<MODE>();
                 foreach (MODE mode in gcModes.SelectedItems)
@@ -301,7 +303,7 @@ namespace SpecialJobs.Views
             {
                 row.MODE_MT_ID = (int)e.Value;
                 CellModesUpdated(e.Value, e.Column.FieldName, row); //сохранение изменений в БД
-                //gcModes.RefreshData();
+                gcModes.RefreshData();
             }
         }
         private void TableViewModes_CellValueChanged(object sender, CellValueChangedEventArgs e)
